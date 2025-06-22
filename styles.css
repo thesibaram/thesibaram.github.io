@@ -255,18 +255,6 @@ nav {
     }
 }
 
-/* Optional Animation for Sliding in */
-@keyframes slideIn {
-    0% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
 /* Work Section */
 #work {
     background-color: #f0f4f8;
@@ -430,17 +418,6 @@ footer {
     font-size: 1rem;
     padding-top: 2rem;
     border-top: 1px solid #333;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
 }
 
 /* Responsive styles */
