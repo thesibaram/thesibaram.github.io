@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to display dynamic messages to the user (info, success, error)
     function displayMessage(message, type) {
+        if (!formMessage) { // Added a check to prevent errors if element is missing
+            console.error("Error: formMessage element not found in HTML.");
+            return;
+        }
         formMessage.textContent = message;
         // Apply appropriate styling class
         formMessage.className = `message-area ${type}`;
@@ -77,13 +81,11 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', async function(event) {
             event.preventDefault(); // Prevent default form submission to handle it with JavaScript
 
-            // Create a FormData object from the form fields.
-            // This object is easily sent via fetch and processed by Google Apps Script's doPost.
             const formData = new FormData(contactForm);
 
             // IMPORTANT: Replace this with YOUR deployed Google Apps Script Web App URL.
             // This URL is specific to your deployed script and is crucial for the form to work.
-            const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbyAjHk-exGW_jC7p9HLfJcs3fbaaPpTf1cQyGrKE383cWyqoyfUOedjzkP6s5vwLv-2/exec'; // This is an example URL, please replace with your own
+            const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbxZ6zL5sRQkuJ2TTc6Ms8RXQYF49jFChJwJ3umrTg-sZJ5DZx5Q3CaIRVK7h_6x6Af4/exec'; // <<< REPLACE WITH YOUR ACTUAL URL
 
             // Basic validation for the Apps Script URL
             if (!googleAppsScriptURL || googleAppsScriptURL.includes('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL')) {
@@ -91,34 +93,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Display an 'info' message indicating the submission is in progress
             displayMessage('Sending message...', 'info');
 
             try {
-                // Send the form data to the Google Apps Script Web App
                 const response = await fetch(googleAppsScriptURL, {
                     method: 'POST',
-                    body: formData // FormData works directly with Apps Script doPost(e)
+                    body: formData
                 });
 
-                // Google Apps Script usually returns a text response (e.g., 'success' or an error message)
                 const result = await response.text();
+                // Log the raw response from Apps Script for debugging
+                console.log('Raw response from Apps Script:', result);
 
-                // Check for a successful response from the Apps Script
-                // We're looking for 'success' in the returned text and a successful HTTP status (response.ok)
-                if (response.ok && result.includes('success')) {
+                // Check for successful HTTP response AND if the response text contains 'success'
+                // Use .trim() to remove any leading/trailing whitespace
+                if (response.ok && result.trim().includes('success')) {
                     console.log('Success:', result);
                     displayMessage('Message sent successfully! Thank you for contacting me.', 'success');
-                    contactForm.reset(); // Clear the form fields upon successful submission
+                    contactForm.reset();
                 } else {
                     console.error('Google Apps Script error:', result);
-                    // Display an error message with more details if available
                     displayMessage(`Failed to send message: ${result || 'Unknown server error. Please try again.'}`, 'error');
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                // Display a network error message if the fetch request itself fails
-                displayMessage('Network error: Please check your internet connection and try again.', 'error');
+                displayMessage('Network error: Please check your connection and try again.', 'error');
             }
         });
     }
