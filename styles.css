@@ -350,6 +350,39 @@ button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
+/* Styles for the Form Message Area */
+.message-area {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    display: none; /* Hidden by default */
+    opacity: 0; /* Start with hidden opacity */
+    transition: opacity 0.5s ease-in-out; /* Smooth transition for visibility */
+}
+
+.message-area.info {
+    background-color: #e7f3fe;
+    color: #0056b3;
+    border: 1px solid #a8d5ff;
+    opacity: 1; /* Show on info */
+}
+
+.message-area.success {
+    background-color: #d4edda;
+    color: #28a745;
+    border: 1px solid #c3e6cb;
+    opacity: 1; /* Show on success */
+}
+
+.message-area.error {
+    background-color: #f8d7da;
+    color: #dc3545;
+    border: 1px solid #f5c6cb;
+    opacity: 1; /* Show on error */
+}
+
 /* Footer */
 footer {
     background-color: #1a1a1a;
