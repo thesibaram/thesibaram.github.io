@@ -10,6 +10,7 @@ import { Blog } from "./components/Blog";
 import { Resume } from "./components/Resume";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
+import { Chatbot } from "./components/Chatbot/index";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Contact />
         </main>
         <Footer />
+        <Chatbot />
       </div>
       <Toaster />
     </ThemeProvider>
