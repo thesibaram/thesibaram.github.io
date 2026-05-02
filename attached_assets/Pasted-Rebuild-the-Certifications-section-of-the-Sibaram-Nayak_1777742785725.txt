@@ -1,0 +1,399 @@
+Rebuild the Certifications section of the Sibaram Nayak portfolio.
+Surgical update - touch only the Certifications section and its components.
+Do not modify anything else.
+
+=== STACK (unchanged) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11,
+JetBrains Mono, TypeScript
+
+=== DATA LAYER ===
+
+Create /data/certifications.ts
+
+export type CertStatus = "completed" | "in-progress" | "planned"
+
+export type Certification = {
+  id: string
+  title: string
+  issuer: string
+  issuedDate: string        // "MMM YYYY" or "Expected MMM YYYY"
+  credentialId?: string     // leave empty string if not yet known
+  credentialUrl?: string    // verification link
+  category: "ML" | "DL" | "CV" | "Dev" | "Cloud" | "General"
+  status: CertStatus
+  skills: string[]          // skills this cert validates
+  featured: boolean
+}
+
+export const certifications: Certification[] = [
+  // PLACEHOLDERS - Sibaram fills these in with real certs
+  {
+    id: "cert-001",
+    title: "// Add Your Certification Title",
+    issuer: "Issuer Name",
+    issuedDate: "MMM YYYY",
+    credentialId: "",
+    credentialUrl: "",
+    category: "ML",
+    status: "completed",
+    skills: ["Python", "ML"],
+    featured: true
+  },
+  {
+    id: "cert-002",
+    title: "// Add Your Certification Title",
+    issuer: "Issuer Name",
+    issuedDate: "MMM YYYY",
+    credentialId: "",
+    credentialUrl: "",
+    category: "DL",
+    status: "completed",
+    skills: ["TensorFlow", "Keras"],
+    featured: true
+  },
+  {
+    id: "cert-003",
+    title: "// In Progress Certification",
+    issuer: "Issuer Name",
+    issuedDate: "Expected Dec 2025",
+    credentialId: "",
+    credentialUrl: "",
+    category: "CV",
+    status: "in-progress",
+    skills: ["Computer Vision", "CNN"],
+    featured: false
+  },
+  {
+    id: "cert-004",
+    title: "// Planned Certification",
+    issuer: "Issuer Name",
+    issuedDate: "Expected 2026",
+    credentialId: "",
+    credentialUrl: "",
+    category: "DL",
+    status: "planned",
+    skills: ["Deep Learning"],
+    featured: false
+  }
+]
+
+export const categoryConfig = {
+  ML:      { label: "ML",      color: "var(--accent)"   },
+  DL:      { label: "DL",      color: "var(--accent-2)" },
+  CV:      { label: "CV",      color: "#22C55E"         },
+  Dev:     { label: "Dev",     color: "#F59E0B"         },
+  Cloud:   { label: "Cloud",   color: "#3B82F6"         },
+  General: { label: "General", color: "var(--border)"   }
+}
+
+=== COMPONENT ARCHITECTURE ===
+
+components/Certifications/
+  index.tsx               (section wrapper + layout)
+  CertGrid.tsx            (responsive card grid)
+  CertCard.tsx            (single cert card, expandable)
+  CertExpanded.tsx        (expanded panel content)
+  CertFilter.tsx          (status filter bar)
+  PixelSeal.tsx           (decorative pixel cert seal, SVG)
+  StatusChip.tsx          (completed/in-progress/planned)
+  CategoryBadge.tsx       (ML/DL/CV etc. pixel badge)
+  CredentialLink.tsx      (verify button with pixel style)
+  CertStats.tsx           (summary count row at top)
+  EmptyState.tsx          (when filter returns nothing)
+
+=== LAYOUT ===
+
+Desktop: max-width 960px, centered, full section width.
+Mobile: full width, 24px padding.
+
+Structure top to bottom:
+  1. Section header
+  2. CertStats row
+  3. CertFilter bar
+  4. CertGrid (featured row + main grid)
+  5. Empty state (conditional)
+
+=== SECTION HEADER ===
+
+Pixel ribbon/medal icon (16x16 SVG rects) left of title.
+"CERTIFICATIONS" 11px JetBrains Mono, --text-muted, tracked.
+Full width 1px dashed --border divider below.
+
+=== CERT STATS ROW (CertStats.tsx) ===
+
+4 stat blocks in a row, same style as Hero stats.
+Divider: 1px solid --border between each block.
+
+Stats:
+  Total completed certs  | label: "Earned"
+  In-progress certs      | label: "In Progress"  
+  Planned certs          | label: "Planned"
+  Unique categories      | label: "Domains"
+
+Values count up on section enter (same counter animation
+as Hero stats, requestAnimationFrame, 1000ms).
+
+Font: JetBrains Mono.
+Value: 24px, --accent.
+Label: 10px, --text-muted, uppercase.
+
+=== CERT FILTER BAR (CertFilter.tsx) ===
+
+Two rows of filters, margin-top 24px.
+
+Row 1 - Status filters:
+  [All] [Completed] [In Progress] [Planned]
+
+Row 2 - Category filters:
+  [All] [ML] [DL] [CV] [Dev] [Cloud] [General]
+
+Each filter pill:
+  Font: 11px JetBrains Mono
+  Padding: 6px 14px
+  Border: 1px solid --border
+  No border-radius
+  Background: transparent
+
+Active pill:
+  Background: var(--accent)
+  Color: #0D0D10
+  Border-color: var(--accent)
+
+Hover (inactive):
+  Transform: translate(-2px, -2px)
+  Box-shadow: 3px 3px 0px var(--accent)
+  Transition: 120ms ease
+
+Both filters work together (AND logic):
+  Status AND category must both match.
+  "All" in either row clears that filter.
+
+Row 2 category pills use their category color on active
+instead of generic --accent.
+
+=== FEATURED ROW ===
+
+Above main grid, label "FEATURED CERTS" with pixel
+star icon (8x8 SVG), 10px JetBrains Mono --text-muted.
+
+Horizontal scrollable row.
+Featured cards: min-width 300px, full card height.
+Only renders if featured: true certs exist.
+Hidden when a filter is active (show all in grid instead).
+
+=== CERT CARD (CertCard.tsx) - COLLAPSED ===
+
+Dimensions: min-height 200px, full grid column width.
+Border: 1px solid --border. No border-radius.
+Background: var(--surface).
+
+PIXEL SEAL (PixelSeal.tsx) - top-right corner:
+  Position: absolute, top 12px, right 12px.
+  SVG 32x32px, image-rendering: pixelated.
+  
+  Seal design (SVG rects, 8x8 grid):
+  Outer ring: pixel octagon outline (8 sides, 1px rects)
+  Inner ring: smaller octagon, 1 pixel gap from outer
+  Center symbol: category-specific icon (4x4 grid)
+    ML:  small brain (2 lobes, 4 rects)
+    DL:  stacked layers (3 horizontal lines)
+    CV:  eye shape (oval + dot)
+    Dev: terminal prompt (> and _)
+    Cloud: cloud puff (rounded pixel top)
+    General: star (5 points, pixel approximation)
+  
+  Seal color: matches categoryConfig color for that cert.
+  
+  completed certs:    seal fully filled, solid color
+  in-progress certs:  seal outline only, dashed border
+  planned certs:      seal outline only, muted color, 
+                      opacity 0.5
+
+Card layout (top to bottom, left side):
+
+  ROW 1: CategoryBadge (left) + StatusChip (right)
+    CategoryBadge: 8x8 pixel icon + label, category color
+    StatusChip:
+      completed:   "EARNED" green border, no fill
+      in-progress: "IN PROGRESS" amber, blinking dot
+      planned:     "PLANNED" muted, dashed border
+
+  ROW 2: Cert title
+    Font: JetBrains Mono 14px, --text-primary, bold
+    Max 2 lines, ellipsis overflow
+    Placeholder titles render in --text-muted, italic
+
+  ROW 3: Issuer name
+    Font: Inter 12px, --text-muted
+    Pixel institution icon (8x8) left of issuer name
+
+  ROW 4: Issue date
+    Font: JetBrains Mono 11px, --text-muted
+    Pixel calendar icon (8x8) left of date
+
+  ROW 5: Skills chips (max 3 visible, "+N" if more)
+    Same PixelChip style as Skills section
+    Font: 10px, compact
+
+  ROW 6: Footer row
+    Left: CredentialLink button (if credentialUrl exists)
+    Right: expand arrow (Lucide ChevronDown, rotates on open)
+
+Card hover:
+  Transform: translate(-3px, -3px)
+  Box-shadow: 5px 5px 0px var(--accent)
+  Border-color: var(--accent)
+  Transition: 150ms ease
+
+PLACEHOLDER CARD SPECIAL TREATMENT:
+  Cards with title starting with "//" render with:
+  Dashed 1px border instead of solid
+  Reduced opacity: 0.65
+  "[ PLACEHOLDER ]" chip in top-left, --text-muted
+  No hover effect
+  No expand (clicking does nothing)
+  Tooltip on hover: "Update /data/certifications.ts 
+    to add your real certifications"
+
+=== CERT EXPANDED PANEL (CertExpanded.tsx) ===
+
+Slides open below card.
+Framer Motion:
+  initial:  { height: 0, opacity: 0 }
+  animate:  { height: "auto", opacity: 1 }
+  exit:     { height: 0, opacity: 0 }
+  transition: duration 0.3, ease "easeInOut"
+
+Only one expanded at a time.
+Escape key closes any open panel.
+
+Separator: 1px dashed --border, full width, margin 12px 0.
+
+Content blocks:
+
+  BLOCK 1 - Credential ID (if exists):
+    Label: "CREDENTIAL ID" 10px JetBrains Mono --text-muted
+    Value: monospace credential string, --text-primary
+    Copy button: pixel 16x16 copy icon, copies to clipboard
+    On copy: button flashes --accent, "COPIED" text 800ms
+
+  BLOCK 2 - Skills validated:
+    Label: "VALIDATES" 10px JetBrains Mono --text-muted
+    All skills as PixelChip components, flex wrap
+
+  BLOCK 3 - Verify button (if credentialUrl exists):
+    Full width button
+    Background: transparent
+    Border: 1px solid --accent
+    Text: "[ VERIFY CREDENTIAL ]" JetBrains Mono 12px --accent
+    Right: pixel external-link icon (8x8 SVG)
+    Hover: background fills --accent at 10%, 
+           translate(-2px, -2px), box-shadow pixel style
+    Opens in new tab
+
+  BLOCK 4 - Status note:
+    completed:   "Verified credential, earned [date]"
+    in-progress: "Currently working toward this certification"
+                 Amber text, pixel clock icon left
+    planned:     "Queued for future learning path"
+                 Muted text, pixel bookmark icon left
+
+=== PIXEL SEAL SPECS (SVG rects, 8x8 grid, 4px per pixel) ===
+
+Octagon outline (32x32 viewBox):
+  Top edge:    rects at rows 1, cols 3-6
+  Bottom edge: rects at rows 8, cols 3-6
+  Left edge:   rects at cols 1, rows 3-6
+  Right edge:  rects at cols 8, rows 3-6
+  Corners: single rect each (row2col2, row2col7, 
+           row7col2, row7col7)
+
+Inner ring: same shape, inset 1 pixel all sides.
+
+Center icon: 4x4 grid, centered (cols 3-6, rows 3-6).
+
+Completed seal fill:
+  All outline rects + filled center background rect
+  Color: categoryConfig[category].color
+
+Incomplete seal:
+  Outline rects only, no fill rect
+  Stroke style via individual rects at 40% opacity
+
+=== PIXEL INSTITUTION ICON (8x8 SVG) ===
+
+Generic building shape:
+  Base: row 8, cols 1-8 (full width, 1px)
+  Body: rows 3-7, cols 2-7 (filled rect, --surface fill,
+        1px --border stroke)
+  Door: rows 6-7, cols 4-5 (2x2, --text-muted fill)
+  Roof: rows 1-2, cols 3-6 (triangle approximation, 
+        2 rects narrowing upward)
+
+=== PIXEL CALENDAR ICON (8x8 SVG) ===
+
+Box outline: rows 2-8, cols 1-8, 1px border
+Header bar: row 2, filled, --accent color
+Hooks: 2 single rects top, cols 3 and 6, row 1
+Grid inside: 2x2 arrangement of 1px dots (rows 4,6 cols 2,4,6)
+
+=== EMPTY STATE (EmptyState.tsx) ===
+
+When filter combo returns 0 certs:
+  Centered in grid area.
+  Pixel art: 24x24 empty folder icon (SVG rects).
+  Text: "No certifications in this category."
+  Sub: "Try a different filter combination."
+  [Reset Filters] button, pixel style.
+  
+  Framer Motion: fade in, y: 10 -> 0.
+
+=== ANIMATIONS ===
+
+Section entrance:
+  CertStats counts up (IntersectionObserver, once)
+  Cards stagger in: 0.07s per card
+  Each card: y: 16 -> 0, opacity: 0 -> 1, duration 250ms
+
+Filter change:
+  AnimatePresence mode="popLayout"
+  Exiting: opacity 0, scale 0.97, 150ms
+  Entering: opacity 0 -> 1, y: 8 -> 0, 200ms, stagger 0.05s
+
+Expand/collapse:
+  Height animates smoothly
+  Arrow rotates 180deg
+
+Seal entrance (per card):
+  Scale: 0 -> 1, delay matches card stagger
+  Duration: 300ms, ease "backOut" (slight overshoot)
+
+=== THEME BEHAVIOR ===
+
+All colors via CSS vars.
+Seal colors: use categoryConfig per cert.
+Placeholder cards:
+  Light: border #D0D0C8 dashed, bg #F5F5F0
+  Dark:  border #252530 dashed, bg #141418
+
+=== MOBILE (below 768px) ===
+
+Grid: single column
+Filter rows: horizontally scrollable, no wrap
+Featured row: single column stack
+CertStats: 2x2 grid
+Pixel seal: scales to 24x24
+Expanded panel: full width, same content
+
+=== DO NOT ===
+
+- No trophy shelf layout (looks like a game achievement screen)
+- No circular badge designs
+- No gradient fills on seals
+- No third-party badge embed widgets
+- No Credly iframe or similar external embeds
+- No animations that loop except:
+    blinking status dot on in-progress chips
+    blinking cursor (if any terminal element added)
+- No border-radius anywhere
+- Placeholder cards must never look like real certs
