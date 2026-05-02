@@ -46,6 +46,8 @@
   --px-accent: #00B4D8;
   --px-accent2: #7B2FBE;
   --px-ink: #1A1A1A;
+  --doc-bg: #FAFAF7;
+  --sticky-bg: #FFF9C4;
   --app-font-sans: 'Inter', sans-serif;
   --app-font-mono: 'JetBrains Mono', monospace;
   --radius: 0.125rem;
@@ -75,6 +77,8 @@
   --px-accent: #00D4F5;
   --px-accent2: #9B4FE8;
   --px-ink: #E8E8E0;
+  --doc-bg: #1A1A20;
+  --sticky-bg: #2A2A00;
 
   --background: 240 14% 7%;
   --foreground: 60 9% 91%;

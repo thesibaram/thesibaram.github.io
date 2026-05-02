@@ -1,13 +1,9 @@
-import { useState } from "react"
 import { motion } from "framer-motion"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { PixelDivider } from "@/components/pixels/PixelDivider"
-import { Certification } from "@/data/certifications"
 import { CertStats } from "./CertStats"
-import { CertFilter } from "./CertFilter"
-import { CertList } from "./CertList"
-
-type StatusFilter = "all" | Certification["status"]
+import { TheWall } from "./TheWall"
+import { CategoryLegend } from "./CategoryLegend"
 
 const SealIcon = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" className="w-full h-full pixel-art">
@@ -21,8 +17,6 @@ const SealIcon = () => (
 )
 
 export function Certifications() {
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
-
   return (
     <motion.section
       id="certifications"
@@ -34,10 +28,9 @@ export function Certifications() {
     >
       <SectionHeader title="Certifications" icon={<SealIcon />} />
       <PixelDivider />
-
       <CertStats />
-      <CertFilter statusFilter={statusFilter} onStatusChange={setStatusFilter} />
-      <CertList statusFilter={statusFilter} onResetFilters={() => setStatusFilter("all")} />
+      <TheWall />
+      <CategoryLegend />
     </motion.section>
   )
 }
