@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="bg-[var(--px-surface)] border-t-2 border-[var(--px-accent)] py-8 mt-20">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="font-mono text-sm text-[var(--px-text)] text-center md:text-left">
-          Sibaram Nayak — built with React + Tailwind + caffeine
+          Sibaram Behera — built with React + Tailwind + caffeine
         </div>
         
         <div className="flex items-center gap-4 text-[var(--px-text)]">

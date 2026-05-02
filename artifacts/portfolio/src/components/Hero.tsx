@@ -79,7 +79,7 @@ export function Hero() {
             }}
             className="text-5xl md:text-7xl font-mono font-bold text-[var(--px-text)] tracking-tight mb-4"
           >
-            Sibaram Nayak
+            Sibaram Behera
           </motion.h1>
 
           <motion.div 
