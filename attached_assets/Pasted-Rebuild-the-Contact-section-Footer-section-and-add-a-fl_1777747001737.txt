@@ -1,0 +1,1020 @@
+Rebuild the Contact section, Footer section, and add a 
+floating AI Chatbot ("Ask AI About Sibaram") to the 
+Sibaram Nayak portfolio.
+
+Surgical update - touch only these three additions.
+Do not modify any other section.
+
+=== STACK (unchanged) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11,
+JetBrains Mono, TypeScript, Anthropic Claude API
+
+=== PART 1: CONTACT SECTION ===
+
+--- DATA LAYER ---
+
+Create /data/contact.ts
+
+export const contact = {
+  email: "placeholder@email.com",
+  github: "https://github.com/thesibaram",
+  linkedin: "#",
+  location: "Berhampur, Odisha, India",
+  availability: "Available for internships from May 2025",
+  responseTime: "Usually replies within 24 hours",
+  preferredContact: "email",
+  formEndpoint: "",        // add your formspree/web3forms key
+  socials: [
+    {
+      label: "GitHub",
+      href: "https://github.com/thesibaram",
+      iconKey: "github",
+      handle: "@thesibaram"
+    },
+    {
+      label: "LinkedIn",
+      href: "#",
+      iconKey: "linkedin",
+      handle: "sibaram-nayak"
+    },
+    {
+      label: "Email",
+      href: "mailto:placeholder@email.com",
+      iconKey: "mail",
+      handle: "placeholder@email.com"
+    }
+  ]
+}
+
+--- COMPONENT ARCHITECTURE ---
+
+components/Contact/
+  index.tsx              (section wrapper + layout)
+  ContactLeft.tsx        (info + availability + socials)
+  ContactRight.tsx       (form)
+  ContactForm.tsx        (controlled form, validation)
+  FormField.tsx          (reusable pixel input field)
+  SocialCard.tsx         (individual social link block)
+  AvailabilityBadge.tsx  (open to work indicator)
+  CRTMonitor.tsx         (pixel art CRT, footer of section)
+  FormSuccess.tsx        (post-submit success state)
+  FormError.tsx          (error state)
+
+--- LAYOUT ---
+
+Desktop: two columns, 50/50, gap 64px.
+Tablet: two columns, 45/55.
+Mobile: single column, contact info first then form.
+
+Max-width: 960px, centered.
+
+--- SECTION HEADER ---
+
+Pixel satellite dish icon (16x16 SVG rects).
+"CONTACT" 11px JetBrains Mono --text-muted tracked.
+Subtitle: "// let's build something together"
+  Inter 12px --text-muted italic.
+Full width 1px dashed --border divider below.
+
+--- LEFT COLUMN (ContactLeft.tsx) ---
+
+AVAILABILITY BADGE (AvailabilityBadge.tsx):
+  Same blinking dot style as Hero status badge.
+  Text: availability string from contact.ts
+  Border: 1px solid green (#22C55E)
+  Dot: green, blinking CSS animation
+  Font: JetBrains Mono 11px
+
+HEADING:
+  "Let's Connect." JetBrains Mono 28px --text-primary
+  Line 2: "I am actively looking for" Inter 14px --text-muted
+  Line 3: "ML internships and research roles."
+    Inter 14px --accent
+
+RESPONSE TIME BLOCK:
+  Border: 1px solid --border
+  Padding: 12px 16px
+  Background: var(--surface)
+  Pixel clock icon (8x8) left
+  responseTime string: JetBrains Mono 11px --text-muted
+
+SOCIAL CARDS (SocialCard.tsx):
+  3 cards stacked vertically, gap 10px.
+  Each card:
+    Border: 1px solid --border
+    Background: var(--surface)
+    Padding: 12px 16px
+    No border-radius
+
+    Left: pixel platform icon (16x16 SVG rects)
+    Center:
+      Platform label: JetBrains Mono 12px --text-primary
+      Handle: Inter 11px --text-muted
+    Right: pixel external-link icon (8x8)
+
+    Hover:
+      Border-color: platform color
+        GitHub:   #6E5494
+        LinkedIn: #0A66C2
+        Email:    var(--accent)
+      Transform: translate(-2px, -2px)
+      Box-shadow: 3px 3px 0px platform color
+      Transition: 120ms ease
+
+    Entire card is an anchor tag, opens correct target.
+
+CRT MONITOR (CRTMonitor.tsx):
+  Below social cards, margin-top 32px.
+  SVG, 120x90px rendered, image-rendering: pixelated.
+  ViewBox: "0 0 48 36", each pixel = 2.5px rendered.
+
+  Monitor body (SVG rects):
+    Outer shell: 40x28 rect, rows 1-28, cols 4-44
+      Fill: var(--surface), stroke: --border 1px
+    Screen bezel: 36x22 rect, inset 2px all sides
+      Fill: #0A0A12 (screen dark, both themes)
+    Screen glass: same rect, fill: #0D1117
+    Stand neck: 4x4 rect, cols 20-28, rows 28-32
+    Stand base: 16x3 rect, cols 16-32, rows 32-35
+
+  Screen content (inside screen rect):
+    Background: #0D1117 always
+    Line 1: "> SIBARAM_N.exe" in --accent, 6px mono
+    Line 2: "> Status: ONLINE" in green #22C55E, 6px
+    Line 3: "> Loading..." in --text-muted, 6px
+    Blinking cursor after line 3:
+      2x4px rect, --accent fill
+      CSS animation: opacity 0->1->0, 600ms loop
+
+  Screen scanlines overlay:
+    Same repeating-linear-gradient spec as Hero
+    Applied as ::after on screen rect area
+
+  Pixel glow effect (CSS only):
+    filter: drop-shadow(0 0 4px var(--accent))
+    On entire SVG, very subtle
+
+--- RIGHT COLUMN (ContactRight.tsx) ---
+
+FORM HEADER:
+  "Send a message" JetBrains Mono 14px --text-primary
+  Subtitle: "// no spam, just real conversation"
+    10px --text-muted
+
+CONTACT FORM (ContactForm.tsx):
+
+  Fields: Name, Email, Subject, Message.
+  
+  Validation (client-side, no library):
+    Name: required, min 2 chars
+    Email: required, valid email regex
+    Subject: required, min 4 chars
+    Message: required, min 20 chars, max 500 chars
+  
+  FormField.tsx (reusable):
+    Label: above field, JetBrains Mono 10px --text-muted
+      uppercase, tracked. Format: "// FIELD_NAME"
+    Input/Textarea:
+      Width: 100%
+      Background: var(--bg)
+      Border: 1px solid --border
+      No border-radius
+      Padding: 10px 12px
+      Font: JetBrains Mono 13px --text-primary
+      Caret-color: var(--accent)
+      
+      Focus state:
+        Border-color: var(--accent)
+        Box-shadow: 0 0 0 1px var(--accent)
+        (double border feel, no blur)
+        Outline: none
+      
+      Error state:
+        Border-color: #EF4444
+        Box-shadow: 0 0 0 1px #EF4444
+      
+      Valid state (after blur, if valid):
+        Border-color: #22C55E
+        
+    Error message:
+      Below field, JetBrains Mono 10px #EF4444
+      Pixel warning icon (6x6) left of message
+      Framer Motion: height 0->auto, opacity 0->1
+  
+  Message textarea:
+    Height: 120px, resize: vertical only.
+    Char counter bottom-right: "N / 500"
+      10px JetBrains Mono --text-muted
+      Turns amber at 400+, red at 490+
+
+  SUBMIT BUTTON:
+    Full width.
+    Background: var(--accent)
+    Color: #0D0D10
+    Border: 2px solid var(--accent)
+    Padding: 14px
+    Font: JetBrains Mono 13px uppercase tracked
+    Text: "[ SEND MESSAGE ]"
+    No border-radius
+
+    Loading state (while submitting):
+      Text: "[ SENDING... ]"
+      Animated pixel dots after text (3 dots, 
+      sequential opacity animation)
+      Button disabled, opacity 0.8
+
+    Hover (not loading):
+      translate(-3px, -3px)
+      box-shadow: 6px 6px 0px rgba(0,180,216,0.4)
+
+    Pixel send icon (8x8 SVG, paper plane shape) 
+    right of text.
+
+  FormSuccess.tsx (replaces form after submit):
+    Border: 1px solid #22C55E
+    Background: var(--surface)
+    Padding: 24px
+    Centered content:
+      Pixel checkmark icon (24x24 SVG rects):
+        Checkmark path from pixel rects, green fill
+      "Message received." JetBrains Mono 16px --text-primary
+      "I will get back to you within 24 hours."
+        Inter 13px --text-muted
+      responseTime string
+      [Send another] link: resets form state
+
+  FormError.tsx:
+    Same layout but red border, error icon, 
+    "Something went wrong. Try emailing directly."
+    With direct email link.
+
+=== PART 2: FOOTER SECTION ===
+
+--- COMPONENT ARCHITECTURE ---
+
+components/Footer/
+  index.tsx              (full footer wrapper)
+  FooterTop.tsx          (main content, 3 columns)
+  FooterNav.tsx          (quick links column)
+  FooterBio.tsx          (left column, identity)
+  FooterStatus.tsx       (right column, live status)
+  FooterBottom.tsx       (copyright bar)
+  PixelDivider.tsx       (dot row divider, reusable)
+  BackToTop.tsx          (scroll to top button)
+  LiveClock.tsx          (real-time IST clock display)
+
+--- FOOTER LAYOUT ---
+
+Full width, no max-width constraint.
+Background: var(--bg) with 1px top border --accent.
+
+NOT a dark background copy of nav. Completely different
+layout from any other section.
+
+Structure:
+  PixelDivider (top)
+  FooterTop (3 columns)
+  PixelDivider (middle)
+  FooterBottom (single row)
+
+--- PIXEL DIVIDER (PixelDivider.tsx) ---
+
+Full width row of 4x4 pixel squares, 8px gap between.
+Color: --border
+Squares repeat across full width (JS calculates count
+  from container width / (4+8) = 12px per unit).
+  
+  Use CSS:
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--border) 0px,
+    var(--border) 4px,
+    transparent 4px,
+    transparent 12px
+  )
+  Height: 4px
+  Width: 100%
+
+--- FOOTER TOP (FooterTop.tsx) ---
+
+3 columns, padding 40px 80px desktop, 24px mobile.
+Desktop: 35% / 30% / 35% split.
+Tablet: 2 columns (col3 wraps below).
+Mobile: single column stack.
+
+COLUMN 1 - FooterBio.tsx:
+
+  Logo: "SN" in 24px JetBrains Mono --text-primary
+  Pixel border around logo: 1px solid --accent, 
+  padding 4px 8px, 2px offset box-shadow --accent
+
+  Tagline: "B.Tech EE @ PMEC"
+    JetBrains Mono 11px --text-muted, margin-top 8px
+
+  One-liner: "Building ML systems from Odisha."
+    Inter 13px --text-primary, margin-top 12px
+
+  Stack chips (current tech):
+    "TensorFlow" "Next.js" "Python" as PixelChip
+    Small, compact, flex wrap
+
+  Made-with line (bottom of col):
+    "// built with Next.js + Tailwind + caffeine"
+    9px JetBrains Mono --text-muted
+
+COLUMN 2 - FooterNav.tsx:
+
+  Label: "// NAVIGATE" 9px JetBrains Mono --text-muted tracked
+
+  Links: Hero, About, Skills, Projects, Experience,
+         Certifications, Blog, Resume, Contact
+
+  Each link:
+    JetBrains Mono 11px --text-muted
+    Prefix: "> " in --accent (static)
+    Hover: color --text-primary, translate(4px)
+    Transition: 100ms
+    Display: block, padding 4px 0
+
+  Separator between nav and social:
+    1px dashed --border, margin 12px 0
+
+  Social icon row (same pixel icon style, 28x28 each):
+    GitHub, LinkedIn, Email
+    Pixel press hover effect
+
+COLUMN 3 - FooterStatus.tsx:
+
+  Label: "// SYSTEM STATUS" 9px JetBrains Mono --text-muted
+
+  Status rows (pixel dot + label + value):
+
+    LOCATION:
+      Pixel location pin (6x6) --text-muted
+      "Berhampur, Odisha" 11px JetBrains Mono
+
+    LOCAL TIME (LiveClock.tsx):
+      Pixel clock icon (6x6) --text-muted
+      Real-time IST clock: "HH:MM:SS IST"
+      Updates every second via setInterval
+      JetBrains Mono 11px --accent (glowing time display)
+
+    AVAILABILITY:
+      Blinking green dot
+      availability string, 11px JetBrains Mono
+
+    CURRENT PROJECT:
+      Pixel folder icon (6x6)
+      "Flowers102 + Grad-CAM" 11px --text-muted
+
+    STATUS:
+      Blinking green dot
+      "ONLINE" 11px JetBrains Mono #22C55E
+
+  GitHub activity mini-block:
+    Below status rows, margin-top 16px
+    Border: 1px solid --border, padding 10px
+    Label: "// github.com/thesibaram"
+      9px JetBrains Mono --text-muted
+    7x pixel squares in a row (last 7 days activity)
+      Each square: 10x10px, --border if no commit,
+      --accent if commit (placeholder: alternate pattern)
+    Label below: "last 7 days" 9px --text-muted
+
+--- FOOTER BOTTOM (FooterBottom.tsx) ---
+
+Full width, background: var(--surface).
+Border-top: 1px solid --border.
+Padding: 12px 80px desktop, 12px 24px mobile.
+
+Flex row, space-between, align center.
+Wraps on mobile to column.
+
+Left:
+  "2025 Sibaram Nayak"
+  JetBrains Mono 10px --text-muted
+  Pixel copyright icon (8x8 SVG) left
+
+Center:
+  "// no rights reserved, use what you want"
+  JetBrains Mono 9px --text-muted
+  Hidden on mobile
+
+Right:
+  BackToTop.tsx:
+    "[ ^ TOP ]" JetBrains Mono 10px --text-muted
+    Border: 1px solid --border, padding 4px 10px
+    Hover: border --accent, color --accent,
+           translate(-2px, -2px),
+           box-shadow: 3px 3px 0 --accent
+    Click: window.scrollTo({ top: 0, behavior: 'smooth' })
+
+=== PART 3: AI CHATBOT "ASK AI ABOUT SIBARAM" ===
+
+--- OVERVIEW ---
+
+Floating chat widget, bottom-right corner.
+Powered by Anthropic Claude API (claude-sonnet-4-20250514).
+Knows everything about Sibaram from a system prompt.
+Answers recruiter/visitor questions about skills,
+projects, availability, background.
+
+--- DATA LAYER ---
+
+Create /data/aiContext.ts
+
+export const sibaramContext = `
+You are an AI assistant embedded in Sibaram Nayak's 
+portfolio website. You answer questions about Sibaram 
+on his behalf. Be direct, honest, and concise.
+Never make up information not provided below.
+If asked something not covered, say you do not have 
+that information and suggest contacting Sibaram directly.
+
+ABOUT SIBARAM:
+- Full name: Sibaram Nayak
+- Currently: B.Tech Electrical Engineering, final year
+- College: Parala Maharaja Engineering College (PMEC), 
+  Berhampur, Odisha
+- From: Sanakholi, Ganjam, Odisha
+- Career goal: ML Engineer, specializing in Computer Vision
+
+TECHNICAL SKILLS:
+- Core: TensorFlow, Keras, MobileNetV2, Transfer Learning,
+  Python, NumPy, Pandas, Git, HTML/CSS
+- Proficient: Grad-CAM, Scikit-learn, JavaScript, 
+  React, Next.js, Tailwind, DirectML, WSL2
+- GPU setup: RTX 3050 Ti, DirectML on Windows
+
+PROJECTS:
+- Intel Image Classification: MobileNetV2, ~94% accuracy,
+  6-class scene recognition
+- Flowers102: 102-class flower classification, functional 
+  API, Grad-CAM in progress (debugging TFOpLambda issue)
+- Harmonic Source Identification: ML on power systems,
+  current signature analysis, research project
+- PixelNest: Personal photo archive website, darkroom 
+  aesthetic, live at thesibaram.github.io/pixelnest
+- GFG 21 Projects: 21 ML projects in 21 days, 
+  scikit-learn + pandas
+
+ACHIEVEMENTS:
+- SIH 2024 National Finalist (Smart India Hackathon)
+- GeeksforGeeks 21 Projects in 21 Days ML Program
+
+AVAILABILITY:
+- Actively seeking ML/CV internships
+- Available from May 2025
+- Open to remote and on-site roles across India
+
+CONTACT:
+- GitHub: github.com/thesibaram
+- Preferred contact: email (on the contact section)
+
+PERSONALITY / WORKING STYLE:
+- Debugs problems others give up on (Grad-CAM example)
+- Prefers building real things over just studying theory
+- Self-taught GPU setup, DirectML environment from scratch
+- Direct communicator, prefers substance over formality
+
+Respond in 2-4 sentences max unless a detailed technical 
+question requires more. Never use bullet points in your 
+responses - write in natural flowing sentences.
+Keep tone professional but not stiff.
+`
+
+--- COMPONENT ARCHITECTURE ---
+
+components/Chatbot/
+  index.tsx              (floating button + window)
+  ChatWindow.tsx         (chat interface)
+  ChatMessage.tsx        (single message bubble)
+  ChatInput.tsx          (input + send button)
+  TypingIndicator.tsx    (pixel animation while AI responds)
+  ChatHeader.tsx         (window header + close)
+  SuggestedQuestions.tsx (quick question chips)
+  PixelBotIcon.tsx       (bot avatar, SVG pixel art)
+
+--- FLOATING TRIGGER BUTTON ---
+
+Position: fixed, bottom 24px, right 24px.
+Z-index: 9999.
+Size: 52x52px.
+Background: var(--accent).
+Border: 2px solid var(--accent).
+No border-radius (sharp corners, pixel style).
+
+Content: PixelBotIcon SVG (24x24):
+  Robot face (SVG rects):
+    Head: 16x14 rect, --surface fill, 1px dark stroke
+    Eyes: two 4x3 rects, --accent fill (glowing eyes)
+    Mouth: 8x2 rect, row below eyes, --accent fill
+    Antenna: 1x4 rect top center + 3x3 head top
+    Ears: 2x4 rects each side
+
+Notification dot (when closed, first visit):
+  8x8px square, #EF4444, position absolute top-right
+  Pulses: scale 1 -> 1.3 -> 1, 1.5s loop
+  Disappears after first chat open
+
+Hover:
+  Transform: translate(-3px, -3px)
+  Box-shadow: 6px 6px 0px rgba(0,180,216,0.5)
+  Transition: 150ms ease
+
+Click: toggles ChatWindow open/closed.
+
+Tooltip on hover (first 3 visits only):
+  "Ask AI about Sibaram"
+  JetBrains Mono 11px
+  Background var(--surface), border 1px --border
+  Appears left of button, 8px gap
+  Framer Motion fade in 200ms
+
+--- CHAT WINDOW ---
+
+Position: fixed, bottom 88px, right 24px.
+Width: 360px desktop, calc(100vw - 32px) mobile.
+Height: 520px desktop, 70vh mobile.
+Max-height: 70vh.
+
+Border: 2px solid --border.
+Background: var(--bg).
+No border-radius.
+Box-shadow: 8px 8px 0px rgba(0,0,0,0.3).
+Z-index: 9998.
+
+Framer Motion entrance:
+  initial:  { opacity: 0, y: 20, scale: 0.95 }
+  animate:  { opacity: 1, y: 0,  scale: 1    }
+  exit:     { opacity: 0, y: 20, scale: 0.95 }
+  transition: duration 0.2, ease "easeOut"
+  origin: bottom right
+
+CHAT HEADER (ChatHeader.tsx):
+  Background: var(--surface).
+  Border-bottom: 1px solid --border.
+  Padding: 12px 16px.
+  Height: 52px.
+
+  Left:
+    PixelBotIcon (20x20, smaller version)
+    Gap 8px
+    "ASK AI" JetBrains Mono 13px --text-primary bold
+    Dot separator
+    "About Sibaram" Inter 11px --text-muted
+
+  Right:
+    Blinking green dot + "ONLINE" 9px #22C55E
+    Gap 12px
+    [X] close button: pixel X SVG, 20x20px
+      Hover: color --accent
+
+MESSAGES AREA:
+  Height: calc(100% - 52px header - 64px input)
+  Overflow-y: auto
+  Padding: 16px
+  Scroll behavior: smooth
+  Auto-scrolls to bottom on new message
+
+  Custom scrollbar:
+    Width: 4px
+    Track: transparent
+    Thumb: --border, hover --accent
+
+  WELCOME STATE (no messages yet):
+    Centered in messages area:
+    PixelBotIcon (32x32)
+    "Hi, I am Sibaram's AI assistant."
+      JetBrains Mono 12px --text-primary, centered
+    "Ask me anything about his skills, 
+      projects, or availability."
+      Inter 11px --text-muted, centered
+
+    SuggestedQuestions.tsx below welcome:
+      4 quick question chips:
+        "What are his top skills?"
+        "Tell me about his projects"
+        "Is he available for internships?"
+        "What is his tech stack?"
+      
+      Each chip:
+        JetBrains Mono 10px --text-primary
+        Border: 1px solid --border
+        Padding: 6px 12px
+        No border-radius
+        Hover: border --accent, color --accent,
+               translate(-1px, -1px)
+               box-shadow 2px 2px 0 --accent
+        Click: sends that question directly
+
+CHAT MESSAGE (ChatMessage.tsx):
+
+  USER MESSAGE:
+    Align: right
+    Background: var(--accent)
+    Color: #0D0D10
+    Border: none
+    Padding: 8px 12px
+    Max-width: 80%
+    Font: Inter 13px
+    Margin-bottom: 12px
+    Sharp corners
+
+  AI MESSAGE:
+    Align: left
+    Background: var(--surface)
+    Color: --text-primary
+    Border: 1px solid --border
+    Border-left: 3px solid --accent
+    Padding: 8px 12px
+    Max-width: 85%
+    Font: Inter 13px, line-height 1.6
+    Margin-bottom: 12px
+
+    AI avatar (left of message, top-aligned):
+      PixelBotIcon 16x16, --accent fill
+      Margin-right: 8px
+
+  ERROR MESSAGE:
+    Same as AI message but border-left: 3px solid #EF4444
+    Text: "Something went wrong. Try again."
+
+  Message entrance animation:
+    y: 8 -> 0, opacity: 0 -> 1
+    Duration: 200ms, ease "easeOut"
+
+TYPING INDICATOR (TypingIndicator.tsx):
+  Shows while waiting for API response.
+  Same position and style as AI message.
+  
+  Content: 3 pixel squares (4x4 each, 4px gap)
+    Sequential opacity animation:
+      Square 1: 0->1->0, 0ms delay
+      Square 2: 0->1->0, 200ms delay  
+      Square 3: 0->1->0, 400ms delay
+    Each cycle: 900ms
+    Color: --accent
+
+CHAT INPUT (ChatInput.tsx):
+  Height: 64px.
+  Border-top: 1px solid --border.
+  Background: var(--surface).
+  Padding: 10px 12px.
+  Display: flex, align-center, gap 8px.
+
+  Input field:
+    Flex: 1
+    Background: var(--bg)
+    Border: 1px solid --border
+    No border-radius
+    Padding: 8px 12px
+    Font: JetBrains Mono 12px --text-primary
+    Caret-color: --accent
+    Placeholder: "Ask about Sibaram..."
+      --text-muted, italic
+
+    Focus:
+      Border-color: --accent
+      Outline: none
+
+    Disabled during API call: opacity 0.6
+
+  Send button:
+    36x36px
+    Background: --accent
+    Border: none
+    No border-radius
+    Pixel send icon (SVG, paper plane, 14x14)
+    Color: #0D0D10
+
+    Hover: translate(-1px, -1px), 
+           box-shadow 2px 2px 0 rgba(0,180,216,0.5)
+    Disabled during call: opacity 0.5, no hover
+    Enter key also submits
+
+--- API INTEGRATION ---
+
+Create /app/api/chat/route.ts (Next.js API route)
+
+import Anthropic from "@anthropic-ai/sdk"
+import { sibaramContext } from "@/data/aiContext"
+
+export async function POST(req: Request) {
+  const { messages } = await req.json()
+
+  const client = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY
+  })
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 300,
+    system: sibaramContext,
+    messages: messages.map((m: any) => ({
+      role: m.role,
+      content: m.content
+    }))
+  })
+
+  return Response.json({
+    message: response.content[0].type === "text"
+      ? response.content[0].text
+      : "I could not generate a response."
+  })
+}
+
+Frontend call from ChatWindow.tsx:
+
+  const sendMessage = async (content: string) => {
+    const userMsg = { role: "user", content }
+    setMessages(prev => [...prev, userMsg])
+    setLoading(true)
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [...messages, userMsg]
+        })
+      })
+      const data = await res.json()
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: data.message }
+      ])
+    } catch {
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: "ERROR_STATE" }
+      ])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+Conversation history: kept in React state only.
+Max history: last 10 messages sent to API
+  (slice last 10 before sending, saves tokens).
+No persistence across page refreshes.
+
+Environment variable: ANTHROPIC_API_KEY in .env.local
+Add .env.local to .gitignore - critical.
+
+--- RATE LIMITING (basic) ---
+
+In /app/api/chat/route.ts:
+  Track requests per session using a simple counter
+  in a Map (in-memory, resets on server restart).
+  Max 20 messages per session.
+  If exceeded: return { message: "MESSAGE_LIMIT" }
+  
+  Frontend shows for MESSAGE_LIMIT response:
+    "You have reached the message limit for this session.
+     Contact Sibaram directly via the form above."
+    With direct email link.
+
+=== PART 4: FULL SITE RESPONSIVE AUDIT ===
+
+Apply these rules globally across ALL sections.
+These override any section-specific responsive specs.
+
+--- BREAKPOINTS ---
+
+xs:  320px  (small phones, iPhone SE)
+sm:  375px  (standard phones)
+md:  768px  (tablets portrait)
+lg:  1024px (tablets landscape + small laptops)
+xl:  1280px (standard laptops)
+2xl: 1440px (large desktops)
+3xl: 1920px (4K and ultrawide)
+
+--- GLOBAL RULES ---
+
+Typography scaling (fluid, CSS clamp):
+  Section titles:
+    font-size: clamp(11px, 1vw, 13px) (label text)
+  
+  Hero name:
+    font-size: clamp(32px, 6vw, 80px)
+  
+  Card titles:
+    font-size: clamp(12px, 1.5vw, 16px)
+  
+  Body text:
+    font-size: clamp(12px, 1.2vw, 14px)
+
+  Use clamp() everywhere font-size is declared.
+  No fixed px sizes on any text except icons.
+
+Spacing scaling:
+  Section padding-y: clamp(48px, 8vw, 96px)
+  Section padding-x: clamp(16px, 5vw, 80px)
+  Card padding:      clamp(12px, 2vw, 24px)
+  Grid gap:          clamp(12px, 2vw, 24px)
+
+Container max-widths:
+  Content sections: max-width 960px, margin 0 auto
+  Hero: max-width 1200px
+  Footer: max-width 100% (full bleed)
+
+--- PER-BREAKPOINT LAYOUT RULES ---
+
+320px - 374px (xs):
+  All grids: 1 column
+  Hero: name 28px, hide pixel sprite entirely
+  Navbar: logo only + hamburger
+  Chatbot window: full width - 16px each side
+  Footer: single column
+  TheWall (certs): 1 column, docs 120x150px
+  Pixel decorations: hidden (performance)
+  CTA buttons: full width, stacked
+
+375px - 767px (sm, standard mobile):
+  All grids: 1 column except Skills chips (2 col)
+  Hero: pixel sprite visible, scaled 40%, 
+        positioned below text not beside it
+  TheWall: 2 columns, docs 140x175px
+  Cert modal: full width bottom sheet style
+    (slides up from bottom, not centered)
+  Blog filter: horizontal scroll
+  Chatbot: calc(100vw - 32px) wide, 65vh tall
+  Footer columns: stacked, centered text
+  About terminal: full width, reduced padding
+  Navbar: hamburger menu
+
+768px - 1023px (md, tablet):
+  Hero: two column maintained, sprite 60% scale
+  About: two column maintained
+  Skills: tabs wrap to 2 rows if needed
+  Projects: 2 columns
+  Blog: 2 columns
+  TheWall: 3 columns
+  Chatbot: 340px wide, 500px tall
+  Footer: 2 columns (col3 wraps below col1)
+  Contact: two columns, 45/55 split
+
+1024px - 1279px (lg, small laptop):
+  All desktop layouts active
+  Hero name: clamp output ~52px
+  TheWall: 3 columns (not yet 4)
+  Chatbot: 360px wide
+
+1280px - 1439px (xl, laptop):
+  Full desktop layout
+  TheWall: 4 columns
+  Max-widths kick in, sections center
+
+1440px+ (2xl, large desktop):
+  Everything centered within max-widths
+  Pixel sprite scales slightly larger
+  Hero name reaches max clamp value
+
+1920px+ (3xl, 4K):
+  Root font-size scales: html { font-size: 18px }
+  All rem-based sizes scale proportionally
+  Max-widths ensure nothing stretches too wide
+  Background dot grid: increase to 32px spacing
+
+--- TOUCH OPTIMIZATIONS ---
+
+All interactive elements: min touch target 44x44px
+  (padding compensates if visual size is smaller)
+
+Hover effects: wrapped in @media (hover: hover)
+  Touch devices get :active states instead:
+    :active { transform: translate(1px, 1px); 
+              box-shadow: none; }
+
+No hover-dependent information (tooltips that only
+  appear on hover must also work on tap/focus).
+
+Form inputs on iOS:
+  font-size: 16px minimum (prevents auto-zoom)
+  -webkit-appearance: none on all inputs
+  border-radius: 0 (override iOS default)
+
+Chatbot on mobile:
+  Input field: font-size 16px (no zoom on focus)
+  Send with Enter: disabled on mobile 
+    (use send button, Enter = new line)
+
+Scroll performance:
+  All fixed/sticky elements: will-change: transform
+  Chatbot window: -webkit-overflow-scrolling: touch
+  TheWall: touch-action: pan-y on container
+
+--- NAVIGATION RESPONSIVE ---
+
+Desktop (1024px+):
+  Full horizontal nav, all links visible
+
+Tablet (768px - 1023px):
+  Full horizontal nav, links slightly smaller
+
+Mobile (below 768px):
+  Hamburger button (pixel style, 3 lines -> X animation)
+  Slide-in drawer from right:
+    Width: 280px
+    Height: 100vh
+    Background: var(--surface)
+    Border-left: 2px solid --border
+    Z-index: 10000
+    
+    Links: stacked, full width, 48px height each
+    Border-bottom: 1px solid --border on each
+    Font: JetBrains Mono 14px
+    Active: --accent color
+    
+    Backdrop: rgba overlay behind drawer
+    Click backdrop to close
+    ESC to close
+    Link click: closes drawer + smooth scrolls
+
+  Framer Motion drawer:
+    initial:  { x: "100%" }
+    animate:  { x: 0 }
+    exit:     { x: "100%" }
+    transition: duration 0.25, ease "easeInOut"
+
+--- IMAGE RESPONSIVE ---
+
+All Next.js Image components:
+  sizes prop set correctly per breakpoint:
+  "(max-width: 768px) 100vw, 
+   (max-width: 1024px) 50vw, 
+   33vw"
+
+About section photo:
+  Mobile: 160x200px
+  Tablet: 220x270px
+  Desktop: 280x320px
+
+PixelSprite SVG:
+  Mobile: 96px wide
+  Tablet: 144px wide
+  Desktop: 192px wide
+
+--- PERFORMANCE (all devices) ---
+
+Lazy load all sections below the fold:
+  dynamic(() => import("@/components/Skills"), 
+    { ssr: false, loading: () => <SectionSkeleton /> })
+  Apply to: Skills, Projects, Experience, 
+            Certifications, Blog, Contact, Footer
+
+SectionSkeleton:
+  Simple pulsing block, same height estimate as section
+  Background: linear-gradient(
+    90deg, var(--surface) 25%, 
+    var(--border) 50%, var(--surface) 75%
+  )
+  background-size: 200% 100%
+  animation: shimmer 1.5s infinite
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0 }
+    100% { background-position: -200% 0 }
+  }
+
+Pixel art SVGs: memoized with React.memo
+Framer Motion: import only used features
+  (not the full bundle)
+  import { motion, AnimatePresence } from "framer-motion"
+  NOT: import * as motion from "framer-motion"
+
+Font loading:
+  next/font/google for JetBrains Mono + Inter
+  display: "swap" on both
+  subsets: ["latin"]
+  preload: true on JetBrains Mono (primary font)
+
+=== ENVIRONMENT SETUP ===
+
+.env.local (create, add to .gitignore):
+  ANTHROPIC_API_KEY=your_key_here
+  NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+
+.env.example (commit this, not .env.local):
+  ANTHROPIC_API_KEY=
+  NEXT_PUBLIC_SITE_URL=
+
+=== DO NOT ===
+
+- No localStorage for chat history
+- No streaming API responses (simple request/response)
+- No chat persistence across sessions
+- No user authentication for chatbot
+- No file uploads in contact form
+- No Google Analytics or tracking scripts
+- No cookie banners
+- No border-radius anywhere on new components
+- No chatbot bubble on xs screens during form focus
+  (hide chatbot FAB when contact form input is focused
+   on mobile, prevents overlap with keyboard)
+- Never expose ANTHROPIC_API_KEY in client code
+  (API route only, server-side)
+- No hardcoded pixel sizes without clamp() fallback
+- No layout that requires horizontal scroll on any 
+  screen width 320px and above
