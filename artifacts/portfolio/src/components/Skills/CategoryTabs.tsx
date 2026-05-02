@@ -79,7 +79,7 @@ interface Props {
 export function CategoryTabs({ activeId, onChange }: Props) {
   return (
     <div
-      className="flex gap-0 overflow-x-auto mt-8 pb-0"
+      className="flex overflow-x-auto mt-8"
       role="tablist"
       style={{ scrollbarWidth: 'none' }}
       data-testid="category-tabs"
@@ -93,12 +93,11 @@ export function CategoryTabs({ activeId, onChange }: Props) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(cat.id)}
-            className={`flex items-center gap-2 px-4 py-2 font-mono text-[11px] border border-[var(--px-border)] transition-all duration-[120ms] whitespace-nowrap flex-shrink-0 -ml-px first:ml-0 ${
+            className={`flex items-center gap-2 px-5 py-2.5 font-mono text-[11px] border border-[var(--px-border)] transition-all duration-[120ms] whitespace-nowrap flex-shrink-0 -ml-px first:ml-0 ${
               isActive
                 ? 'bg-[var(--px-accent)] text-[#0D0D10] border-[var(--px-accent)] z-10 relative'
-                : 'bg-transparent text-[var(--px-muted)] hover:-translate-x-0.5 hover:-translate-y-0.5'
+                : 'bg-transparent text-[var(--px-muted)] hover:text-[var(--px-text)] hover:-translate-x-0.5 hover:-translate-y-0.5'
             }`}
-            style={isActive ? {} : undefined}
             onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.boxShadow = '3px 3px 0px var(--px-accent)' }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
             data-testid={`tab-${cat.id}`}

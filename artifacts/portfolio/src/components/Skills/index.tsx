@@ -27,7 +27,7 @@ export function Skills() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-4xl mx-auto px-4 py-20 w-full"
+      className="max-w-6xl mx-auto px-4 md:px-6 py-20 w-full"
     >
       <SectionHeader title="Skills" icon={<LightningIcon />} />
       <PixelDivider />
