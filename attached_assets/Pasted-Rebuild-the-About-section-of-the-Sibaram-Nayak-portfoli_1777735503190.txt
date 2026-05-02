@@ -1,0 +1,289 @@
+Rebuild the About section of the Sibaram Nayak portfolio.
+Surgical update - touch only the About section and its components.
+Do not modify anything else.
+
+=== STACK (unchanged) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11, 
+JetBrains Mono, TypeScript
+
+=== DATA LAYER ===
+
+Create /data/about.ts
+
+export const about = {
+  name: "Sibaram Nayak",
+  role: "B.Tech Electrical Engineering",
+  college: "Parala Maharaja Engineering College, Berhampur",
+  location: "Sanakholi, Ganjam, Odisha",
+  focus: "Machine Learning + Computer Vision",
+  status: "Actively seeking ML internships",
+  image: "/images/sibaram.jpg",   // <-- PLACEHOLDER: drop your photo here
+  imageFallback: null,            // pixel avatar renders if image missing
+  bio: [
+    "I study Electrical Engineering but spend most of my time \
+training neural networks on my RTX 3050 Ti.",
+    "Currently debugging a Grad-CAM graph disconnection on \
+Flowers102 - the kind of bug that teaches more than any tutorial.",
+    "SIH 2024 National Finalist. 21 ML projects shipped. \
+Looking for a team where I can go deep on Computer Vision."
+  ],
+  stats: [
+    { label: "LOCATION",      value: "Berhampur, Odisha"       },
+    { label: "BRANCH",        value: "Electrical Engineering"  },
+    { label: "FOCUS",         value: "ML + Computer Vision"    },
+    { label: "STATUS",        value: "Internship hunting"      },
+    { label: "CURRENT BUG",   value: "Grad-CAM graph disconnect"},
+    { label: "SIH 2024",      value: "National Finalist"       },
+    { label: "PROJECTS",      value: "21 shipped"              },
+    { label: "GPU",           value: "RTX 3050 Ti"             }
+  ],
+  funFacts: [
+    "Trains CNNs at 2am",
+    "From a village, building for the world",
+    "Fixes bugs nobody else debugs",
+    "PixelNest is my side brain"
+  ]
+}
+
+=== COMPONENT ARCHITECTURE ===
+
+components/About/
+  index.tsx              (section wrapper + layout)
+  AboutImage.tsx         (photo + pixel frame + fallback avatar)
+  AboutBio.tsx           (bio paragraphs)
+  StatBlock.tsx          (RPG stat sheet)
+  StatRow.tsx            (single stat label + value)
+  PixelAvatar.tsx        (fallback pixel art face, SVG only)
+  TerminalBio.tsx        (typewriter bio lines)
+  FunFactTicker.tsx      (scrolling marquee of fun facts)
+
+=== LAYOUT ===
+
+Desktop: two equal columns, gap 64px
+  Left col:  Image block (top) + Fun fact ticker (bottom)
+  Right col: Terminal bio (top) + Stat block (bottom)
+
+Mobile: single column stack
+  Order: Image -> Bio -> Stats -> Ticker
+
+Section header:
+  Pixel 16x16 "person" icon (SVG rects) + "ABOUT" in 
+  JetBrains Mono 11px tracked wide, --text-muted
+  Below: full-width 1px dashed --border divider
+
+=== LEFT COLUMN: IMAGE BLOCK ===
+
+Container: fixed 280x320px on desktop, 200x240px on mobile
+Border: 2px solid var(--accent)
+No border-radius - sharp pixel corners
+
+PIXEL CORNER DECORATIONS (CSS only, no images):
+  Each corner has an L-shaped pixel bracket made from 
+  two pseudo-elements:
+    Top-left:     ┌
+    Top-right:    ┐
+    Bottom-left:  └
+    Bottom-right: ┘
+  Each bracket: 12px wide, 2px thick, var(--accent) color
+  These sit outside the image border, offset 6px
+
+IMAGE PLACEHOLDER BEHAVIOR:
+
+  Case 1 - Photo exists (/images/sibaram.jpg):
+    Render <Image> (Next.js) with object-fit: cover
+    Slight desaturate filter (filter: saturate(0.85) contrast(1.05))
+    On hover: filter removes, full color shows (transition 300ms)
+
+  Case 2 - No photo (file missing):
+    Render PixelAvatar component (see below)
+    Same container dimensions
+
+PHOTO LABEL:
+  Below the image container, left-aligned:
+  Small pixel camera icon (8x8 SVG) + 
+  "SIBARAM NAYAK" in 10px JetBrains Mono, --text-muted
+  Under that: "B.Tech EE @ PMEC" in 10px, --text-muted, 
+  opacity 0.6
+
+SCAN LINE OVERLAY (CSS only):
+  ::after pseudo on image container
+  repeating-linear-gradient(
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.03) 3px,
+    rgba(0,0,0,0.03) 4px
+  )
+  Pointer-events: none, position absolute, full cover
+  Dark mode: rgba(255,255,255,0.02) instead
+
+=== PIXEL AVATAR (fallback, PixelAvatar.tsx) ===
+
+SVG viewBox="0 0 64 80", each pixel = 4px
+Built entirely from <rect> elements.
+Simple pixel art face + torso:
+
+Head (rows 2-10, cols 20-44):
+  Skin tone: #C68642 (light) or #8D5524 (dark mode auto)
+  Hair: --pixel-ink color, top 3 rows
+  Eyes: 2 white pixels with 1 dark pupil each, row 6
+  Nose: 1 pixel, row 8, center
+  Mouth: 3 pixels, row 9, slight smile shape
+
+Torso (rows 12-20):
+  Shirt: var(--accent) color, simple rectangle
+  Collar: 2 dark pixels
+
+Arms: 2px wide each side
+
+Label under avatar: "// photo coming soon"
+in 10px JetBrains Mono, --text-muted, centered
+
+=== RIGHT COLUMN: TERMINAL BIO ===
+
+Looks like a terminal window.
+Container: full width, border 1px solid --border
+
+Terminal top bar:
+  Background: var(--border)
+  Three pixel dots left side (red #FF5F57, yellow #FFBD2E, 
+  green #28C840) each 8x8px squares (not circles - pixel style)
+  Text right side: "about.sh" in 11px JetBrains Mono, --text-muted
+
+Terminal body: background var(--surface), padding 20px
+
+Content:
+  Line 1: "$ whoami" in --accent, typed instantly
+  Line 2: blank, 200ms delay
+  Lines 3-5: bio paragraphs, typed one character at a time
+    Each line prefixed with "> " in --text-muted
+    Typing speed: 18ms per character
+    400ms pause between paragraphs
+  Final line after all bio typed:
+    Blinking cursor "_" in --accent
+    CSS animation: opacity 0->1->0, 600ms loop
+
+Framer Motion: 
+  Terminal animates in from y:20, opacity:0 when section 
+  enters viewport (IntersectionObserver, trigger once)
+
+=== RIGHT COLUMN: STAT BLOCK ===
+
+Below the terminal, margin-top 24px.
+Looks like an RPG character sheet / HUD display.
+
+Header row:
+  Pixel 8x8 "grid" icon + "// PROFILE.JSON" text in 
+  10px JetBrains Mono, --text-muted
+
+Each stat row (StatRow.tsx):
+  Layout: label left, value right, space-between
+  Label: 10px JetBrains Mono, --text-muted, uppercase
+  Value: 12px JetBrains Mono, --text-primary
+  Separator: 1px dotted --border line between label and value
+  Height: 32px per row
+  Border-bottom: 1px solid --border on all but last row
+
+Special stat behaviors:
+  STATUS row: value has a blinking green dot before text
+    (2px square, CSS opacity animation, 1s loop)
+  CURRENT BUG row: value in amber (#F59E0B), italic
+  SIH 2024 row: value prefixed with pixel trophy icon (8x8 SVG)
+  GPU row: value prefixed with pixel chip icon (8x8 SVG)
+
+Entrance animation:
+  Rows stagger in, each delayed 0.06s, 
+  from x:-10, opacity:0 to x:0, opacity:1
+
+=== BOTTOM: FUN FACT TICKER ===
+
+Full width of left column.
+Margin-top: 16px below image block.
+
+Single horizontal scrolling marquee.
+Content: funFacts array joined with "  //  " separator.
+Scroll: CSS animation, linear, 20s loop, left-to-right infinite.
+Pause on hover (animation-play-state: paused).
+
+Styling:
+  Border-top: 1px solid --border
+  Border-bottom: 1px solid --border
+  Padding: 6px 0
+  Font: 11px JetBrains Mono, --text-muted
+  Prefix each fact with a pixel star (4x4 SVG, --accent fill)
+
+=== PIXEL CORNER BRACKET SPEC ===
+
+Implemented in CSS using ::before and ::after 
+on two wrapper divs (one per corner pair).
+No SVG needed.
+
+.corner-tl::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: -6px;
+  width: 12px; height: 2px;
+  background: var(--accent);
+  box-shadow: 0 2px 0 var(--accent),  // vertical part
+              0 4px 0 var(--accent);
+}
+Mirror for each corner. 
+Total 4 corners, each an L-shape in --accent.
+
+=== PIXEL SECTION ICONS (SVG rects only) ===
+
+Person icon (16x16):
+  Head: 4x4 block, center-top
+  Body: 8x6 block, center-bottom
+  Arms: 2x4 each side
+
+Camera icon (8x8, used under photo):
+  Body: 6x4 rect, rows 2-6
+  Lens: 2x2 rect, center
+  Flash: 2x1 rect, top-right
+
+Trophy icon (8x8, SIH stat):
+  Cup: 4x4 top, 2x2 stem, 4x2 base
+
+Chip icon (8x8, GPU stat):
+  Square outline, 4 pins each side (1x1 rects)
+
+=== THEME BEHAVIOR ===
+
+All colors via CSS vars - both themes handled automatically.
+Pixel avatar skin tone switches via:
+  [data-theme="dark"] .pixel-avatar-skin { fill: #8D5524 }
+  [data-theme="light"] .pixel-avatar-skin { fill: #C68642 }
+
+Scan line overlay opacity:
+  Light: rgba(0,0,0,0.03)
+  Dark:  rgba(255,255,255,0.02)
+
+=== IMAGE PLACEHOLDER INSTRUCTIONS ===
+
+Add a clearly commented block in AboutImage.tsx:
+
+  // ============================================
+  // PHOTO PLACEHOLDER
+  // To add your photo:
+  // 1. Drop your image into /public/images/
+  // 2. Name it: sibaram.jpg (or .png / .webp)
+  // 3. Update about.ts -> image field with the path
+  // 4. The pixel avatar fallback disappears automatically
+  // ============================================
+
+Also add a visible placeholder state in the UI when 
+no image is found:
+  Dashed 2px --border box, same 280x320 dimensions
+  Centered content:
+    Pixel camera icon (24x24)
+    Text: "[ drop photo here ]" 12px JetBrains Mono --text-muted
+    Sub: "public/images/sibaram.jpg" 10px, opacity 0.5
+
+=== DO NOT ===
+
+- No circular image crop - sharp rectangle only
+- No box-shadow blur - only hard offset pixel shadows
+- No skeleton loaders - show pixel avatar immediately
+- No external image services (no Unsplash placeholders)
+- No lorem ipsum anywhere
+- No gradients on text
