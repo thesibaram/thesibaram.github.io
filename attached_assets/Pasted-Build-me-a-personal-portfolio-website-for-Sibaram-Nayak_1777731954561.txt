@@ -1,0 +1,284 @@
+Build me a personal portfolio website for Sibaram Nayak - a final-year B.Tech Electrical 
+Engineering student at Parala Maharaja Engineering College (PMEC), Berhampur, Odisha, 
+actively building toward a career in Machine Learning and Computer Vision.
+
+=== TECH STACK (modern only - nothing outdated) ===
+
+- Framework: Next.js 15 (App Router)
+- Styling: Tailwind CSS v4 + CSS custom properties
+- Animations: Framer Motion v11
+- Icons: Lucide React
+- Fonts: JetBrains Mono (primary) + Inter (body)
+- Theme: next-themes (auto system preference detection)
+- Deployment-ready: Vercel config included
+
+No Bootstrap. No jQuery. No Create React App. No plain HTML/CSS files. 
+Use React Server Components where possible. Client components only where 
+interactivity is needed.
+
+=== DESIGN SYSTEM ===
+
+The aesthetic is: "calm pixel laboratory" - minimalist base with deliberate pixel art 
+accents. NOT a pixel art website. A clean, modern site that uses pixel art as a design 
+language in specific places. Think: a dark research lab where someone tacked hand-drawn 
+pixel sprites on the walls.
+
+LIGHT MODE palette:
+  --bg: #F5F5F0
+  --surface: #EBEBE6
+  --border: #D0D0C8
+  --text-primary: #1A1A1A
+  --text-muted: #6B6B6B
+  --accent: #00B4D8 (electric cyan)
+  --accent-2: #7B2FBE (deep violet)
+  --pixel-ink: #1A1A1A
+
+DARK MODE palette:
+  --bg: #0D0D10
+  --surface: #141418
+  --border: #252530
+  --text-primary: #E8E8E0
+  --text-muted: #9090A0
+  --accent: #00D4F5
+  --accent-2: #9B4FE8
+  --pixel-ink: #E8E8E0
+
+Rules:
+- No gradients except as very subtle background texture
+- Borders use 1px solid var(--border) everywhere
+- Spacing based on 8px grid
+- Every interactive element has a pixel-style :hover state 
+  (2px offset box-shadow in --accent color, like an 8-bit button press)
+- Scrollbar styled: thin, accent colored
+
+PIXEL ACCENT RULES (inline SVG sprites - no external image files):
+- Each section header has a small pixel art icon (8x8 or 16x16 SVG) 
+  left of the title, hand-crafted to match section theme
+- Hero: a tiny animated pixel character (CSS keyframe idle animation - 
+  bobbing 2px up and down, 800ms loop)
+- Skills section: pixel bar charts instead of plain progress bars
+- Projects: pixel "badge" in top-left corner of each card showing category 
+  (CV, ML, Web, etc.)
+- Contact/Footer: pixel art of a CRT monitor with blinking cursor
+- Dividers between sections: a single row of pixel dots (4x4 each, 8px gap, 
+  muted color)
+
+=== SECTIONS (in this order) ===
+
+1. NAVBAR
+Sticky top. Logo: "SN" in monospace, pixel-bordered. 
+Links: Hero, About, Skills, Projects, Experience, Certifications, Blog, Resume, Contact.
+Mobile: hamburger that opens a slide-in drawer.
+Theme toggle button: pixel sun/moon icon, smooth transition.
+
+2. HERO
+Full viewport height. Left-aligned text layout.
+- Pixel character sprite (idle animation) top-left
+- "Sibaram Nayak" in large JetBrains Mono
+- Under it: a typing animation cycling through 
+  ["ML Engineer", "Computer Vision Dev", "EE Student", "Building cool things"]
+- One-liner bio: "B.Tech EE @ PMEC | SIH 2024 National Finalist | 
+  Currently obsessed with CNNs and Grad-CAM"
+- Two CTA buttons: [View Projects] [Download Resume] - pixel press effect on click
+- Subtle background: CSS grid of tiny dots (2px, muted), static
+
+3. ABOUT
+Two-column on desktop, single column on mobile.
+Left: short personal paragraph (3-4 sentences, first person, real voice).
+  "I study Electrical Engineering but spend most of my time training neural networks 
+  on my RTX 3050 Ti. Currently fixing a Grad-CAM issue on Flowers102 - the kind of 
+  bug that teaches you more than any tutorial. From Sanakholi, Ganjam, Odisha. 
+  SIH 2024 National Finalist."
+Right: a pixel art "stat block" (like an RPG character sheet):
+  LOCATION: Berhampur, Odisha
+  BRANCH: Electrical Engineering
+  FOCUS: Machine Learning + CV
+  STATUS: Internship hunting
+  CURRENT BUG: Grad-CAM graph disconnect
+  HP: 99/100
+
+4. SKILLS
+Section title with pixel lightning bolt icon.
+Categories displayed as labeled groups:
+  ML/DL: TensorFlow, Keras, MobileNetV2, Transfer Learning, Grad-CAM
+  CV: Image Classification, Feature Extraction, Data Augmentation
+  Languages: Python, JavaScript
+  Data: NumPy, Pandas, Scikit-learn, Matplotlib
+  Dev: Git, GitHub, VS Code, PyCharm, DirectML, WSL2
+  Web: React, Next.js, Tailwind CSS
+
+Each skill rendered as a pixel chip - monospace text inside a 1px bordered box.
+On hover: box shifts 2px down-right, background fills with --accent at 15% opacity.
+No progress bars. No percentages on skills. Just the chips.
+
+5. PROJECTS
+Section title with pixel folder icon.
+Grid: 2 columns desktop, 1 column mobile.
+
+Each card is EXPANDABLE - clicking opens an inline detail panel below the card 
+(accordion style, Framer Motion animate height). 
+
+Card (collapsed):
+  - Top-left: pixel category badge (e.g. [CV])
+  - Project name in bold monospace
+  - One-line description
+  - Tech stack as small chips
+  - Accuracy badge if applicable (e.g. "94.2% acc")
+  - [Live Demo] [GitHub] as pixel-bordered links
+  - Expand arrow (rotates 180deg when open)
+
+Card (expanded, slides open):
+  - Longer description (2-3 sentences)
+  - Problem it solves
+  - Key technical decisions
+  - Result / outcome
+
+Pre-fill with these projects:
+  a. Intel Image Classification
+     CNN transfer learning with MobileNetV2, TF/Keras
+     Accuracy: ~94%
+     
+  b. Flowers102 Classification
+     102-category flower classification, functional API, DirectML
+     Current work: Grad-CAM visualization (in progress)
+     
+  c. PixelNest (pixelnest photo archive)
+     Personal photo archive site, darkroom aesthetic
+     Web: HTML/CSS/JS
+     
+  d. Harmonic Source Identification
+     ML-based power system analysis, current signature analysis
+     Research project, PMEC EE
+     
+  e. GFG 21 Projects in 21 Days
+     21 ML projects in 21 days, supervised program
+     Scikit-learn, Pandas, Python
+
+6. EXPERIENCE
+Timeline layout - vertical line left side with pixel dot markers.
+Each entry: role, org, dates, 2-3 bullet points.
+Entries:
+  - GeeksforGeeks 21 Projects in 21 Days ML Program (participant)
+  - SIH 2024 - National Finalist (team project, Smart India Hackathon)
+  - PMEC EE Department - Research (harmonic identification project)
+
+7. CERTIFICATIONS
+3-column grid on desktop. Each cert is a pixel "card" with:
+  - Pixel seal/badge icon (SVG, 24x24)
+  - Cert name
+  - Issuer
+  - Date
+  - Status chip: [Completed] or [In Progress]
+  
+Leave placeholders for Sibaram to fill in actual cert names.
+
+8. BLOG
+Section title with pixel pencil icon.
+Grid of blog post cards (2 columns).
+Each card is EXPANDABLE (same accordion mechanic as projects).
+
+Card (collapsed):
+  - Title
+  - Date (monospace)
+  - 1-sentence preview
+  - Read more arrow
+
+Card (expanded):
+  - Full post content OR "Coming soon" placeholder
+  - Tags as pixel chips
+
+Pre-fill with placeholder posts:
+  - "Fixing Grad-CAM on a Functional API Model" (in progress)
+  - "Transfer Learning on Intel Image Dataset - What Actually Worked"
+  - "Setting Up TensorFlow with DirectML on Windows"
+  - "SIH 2024: What We Built and What Broke"
+
+9. RESUME
+Clean centered section.
+Large pixel "document" icon.
+Button: [Download Resume PDF] - pixel press effect.
+Note: "Last updated: [Month Year]"
+Link the button to /public/resume.pdf (placeholder).
+
+10. CONTACT
+Left: contact info block
+  Email: [placeholder]
+  GitHub: github.com/thesibaram
+  LinkedIn: [placeholder]
+  Location: Berhampur, Odisha
+
+Right: a simple contact form (name, email, message, send button).
+Form fields styled with 1px pixel borders, monospace labels above inputs (not inside).
+Send button: full accent color, pixel press on click.
+
+Below the form: the CRT monitor pixel art with blinking cursor (CSS animation).
+
+FOOTER:
+Dark background (surface color), full width.
+Left: "Sibaram Nayak - built with Next.js + Tailwind + caffeine"
+Center: pixel art row of social icons (GitHub, LinkedIn, Email) - each 20x20 SVG
+Right: "2025 - no rights reserved, use what you want"
+Top border: 2px solid --accent
+
+=== BEHAVIOR AND INTERACTIONS ===
+
+- Smooth scroll between sections (CSS scroll-behavior: smooth)
+- Active nav link highlights as user scrolls (IntersectionObserver)
+- Cards expand/collapse with Framer Motion (animatePresence + height animation)
+- Expand arrow rotates 180deg via CSS transform transition
+- All hover states use the pixel press effect (translate 2px, box-shadow offset)
+- Page load: staggered fade-in per section (Framer Motion, 0.1s stagger)
+- Theme toggle persists to localStorage via next-themes
+- Mobile menu closes on link click
+
+=== FILE STRUCTURE ===
+
+app/
+  layout.tsx (ThemeProvider wrapper, font imports)
+  page.tsx (imports all sections)
+  globals.css (CSS vars, base styles, scrollbar)
+components/
+  Navbar.tsx
+  Hero.tsx
+  About.tsx
+  Skills.tsx
+  Projects.tsx
+  Experience.tsx
+  Certifications.tsx
+  Blog.tsx
+  Resume.tsx
+  Contact.tsx
+  Footer.tsx
+  ui/
+    PixelChip.tsx (reusable skill/tag chip)
+    PixelCard.tsx (reusable expandable card)
+    PixelBadge.tsx (category badge)
+    SectionHeader.tsx (title + pixel icon)
+  pixels/
+    HeroSprite.tsx (pixel character SVG + animation)
+    CRTMonitor.tsx (footer pixel art SVG)
+    PixelDivider.tsx (dot row divider)
+
+=== PIXEL ART SPECS (inline SVG only) ===
+
+All pixel art is built from <rect> elements on a viewBox grid.
+No external images. No raster files.
+Each pixel = one <rect> element with fill="currentColor" or fill="var(--accent)".
+
+Hero sprite: 16x24 grid, simple humanoid figure, idle bounce animation via CSS.
+Category badges: 8x8, different color per category (CV=cyan, ML=violet, Web=green).
+Section icons: 16x16, one per section, thematically matched.
+CRT monitor: 32x24, simple monitor shape with screen glow effect.
+Pixel divider: 1 row, repeating 4x4 dots.
+
+=== FINAL REQUIREMENTS ===
+
+1. No build warnings or errors.
+2. Fully responsive: 375px mobile through 1440px desktop.
+3. Both themes must look polished - test both before finishing.
+4. All expandable cards must animate smoothly on both open and close.
+5. Pixel art must render crisply - use image-rendering: pixelated on all SVGs.
+6. Performance: lazy load below-fold sections with dynamic import.
+7. No lorem ipsum left in the final output - use real placeholder content 
+   about Sibaram's actual background.
+8. README.md with setup instructions and a "how to add content" guide.
