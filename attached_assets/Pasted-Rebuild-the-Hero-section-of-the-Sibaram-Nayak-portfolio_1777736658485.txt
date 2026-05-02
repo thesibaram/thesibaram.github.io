@@ -1,0 +1,389 @@
+Rebuild the Hero section of the Sibaram Nayak portfolio.
+Surgical update - touch only the Hero section and its components.
+Do not modify anything else.
+
+=== STACK (unchanged) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11,
+JetBrains Mono, TypeScript
+
+=== DATA LAYER ===
+
+Create /data/hero.ts
+
+export const hero = {
+  name: "Sibaram Nayak",
+  roles: [
+    "ML Engineer",
+    "Computer Vision Dev",
+    "EE Student @ PMEC",
+    "SIH 2024 National Finalist",
+    "Building things that learn"
+  ],
+  tagline: "B.Tech EE @ PMEC | RTX 3050 Ti | CNNs + Grad-CAM",
+  status: {
+    label: "Open to internships",
+    active: true
+  },
+  cta: {
+    primary: { label: "View Projects",     href: "#projects" },
+    secondary: { label: "Download Resume", href: "/resume.pdf" }
+  },
+  socials: [
+    { label: "GitHub",   href: "https://github.com/thesibaram", icon: "github"   },
+    { label: "LinkedIn", href: "#",                              icon: "linkedin" },
+    { label: "Email",    href: "mailto:placeholder@email.com",   icon: "mail"     }
+  ],
+  stats: [
+    { value: "21",   label: "Projects"          },
+    { value: "94%",  label: "Best Accuracy"     },
+    { value: "102",  label: "Flower Classes"    },
+    { value: "2024", label: "SIH Finalist"      }
+  ]
+}
+
+=== COMPONENT ARCHITECTURE ===
+
+components/Hero/
+  index.tsx              (full section wrapper)
+  HeroLeft.tsx           (name, roles, tagline, CTAs, socials)
+  HeroRight.tsx          (pixel sprite + decorative elements)
+  RoleTyper.tsx          (cycling typewriter for roles array)
+  HeroStats.tsx          (4 stat counters row)
+  StatusBadge.tsx        (open to work indicator)
+  PixelSprite.tsx        (animated pixel character, SVG only)
+  PixelScene.tsx         (background scene behind sprite)
+  HeroBackground.tsx     (dot grid + scanlines, CSS only)
+  SocialLinks.tsx        (icon row)
+
+=== OVERALL LAYOUT ===
+
+Full viewport height (100dvh).
+Two columns: 55% left / 45% right. Gap: 48px.
+Vertically centered content in both columns.
+Mobile: single column, right column moves below left.
+
+Padding: 0 80px desktop, 0 24px mobile.
+No navbar overlap: padding-top accounts for sticky nav height.
+
+=== HERO BACKGROUND (HeroBackground.tsx) ===
+
+Layer 1 - Dot grid (CSS only):
+  background-image: radial-gradient(
+    circle, var(--border) 1px, transparent 1px
+  )
+  background-size: 24px 24px
+  Full section coverage, position absolute, z-index 0
+  Opacity: 0.6 light mode, 0.3 dark mode
+
+Layer 2 - Corner vignette:
+  radial-gradient from transparent center to
+  var(--bg) at edges (very subtle, 20% opacity)
+  Softens dot grid at edges without hiding it
+
+Layer 3 - Scan lines (::after pseudo):
+  Same spec as About section
+  repeating-linear-gradient horizontal lines
+  4px repeat, 1px line, 0.02 opacity
+
+All layers: position absolute, pointer-events none, z-index 0
+All content: position relative, z-index 1
+
+=== LEFT COLUMN ===
+
+--- STATUS BADGE (StatusBadge.tsx) ---
+
+Topmost element, margin-bottom 20px.
+Inline-flex, border 1px solid var(--accent), 
+padding 4px 10px, no border-radius.
+
+Content:
+  2px square blinking dot (green, CSS opacity animation, 1s loop)
+  Gap 6px
+  "OPEN TO INTERNSHIPS" 10px JetBrains Mono, --accent color
+  
+Entrance: fade in first, 0ms delay.
+
+--- NAME BLOCK ---
+
+"SIBARAM" on line 1
+"NAYAK"   on line 2
+
+Font: JetBrains Mono, 72px desktop / 42px mobile
+Font-weight: 700
+Color: --text-primary
+Line-height: 0.95
+Letter-spacing: -2px
+
+PIXEL OUTLINE EFFECT on "NAYAK":
+  text-shadow:
+    2px 0 0 var(--accent),
+   -2px 0 0 var(--accent),
+    0 2px 0 var(--accent),
+    0 -2px 0 var(--accent)
+  Text fill: transparent (WebkitTextFillColor)
+  Result: outlined text, accent color outline, no fill
+  Only on "NAYAK" - "SIBARAM" is solid
+
+Entrance animation:
+  "SIBARAM": x: -30 -> 0, opacity 0->1, delay 100ms
+  "NAYAK":   x: -30 -> 0, opacity 0->1, delay 200ms
+  Both: duration 500ms, ease "easeOut"
+
+--- ROLE TYPER (RoleTyper.tsx) ---
+
+Below name, margin-top 16px.
+
+Layout: 
+  Prefix: "// " in --text-muted, static, JetBrains Mono 18px
+  Typed text: --accent color, JetBrains Mono 18px
+  Cursor: "|" blinking after typed text, --accent
+
+Behavior:
+  Types current role character by character (20ms per char)
+  Holds for 1800ms when complete
+  Deletes character by character (10ms per char - delete faster)
+  200ms pause then types next role
+  Loops infinitely through roles array
+
+Entrance: fade in after name, delay 400ms
+
+--- TAGLINE ---
+
+Below role typer, margin-top 12px.
+"B.Tech EE @ PMEC  |  RTX 3050 Ti  |  CNNs + Grad-CAM"
+Font: Inter 14px, --text-muted
+Pipes rendered as --accent color spans
+
+Entrance: fade in, delay 500ms
+
+--- CTA BUTTONS ---
+
+Below tagline, margin-top 32px.
+Flex row, gap 16px. Stack on mobile.
+
+Primary button [View Projects]:
+  Background: var(--accent)
+  Color: #0D0D10 (dark text on cyan)
+  Border: 2px solid var(--accent)
+  Padding: 12px 28px
+  Font: JetBrains Mono 13px, uppercase, tracked
+  No border-radius
+  
+  Hover state:
+    Background: transparent
+    Color: var(--accent)
+    Transform: translate(-3px, -3px)
+    Box-shadow: 6px 6px 0px var(--accent)
+    Transition: 120ms ease
+
+  Click state:
+    Transform: translate(0px, 0px)
+    Box-shadow: none
+    (pixel press feel)
+
+Secondary button [Download Resume]:
+  Background: transparent
+  Color: --text-primary
+  Border: 2px solid --border
+  Same padding, font, no border-radius
+
+  Hover state:
+    Border-color: --text-primary
+    Transform: translate(-3px, -3px)
+    Box-shadow: 6px 6px 0px var(--border)
+    Transition: 120ms ease
+
+  Download icon: Lucide ArrowDownToLine, 14px, left of text
+
+Entrance: buttons slide up from y:10, opacity 0->1, delay 600ms
+
+--- SOCIAL LINKS (SocialLinks.tsx) ---
+
+Below CTAs, margin-top 24px.
+Flex row, gap 12px.
+
+Each social: pixel-bordered square button 36x36px.
+Border: 1px solid --border, no border-radius.
+Icon: Lucide icon, 16px, --text-muted.
+
+Hover:
+  Border-color: --accent
+  Icon color: --accent
+  Transform: translate(-2px, -2px)
+  Box-shadow: 4px 4px 0px var(--accent)
+  Transition: 120ms ease
+
+Entrance: stagger 0.08s each, delay starts 700ms
+
+--- HERO STATS (HeroStats.tsx) ---
+
+Bottom of left column, margin-top auto (pushes to bottom).
+4 stats in a row. Divider between each: 1px solid --border.
+
+Each stat:
+  Value: JetBrains Mono 28px, --accent, font-weight 700
+  Label: Inter 11px, --text-muted, uppercase
+
+On section enter: values count up from 0 to final number
+  Duration: 1200ms, easeOut
+  Non-numeric values ("SIH") just fade in
+
+Entrance: stagger in from bottom, delay 800ms
+
+=== RIGHT COLUMN ===
+
+--- PIXEL SPRITE (PixelSprite.tsx) ---
+
+SVG viewBox="0 0 48 64", pixel size = 4px (12x16 grid)
+Centered in right column.
+Width: 192px rendered (48*4), height: 256px (64*4)
+image-rendering: pixelated on the SVG element.
+
+Character design (pixel art, SVG rects):
+
+Head (rows 1-5, cols 4-9):
+  Hair: rows 1-2, cols 3-10, --pixel-ink color
+  Skin: rows 3-5, cols 4-9, #C68642 / #8D5524 dark
+  Eyes: row 4, cols 5 and 8, white + dark pupil (2 rects each)
+  Mouth: row 5, cols 6-7, small smile
+
+Body (rows 6-11):
+  Shirt: --accent color fill, cols 3-10
+  Collar: 2 dark pixels top center
+
+Arms (rows 6-10):
+  Left arm: col 2, skin tone
+  Right arm: col 11, skin tone
+
+Legs (rows 12-16):
+  Pants: --text-muted color, cols 4-9
+  Feet: --pixel-ink, bottom 2 rows
+
+IDLE ANIMATION (CSS keyframes):
+  @keyframes sprite-idle {
+    0%, 100% { transform: translateY(0px)   }
+    50%       { transform: translateY(-4px)  }
+  }
+  Duration: 900ms, ease-in-out, infinite
+  Applied to entire SVG element
+
+LAPTOP IN HANDS (pixel art, rows 8-10):
+  Small pixel laptop: 6x4 grid, --surface color screen
+  Screen has 2 pixel "code lines" in --accent
+  Held at row 9, cols 4-9
+
+--- PIXEL SCENE (PixelScene.tsx) ---
+
+Background context around the sprite.
+SVG, same viewBox scale, position absolute behind sprite.
+
+Elements (all pixel rects):
+
+Desk surface:
+  Horizontal line, row 17, cols 1-14, --border color, 2px height
+
+Monitor on desk (left of sprite):
+  Screen: 8x6 rect, --surface fill, 1px --border stroke
+  Stand: 1x3 rect below screen
+  Screen content: 3 pixel "code lines", --accent, 1px each
+
+Coffee mug (right of sprite):
+  Cup: 3x3 rect, --text-muted fill
+  Handle: 1x2 rect, right side
+  Steam: 1px rects, 2 wisps above, CSS opacity animation (float up)
+
+Floating pixel elements (Framer Motion, slow float):
+  Top-left: pixel "{ }" braces icon, 8x8, --accent, opacity 0.4
+    Animation: y 0 -> -8 -> 0, 3s loop, ease-in-out
+  Top-right: pixel "CNN" text (dot matrix letters), --text-muted, opacity 0.3
+    Animation: y 0 -> -6 -> 0, 4s loop, offset phase
+  Bottom-right: pixel "94%" text, --accent, opacity 0.5
+    Animation: y 0 -> -5 -> 0, 3.5s loop, offset phase
+
+--- DECORATIVE PIXEL FRAME ---
+
+Around the right column content:
+  Dashed border: 2px dashed --border
+  No border-radius
+  Padding: 32px
+  
+  Corner pixel accents (same L-bracket spec as About section):
+    Each corner: --accent color L-shape, 16px arms, 2px thick
+
+  Top-center label strip:
+    "[ OPERATOR: SIBARAM_N ]" 
+    10px JetBrains Mono, --text-muted
+    Background: var(--bg), padding 0 8px
+    Positioned absolute, top -8px, centered
+    (Cuts into the border like a panel label)
+
+=== SCROLL INDICATOR ===
+
+Bottom-center of section, position absolute.
+Visible only when user has not scrolled.
+Fades out after first scroll (IntersectionObserver or 
+scroll event listener).
+
+Content:
+  Pixel down-arrow (8x8 SVG, 3 chevron lines)
+  "SCROLL" 9px JetBrains Mono, --text-muted, letter-spacing 3px
+
+Animation: 
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0)  }
+    50%       { transform: translateY(6px)}
+  }
+  1s loop, ease-in-out
+
+=== ENTRANCE SEQUENCE (full timeline) ===
+
+All managed by Framer Motion stagger:
+
+0ms    Background fades in (opacity 0->1, 400ms)
+100ms  "SIBARAM" slides in
+200ms  "NAYAK" slides in  
+300ms  Status badge fades in
+400ms  Role typer starts (first character)
+500ms  Tagline fades in
+600ms  CTA buttons slide up
+700ms  Social icons stagger in
+800ms  Stats count up
+900ms  Right column pixel frame fades in
+1000ms Pixel sprite appears + idle animation starts
+1100ms Floating elements begin their loops
+
+Each animation triggers once. No replay on scroll.
+
+=== MOBILE BEHAVIOR (below 768px) ===
+
+Single column layout.
+Order: Status badge -> Name -> Typer -> Tagline -> 
+       CTAs -> Socials -> Pixel sprite (smaller, 120px) -> Stats
+
+Name: 40px font
+Pixel sprite: scale down to 50%, centered
+Floating elements: hidden on mobile (too cluttered)
+Pixel frame: hidden on mobile, sprite renders without it
+Stats: 2x2 grid instead of 4-column row
+Scroll indicator: visible
+
+=== PERFORMANCE ===
+
+- PixelSprite and PixelScene: memoized with React.memo
+- HeroBackground: pure CSS, zero JS
+- Role typer: useRef for interval cleanup on unmount
+- Stats counter: requestAnimationFrame based, cleanup on unmount
+- All Framer Motion: animate once, no scroll-linked animations
+
+=== DO NOT ===
+
+- No video backgrounds
+- No canvas element
+- No WebGL
+- No particle systems
+- No external image files in this section
+- No gradient text (only outline effect on NAYAK)
+- No border-radius anywhere
+- No animations that loop visibly except:
+    sprite idle, blinking cursor, blinking status dot,
+    floating elements, scroll indicator, steam wisps
