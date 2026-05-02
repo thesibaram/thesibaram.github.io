@@ -1,0 +1,329 @@
+Improve and rebuild the Projects section of the Sibaram Nayak portfolio.
+This is a surgical update - touch only the Projects section and its related
+components. Do not modify any other section.
+
+=== CURRENT STACK (do not change) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11, JetBrains Mono, TypeScript
+
+=== DATA LAYER ===
+
+Create /data/projects.ts - single source of truth for all project data.
+No hardcoded content inside components.
+
+export type Project = {
+  id: string
+  title: string
+  tagline: string
+  description: string
+  problem: string
+  approach: string
+  outcome: string
+  category: "CV" | "ML" | "Web" | "Research" | "Systems"
+  techStack: string[]
+  metrics?: { label: string; value: string }[]
+  status: "completed" | "in-progress" | "archived"
+  year: string
+  links: {
+    demo?: string
+    github?: string
+    paper?: string
+  }
+  featured: boolean
+}
+
+Pre-fill with these exact projects:
+
+[
+  {
+    id: "intel-image-classification",
+    title: "Intel Image Classification",
+    tagline: "Scene recognition across 6 natural categories using transfer learning",
+    description: "Built a CNN classifier on the Intel Image Classification dataset 
+      using MobileNetV2 as the backbone. Applied fine-tuning on the top layers after 
+      freezing the base, trained on an RTX 3050 Ti via DirectML on Windows.",
+    problem: "Raw training from scratch on a mid-range GPU was too slow and 
+      overfit quickly on the 25k image dataset.",
+    approach: "Used MobileNetV2 pretrained on ImageNet, froze base layers, 
+      added custom dense head, used aggressive data augmentation to generalize.",
+    outcome: "Achieved ~94% validation accuracy. Model generalizes well across 
+      buildings, forests, glaciers, mountains, sea, and street categories.",
+    category: "CV",
+    techStack: ["TensorFlow", "Keras", "MobileNetV2", "DirectML", "Python"],
+    metrics: [
+      { label: "Accuracy", value: "94.2%" },
+      { label: "Classes", value: "6" },
+      { label: "Dataset", value: "25k images" }
+    ],
+    status: "completed",
+    year: "2024",
+    links: { github: "#" },
+    featured: true
+  },
+  {
+    id: "flowers102-classification",
+    title: "Flowers102 Classification",
+    tagline: "102-category fine-grained flower recognition with Grad-CAM visualization",
+    description: "Fine-grained classification on the Oxford Flowers102 dataset using 
+      MobileNetV2 functional API. Currently building Grad-CAM visualization to 
+      understand which regions the model attends to per class.",
+    problem: "Fine-grained recognition is harder than scene classification - 
+      inter-class differences between flower species are subtle and intra-class 
+      variation is high.",
+    approach: "Functional API model for flexibility, custom preprocessing layer, 
+      transfer learning from ImageNet weights. Grad-CAM integration currently 
+      blocked by TFOpLambda graph disconnection issue.",
+    outcome: "Classification working with strong accuracy. Grad-CAM work in progress 
+      - debugging graph disconnection from preprocessing layers.",
+    category: "CV",
+    techStack: ["TensorFlow", "Keras", "MobileNetV2", "Grad-CAM", "DirectML"],
+    metrics: [
+      { label: "Classes", value: "102" },
+      { label: "Dataset", value: "Flowers102" },
+      { label: "Grad-CAM", value: "In Progress" }
+    ],
+    status: "in-progress",
+    year: "2025",
+    links: { github: "#" },
+    featured: true
+  },
+  {
+    id: "harmonic-source-identification",
+    title: "Harmonic Source Identification",
+    tagline: "ML-based harmonic detection in power distribution networks",
+    description: "Research project on identifying harmonic sources in power 
+      distribution networks using current signature analysis. Applied supervised 
+      ML classifiers to distinguish harmonic-generating loads from clean ones.",
+    problem: "Harmonic distortion from nonlinear loads degrades power quality. 
+      Manually identifying the source requires expensive measurement equipment.",
+    approach: "Extracted features from current waveforms, trained classification 
+      models on labeled signature data, evaluated performance across load types.",
+    outcome: "Demonstrated feasibility of ML-based detection as a low-cost 
+      alternative to traditional harmonic analyzers.",
+    category: "Research",
+    techStack: ["Python", "Scikit-learn", "NumPy", "Pandas", "Matplotlib"],
+    metrics: [
+      { label: "Domain", value: "Power Systems" },
+      { label: "Type", value: "Research" }
+    ],
+    status: "completed",
+    year: "2024",
+    links: {},
+    featured: true
+  },
+  {
+    id: "pixelnest",
+    title: "PixelNest",
+    tagline: "Personal photo archive with a darkroom and film photography aesthetic",
+    description: "A personal photo archive website with a film photography aesthetic. 
+      Built as a digital memory vault with a darkroom visual identity.",
+    problem: "Wanted a personal photo home that felt like a physical archive, 
+      not a social media feed.",
+    approach: "Custom HTML/CSS/JS, dark background, grain texture, minimal UI. 
+      Planned upgrade to a photos.json data layer and lightbox integration.",
+    outcome: "Live at thesibaram.github.io/pixelnest. Multi-phase redesign 
+      currently in progress.",
+    category: "Web",
+    techStack: ["HTML", "CSS", "JavaScript"],
+    metrics: [
+      { label: "Status", value: "Live" }
+    ],
+    status: "in-progress",
+    year: "2024",
+    links: { demo: "https://thesibaram.github.io/pixelnest", github: "#" },
+    featured: false
+  },
+  {
+    id: "gfg-21-projects",
+    title: "21 ML Projects in 21 Days",
+    tagline: "Structured ML sprint covering classification, regression, clustering",
+    description: "Completed GeeksforGeeks structured ML program building 21 
+      independent projects across 21 days. Covered the breadth of classical ML 
+      from linear models to ensemble methods.",
+    problem: "Needed to rapidly build portfolio depth across multiple ML domains 
+      before internship application season.",
+    approach: "One project per day, each using a different algorithm or dataset. 
+      Scikit-learn, Pandas, and Python throughout. All pushed to GitHub.",
+    outcome: "21 completed, documented projects on GitHub. Solid foundation 
+      across supervised, unsupervised, and evaluation workflows.",
+    category: "ML",
+    techStack: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib"],
+    metrics: [
+      { label: "Projects", value: "21" },
+      { label: "Duration", value: "21 days" }
+    ],
+    status: "completed",
+    year: "2024",
+    links: { github: "#" },
+    featured: false
+  }
+]
+
+=== COMPONENT ARCHITECTURE ===
+
+components/Projects/
+  index.tsx           (section wrapper, filter logic, grid)
+  ProjectCard.tsx     (collapsed card view)
+  ProjectExpanded.tsx (expanded panel content)
+  ProjectFilter.tsx   (category filter bar)
+  MetricBadge.tsx     (single metric pill)
+  StatusChip.tsx      (completed / in-progress / archived chip)
+  CategoryBadge.tsx   (pixel category badge, colored per type)
+
+=== FILTER BAR ===
+
+Horizontal pill buttons above the grid:
+  [All] [CV] [ML] [Research] [Web] [Systems]
+
+Active filter: filled with --accent color, 1px border.
+Inactive: transparent background, 1px border.
+Pixel press effect on click.
+Filter animates cards out/in using Framer Motion layoutId.
+"Featured only" toggle on the right side of the filter bar.
+Filtering does not reload the page - pure client state.
+
+=== CARD DESIGN (collapsed) ===
+
+Card dimensions: fixed min-height 220px, full column width.
+Border: 1px solid var(--border).
+Background: var(--surface).
+No border-radius - sharp corners only (pixel aesthetic).
+
+Layout (top to bottom):
+
+  ROW 1: CategoryBadge (left) + StatusChip (right)
+    CategoryBadge: pixel 8x8 SVG icon + label text
+      CV     -> cyan   (#00D4F5) icon
+      ML     -> violet (#9B4FE8) icon
+      Web    -> green  (#22C55E) icon
+      Research -> amber (#F59E0B) icon
+      Systems -> red   (#EF4444) icon
+    StatusChip:
+      completed    -> green border + text, no fill
+      in-progress  -> amber border + text, blinking dot (CSS animation)
+      archived     -> muted border + text
+
+  ROW 2: Project title (JetBrains Mono, 18px, --text-primary)
+
+  ROW 3: Tagline (Inter, 13px, --text-muted, max 2 lines, ellipsis overflow)
+
+  ROW 4: Tech stack chips (PixelChip components, wrapping flex row)
+    Max 4 chips visible, "+N more" chip if overflow
+
+  ROW 5: Metrics row (MetricBadge components)
+    Each metric: label in muted + value in accent, separated by pipe |
+    Example: "Accuracy | 94.2%   Classes | 6   Dataset | 25k images"
+
+  ROW 6: Footer row
+    Left: [Live Demo] [GitHub] [Paper] - only render if link exists
+      Each as pixel-bordered anchor, 12px monospace text
+    Right: Year chip + expand arrow icon (Lucide ChevronDown)
+
+Hover state on entire card:
+  - 2px translate(-2px, -2px)
+  - box-shadow: 4px 4px 0px var(--accent)
+  - Transition: 150ms ease
+
+=== EXPANDED PANEL ===
+
+Slides open below the card using Framer Motion:
+  initial: { height: 0, opacity: 0 }
+  animate: { height: "auto", opacity: 1 }
+  transition: { duration: 0.3, ease: "easeInOut" }
+  
+Expand arrow rotates 180deg when open (CSS transform transition).
+
+Content inside expanded panel:
+  Separator: 1px dashed var(--border), full width
+
+  Three labeled blocks, each with a pixel icon prefix:
+
+  [>] THE PROBLEM
+      problem field text, 13px Inter, --text-muted
+
+  [>] THE APPROACH
+      approach field text, 13px Inter, --text-muted
+
+  [>] THE OUTCOME
+      outcome field text, 13px Inter, 
+      if status is in-progress: outcome text + amber "Work in progress" tag
+
+  Full tech stack (all chips, not truncated)
+  All links repeated (Live Demo, GitHub, Paper)
+
+Only one card can be expanded at a time.
+Clicking an open card closes it.
+Clicking a different card closes the previous one and opens the new one.
+
+=== FEATURED ROW ===
+
+Above the main grid, render featured: true projects in a horizontal 
+scrollable row labeled "FEATURED WORK" with a pixel star icon.
+This row shows on all filter states.
+Each featured card in this row is wider (takes 60% width, min 320px).
+Non-featured projects appear in the regular grid below.
+
+=== PIXEL CATEGORY BADGE SPECS ===
+
+Built from SVG <rect> elements only. Each is 8x8 pixel grid on a 24x24 viewBox.
+Pixel size = 3px (24 / 8 = 3px per pixel).
+
+CV badge (eye icon shape):
+  Row 2: pixels 2,3,4,5,6 filled
+  Row 3: pixels 1,3,5,7 filled (pupil gap)
+  Row 4: pixels 2,3,4,5,6 filled
+
+ML badge (brain/network icon):
+  3 nodes connected by lines, abstract
+
+Web badge (globe icon):
+  Circle outline with horizontal lines
+
+Research badge (flask icon):
+  Simple test tube shape
+
+Build each as its own SVG component with fill="currentColor" 
+so it inherits the category color from the parent.
+
+=== EMPTY STATE ===
+
+When filter returns 0 results:
+  Centered pixel art "404 not found" style illustration (simple, 32x32 grid)
+  Text: "Nothing in this category yet."
+  Sub-text: "More projects loading..."
+  [Reset Filter] button
+
+=== ANIMATIONS ===
+
+Grid reflow on filter change:
+  - Framer Motion AnimatePresence with mode="popLayout"
+  - Exiting cards: { opacity: 0, scale: 0.95, transition: 0.15s }
+  - Entering cards: { opacity: 0, y: 10 } -> { opacity: 1, y: 0 }
+  - Stagger entering cards by 0.05s each
+
+Section entrance (first load):
+  - Cards animate in with 0.08s stagger, y: 20 -> 0, opacity 0 -> 1
+  - Trigger via IntersectionObserver, animate once
+
+=== ACCESSIBILITY ===
+
+- All cards are keyboard focusable (tabIndex=0)
+- Enter/Space toggles expand on focused card
+- Escape closes any open expanded panel
+- aria-expanded on each card
+- aria-label on all icon-only buttons
+- Filter buttons use role="tab" and aria-selected
+
+=== MOBILE BEHAVIOR ===
+
+- Single column below 768px
+- Featured row becomes single column stack (no horizontal scroll)
+- Filter bar becomes horizontally scrollable (overflow-x: auto, no wrapping)
+- Expanded panel same behavior, just full width
+
+=== DO NOT ===
+
+- Do not add page transitions or route changes for project detail
+- Do not use modal/overlay for expanded content - inline accordion only
+- Do not use any image files - all visual elements are SVG or CSS
+- Do not add a "load more" button - render all projects, filtering handles discovery
+- Do not add any animation that loops unless it is the status blinking dot
