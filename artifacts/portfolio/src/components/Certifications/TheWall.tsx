@@ -15,19 +15,13 @@ export function TheWall() {
         className="relative"
         style={{
           border: "2px solid var(--px-border)",
-          padding: 24,
-          paddingTop: 36,
+          padding: "40px 28px 32px",
         }}
       >
         {/* Wall label */}
         <span
           className="absolute font-mono uppercase tracking-widest"
-          style={{
-            top: 8,
-            left: 12,
-            fontSize: 9,
-            color: "var(--px-muted)",
-          }}
+          style={{ top: 10, left: 14, fontSize: 9, color: "var(--px-muted)" }}
         >
           // CREDENTIAL WALL
         </span>
@@ -35,12 +29,12 @@ export function TheWall() {
         {/* Background texture */}
         <WallBackground />
 
-        {/* Documents grid */}
+        {/* Documents grid — min 240px so docs fit without squishing */}
         <div
           className="relative grid justify-items-center"
           style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-            gap: "32px 24px",
+            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+            gap: "48px 32px",
           }}
         >
           {certifications.map((cert, i) =>

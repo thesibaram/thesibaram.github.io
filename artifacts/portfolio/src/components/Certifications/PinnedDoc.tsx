@@ -40,20 +40,20 @@ export function PinnedDoc({ cert, index, onOpen }: Props) {
       className="flex flex-col items-center"
       style={{ opacity: placeholder ? 0.65 : 1 }}
     >
-      {/* Pin above document — centered */}
-      <div style={{ zIndex: 1, marginBottom: -7, position: "relative" }}>
+      {/* Pin above document */}
+      <div style={{ zIndex: 1, marginBottom: -8, position: "relative" }}>
         <PinHead color={pinColor} size="md" />
       </div>
 
-      {/* Document */}
+      {/* Document — 240×320px, readable */}
       <div
         className="relative"
         style={{
-          width: 160,
-          height: 200,
+          width: 240,
+          height: 320,
           background: "var(--doc-bg, #FAFAF7)",
-          border: `1px solid var(--px-border)`,
-          boxShadow: "4px 4px 0px rgba(0,0,0,0.14)",
+          border: "1px solid var(--px-border)",
+          boxShadow: "5px 5px 0px rgba(0,0,0,0.14)",
           cursor: placeholder ? "default" : "pointer",
           transition: "transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease",
         }}
@@ -62,8 +62,8 @@ export function PinnedDoc({ cert, index, onOpen }: Props) {
         onMouseEnter={e => {
           if (!placeholder) {
             const el = e.currentTarget as HTMLElement
-            el.style.transform = `rotate(${rotation}deg) scale(1.05) translateY(-4px)`
-            el.style.boxShadow = "6px 6px 0px rgba(0,0,0,0.22)"
+            el.style.transform = `rotate(${rotation}deg) scale(1.04) translateY(-6px)`
+            el.style.boxShadow = "8px 8px 0px rgba(0,0,0,0.2)"
             el.style.borderColor = catConfig.color
           }
         }}
@@ -71,14 +71,12 @@ export function PinnedDoc({ cert, index, onOpen }: Props) {
           if (!placeholder) {
             const el = e.currentTarget as HTMLElement
             el.style.transform = ""
-            el.style.boxShadow = "4px 4px 0px rgba(0,0,0,0.14)"
+            el.style.boxShadow = "5px 5px 0px rgba(0,0,0,0.14)"
             el.style.borderColor = "var(--px-border)"
           }
         }}
       >
         <DocContent cert={cert} isPlaceholder={placeholder} />
-
-        {/* Torn bottom edge for in-progress */}
         {isInProgress && <TornEdge />}
       </div>
     </motion.div>
