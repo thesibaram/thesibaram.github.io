@@ -1,0 +1,350 @@
+Rebuild the Skills section of the Sibaram Nayak portfolio.
+Surgical update - touch only the Skills section and its components.
+Do not modify anything else.
+
+=== STACK (unchanged) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11,
+JetBrains Mono, TypeScript
+
+=== DATA LAYER ===
+
+Create /data/skills.ts
+
+export type SkillLevel = "core" | "proficient" | "familiar"
+
+export type Skill = {
+  name: string
+  level: SkillLevel
+  pixelIcon?: string   // icon key, maps to PixelIcons map
+}
+
+export type SkillCategory = {
+  id: string
+  label: string
+  iconKey: string
+  description: string
+  skills: Skill[]
+}
+
+export const skillCategories: SkillCategory[] = [
+  {
+    id: "ml-dl",
+    label: "ML / Deep Learning",
+    iconKey: "brain",
+    description: "Core stack for building and training models",
+    skills: [
+      { name: "TensorFlow",        level: "core"       },
+      { name: "Keras",             level: "core"       },
+      { name: "MobileNetV2",       level: "core"       },
+      { name: "Transfer Learning", level: "core"       },
+      { name: "Grad-CAM",          level: "proficient" },
+      { name: "Scikit-learn",      level: "proficient" },
+      { name: "Data Augmentation", level: "proficient" }
+    ]
+  },
+  {
+    id: "computer-vision",
+    label: "Computer Vision",
+    iconKey: "eye",
+    description: "Image understanding and visual ML",
+    skills: [
+      { name: "Image Classification", level: "core"       },
+      { name: "Feature Extraction",   level: "core"       },
+      { name: "Fine-Grained Recog",   level: "proficient" },
+      { name: "Functional API",       level: "proficient" },
+      { name: "Model Visualization",  level: "proficient" }
+    ]
+  },
+  {
+    id: "languages",
+    label: "Languages",
+    iconKey: "code",
+    description: "What I actually write",
+    skills: [
+      { name: "Python",     level: "core"       },
+      { name: "JavaScript", level: "proficient" },
+      { name: "TypeScript", level: "familiar"   },
+      { name: "C",          level: "familiar"   }
+    ]
+  },
+  {
+    id: "data",
+    label: "Data",
+    iconKey: "chart",
+    description: "Wrangling numbers and results",
+    skills: [
+      { name: "NumPy",      level: "core"       },
+      { name: "Pandas",     level: "core"       },
+      { name: "Matplotlib", level: "proficient" },
+      { name: "Seaborn",    level: "familiar"   }
+    ]
+  },
+  {
+    id: "dev",
+    label: "Dev Tools",
+    iconKey: "terminal",
+    description: "Environment and workflow",
+    skills: [
+      { name: "Git",       level: "core"       },
+      { name: "GitHub",    level: "core"       },
+      { name: "VS Code",   level: "core"       },
+      { name: "DirectML",  level: "proficient" },
+      { name: "WSL2",      level: "proficient" },
+      { name: "PyCharm",   level: "familiar"   }
+    ]
+  },
+  {
+    id: "web",
+    label: "Web",
+    iconKey: "globe",
+    description: "Frontend and portfolio work",
+    skills: [
+      { name: "React",      level: "proficient" },
+      { name: "Next.js",    level: "proficient" },
+      { name: "Tailwind",   level: "proficient" },
+      { name: "HTML/CSS",   level: "core"       }
+    ]
+  }
+]
+
+export const levelConfig = {
+  core:       { label: "Core",       color: "var(--accent)",   pixels: 5 },
+  proficient: { label: "Proficient", color: "var(--accent-2)", pixels: 3 },
+  familiar:   { label: "Familiar",   color: "var(--border)",   pixels: 1 }
+}
+
+=== COMPONENT ARCHITECTURE ===
+
+components/Skills/
+  index.tsx            (section wrapper + layout)
+  CategoryTabs.tsx     (horizontal tab switcher)
+  SkillGrid.tsx        (chip grid for active category)
+  SkillChip.tsx        (single skill chip)
+  PixelLevelBar.tsx    (5-block pixel level indicator)
+  LevelLegend.tsx      (core / proficient / familiar key)
+  CategoryPanel.tsx    (description + skill grid + bar chart)
+  PixelBarChart.tsx    (horizontal bar chart, skill count per category)
+  AllSkillsCloud.tsx   (all skills flat view, togglable)
+
+=== LAYOUT ===
+
+Desktop: full width, max-width 960px, centered.
+Mobile: full width, 24px padding.
+
+Structure (top to bottom):
+  1. Section header
+  2. Pixel bar chart (category overview)
+  3. Category tabs
+  4. Active category panel (chips + descriptions)
+  5. Level legend
+  6. "View all skills" toggle -> AllSkillsCloud
+
+=== SECTION HEADER ===
+
+Pixel lightning bolt icon (16x16 SVG rects) left of title.
+"SKILLS" in 11px JetBrains Mono, --text-muted, tracked wide.
+Full width 1px dashed --border divider below.
+
+=== PIXEL BAR CHART (PixelBarChart.tsx) ===
+
+Horizontal bar chart. One bar per category.
+Shows skill count as a pixel-block bar.
+
+Each row:
+  Category label: 140px fixed width, 
+    11px JetBrains Mono, --text-muted, right-aligned
+  Bar: flex row of filled/empty pixel blocks
+    Each block: 12x12px square, 3px gap between blocks
+    Max blocks: 8 (normalize to largest category)
+    Filled blocks: var(--accent), 1px solid var(--accent)
+    Empty blocks: transparent, 1px solid var(--border)
+  Count label: "7 skills" 10px --text-muted, left of bar
+
+Hover on a row: accent color fills label, 
+  clicking the row activates that category tab
+
+Entrance animation:
+  Bars fill left to right, block by block
+  Each block: 60ms delay * block index
+  Stagger categories 100ms apart
+  Trigger once on IntersectionObserver
+
+=== CATEGORY TABS (CategoryTabs.tsx) ===
+
+Horizontal tab row, margin-top 32px.
+One tab per category. Scrollable on mobile.
+
+Each tab:
+  Pixel category icon (16x16 SVG) + label text
+  Font: 11px JetBrains Mono
+  Padding: 8px 16px
+  Border: 1px solid --border
+  No border-radius
+  Background: transparent
+
+Active tab:
+  Background: var(--accent)
+  Color: #0D0D10
+  Border-color: var(--accent)
+  Icon: inverted color
+
+Hover (inactive):
+  Transform: translate(-2px, -2px)
+  Box-shadow: 3px 3px 0px var(--accent)
+
+Tab switching:
+  Framer Motion layoutId on active indicator
+  Panel content: AnimatePresence mode="wait"
+    Exit: x: -10, opacity: 0, duration 150ms
+    Enter: x: 10->0, opacity: 0->1, duration 200ms
+
+=== CATEGORY PANEL (CategoryPanel.tsx) ===
+
+Below tabs, margin-top 24px.
+Border: 1px solid --border, padding 24px.
+
+Panel header row:
+  Left: category label, 14px JetBrains Mono, --text-primary
+  Right: description text, 12px Inter, --text-muted, italic
+
+Skill chips grid below header:
+  CSS grid: repeat(auto-fill, minmax(140px, 1fr)), gap 10px
+
+=== SKILL CHIP (SkillChip.tsx) ===
+
+Each skill rendered as a chip.
+Height: 44px. Full width of grid cell.
+Border: 1px solid --border. No border-radius.
+Background: var(--surface).
+Padding: 8px 12px.
+
+Layout (left to right):
+  PixelLevelBar (left, vertical stack of 5 blocks)
+  Gap: 8px
+  Skill name: 12px JetBrains Mono, --text-primary
+
+PixelLevelBar (PixelLevelBar.tsx):
+  5 stacked pixel blocks, each 4x4px, 2px gap between
+  core:       5 filled (--accent)
+  proficient: 3 filled (--accent-2), 2 empty
+  familiar:   1 filled (--border tint), 4 empty
+  Filled: solid fill. Empty: 1px --border outline only.
+  Renders vertically, bottom to top (filled from bottom)
+
+Chip hover:
+  Background: var(--accent) at 8% opacity
+  Border-color: var(--accent)
+  Transform: translate(-2px, -2px)
+  Box-shadow: 3px 3px 0px var(--accent)
+  Skill name color: --accent
+  Transition: 120ms ease
+
+Chip entrance (when panel opens):
+  Stagger 0.04s per chip
+  y: 8 -> 0, opacity: 0 -> 1
+  duration: 200ms
+
+=== LEVEL LEGEND (LevelLegend.tsx) ===
+
+Below the category panel, margin-top 16px.
+Flex row, gap 24px, right-aligned.
+
+Each legend item:
+  PixelLevelBar (same component, non-interactive)
+  Label: 10px JetBrains Mono, --text-muted
+
+Three items:
+  [5 blocks filled] Core
+  [3 blocks filled] Proficient
+  [1 block filled]  Familiar
+
+=== ALL SKILLS CLOUD (AllSkillsCloud.tsx) ===
+
+Toggled by "// view all skills" link below legend.
+Framer Motion: height 0 -> auto on toggle.
+
+When open:
+  Flat wrap of ALL skill chips from all categories.
+  Same SkillChip component, no grid - flex wrap, gap 8px.
+  Chips sorted: core first, then proficient, then familiar.
+  Core chips slightly larger (scale 1.05).
+
+Toggle button:
+  "// view all skills" when closed
+  "// collapse"        when open
+  Font: 11px JetBrains Mono, --accent color
+  No border, no background
+  Arrow icon rotates 90deg on open
+
+=== PIXEL CATEGORY ICONS (SVG rects, 16x16 grid) ===
+
+brain (ML/DL):
+  Outline of two lobes, pixel style
+  Center line: 1px divider
+  3 small dots each lobe (neuron nodes)
+
+eye (CV):
+  Outer oval: 12px wide, 6px tall, pixel outline
+  Pupil: 4x4 filled center
+  Eyelashes: 3 single pixels top edge
+
+code (Languages):
+  Left bracket:  < (3 rects, chevron)
+  Right bracket: > (3 rects, chevron)
+  Slash center:  / (diagonal pixel line)
+
+chart (Data):
+  3 vertical bars: heights 4, 8, 6 px
+  Base line: 1px horizontal
+  All: --accent or currentColor
+
+terminal (Dev):
+  Rectangle outline (border only)
+  Prompt: "> " as 3 pixel rects inside
+  Cursor: 2x1 rect, blinking CSS animation
+
+globe (Web):
+  Circle outline (pixel approximation)
+  2 horizontal lines through center
+  1 vertical center line
+
+=== THEME BEHAVIOR ===
+
+All colors via CSS vars.
+Pixel level bars:
+  core filled:       var(--accent)
+  proficient filled: var(--accent-2)
+  familiar filled:   var(--border) + 40% brightness filter
+  empty:             1px solid var(--border)
+
+Bar chart filled blocks:
+  Light mode: var(--accent) with 0.9 opacity
+  Dark mode:  var(--accent) with 1.0 opacity
+
+=== MOBILE BEHAVIOR (below 768px) ===
+
+Bar chart: hidden (too dense for mobile)
+Category tabs: horizontally scrollable row, no wrap
+Chip grid: 2 columns fixed
+All skills cloud: same chip grid, 2 columns
+Level legend: centered, smaller text
+
+=== PERFORMANCE ===
+
+- Bar chart animation: requestAnimationFrame block fill
+- Category tab content: only active panel in DOM
+  (AnimatePresence removes unmounted panels)
+- All skill chips: React.memo, no rerenders on tab switch
+- Icons: inline SVG, zero external requests
+
+=== DO NOT ===
+
+- No circular progress rings
+- No percentage numbers on individual skills
+- No skill rating out of 10
+- No star ratings
+- No tooltips (level is shown directly on chip)
+- No horizontal progress bars (pixel blocks only)
+- No animations that loop except terminal cursor blink
+- No icons from Lucide or any icon library for 
+  category icons - SVG rects only
