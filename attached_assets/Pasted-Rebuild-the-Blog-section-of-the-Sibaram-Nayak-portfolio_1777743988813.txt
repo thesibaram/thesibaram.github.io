@@ -1,0 +1,575 @@
+Rebuild the Blog section of the Sibaram Nayak portfolio.
+Surgical update - touch only the Blog section and its components.
+Do not modify anything else.
+
+=== STACK (unchanged) ===
+Next.js 15, Tailwind CSS v4, Framer Motion v11,
+JetBrains Mono, TypeScript
+
+=== DATA LAYER ===
+
+Create /data/blog.ts
+
+export type BlogStatus = "published" | "draft" | "coming-soon"
+
+export type ReadTime = {
+  minutes: number
+  words: number
+}
+
+export type BlogPost = {
+  id: string
+  slug: string
+  title: string
+  subtitle: string
+  preview: string           // 2-3 sentence teaser
+  content: string           // full post in markdown
+  tags: string[]
+  category: "Debug" | "Tutorial" | "Project" | 
+            "Research" | "Opinion" | "Journey"
+  status: BlogStatus
+  publishedAt: string       // "DD MMM YYYY" or ""
+  updatedAt?: string
+  readTime: ReadTime
+  featured: boolean
+  series?: {                // if part of a series
+    name: string
+    part: number
+    total: number
+  }
+}
+
+export const blogPosts: BlogPost[] = [
+  {
+    id: "blog-001",
+    slug: "fixing-gradcam-functional-api",
+    title: "Fixing Grad-CAM on a Functional API Model",
+    subtitle: "TFOpLambda preprocessing layers and why they 
+               break your gradient graph",
+    preview: "Grad-CAM stopped working the moment I switched 
+      to the functional API on Flowers102. The error was a 
+      graph disconnection from a TFOpLambda preprocessing 
+      layer. Here is what I found and how I fixed it.",
+    content: "// COMING SOON - post in progress",
+    tags: ["TensorFlow", "Grad-CAM", "Computer Vision", 
+           "Debugging", "MobileNetV2"],
+    category: "Debug",
+    status: "draft",
+    publishedAt: "",
+    readTime: { minutes: 6, words: 1400 },
+    featured: true,
+    series: {
+      name: "Flowers102 Deep Dive",
+      part: 2,
+      total: 3
+    }
+  },
+  {
+    id: "blog-002",
+    slug: "transfer-learning-intel-what-worked",
+    title: "Transfer Learning on Intel Image Dataset",
+    subtitle: "What actually worked, what did not, 
+               and what the accuracy hides",
+    preview: "94% sounds clean. The confusion matrix 
+      between glacier and mountain does not. Here is 
+      the full story of building the Intel classifier - 
+      the decisions, the failures, and the final setup 
+      that got there.",
+    content: "// COMING SOON",
+    tags: ["Transfer Learning", "MobileNetV2", 
+           "TensorFlow", "CNN", "Intel Dataset"],
+    category: "Project",
+    status: "coming-soon",
+    publishedAt: "",
+    readTime: { minutes: 8, words: 1900 },
+    featured: true,
+    series: null
+  },
+  {
+    id: "blog-003",
+    slug: "tensorflow-directml-windows-setup",
+    title: "Setting Up TensorFlow with DirectML on Windows",
+    subtitle: "RTX 3050 Ti, no CUDA, full GPU training",
+    preview: "CUDA refused to cooperate. DirectML worked 
+      first try. This is the exact setup that got 
+      TensorFlow running on my RTX 3050 Ti on Windows 
+      without WSL2 or any CUDA configuration.",
+    content: "// COMING SOON",
+    tags: ["TensorFlow", "DirectML", "Windows", 
+           "GPU", "Setup"],
+    category: "Tutorial",
+    status: "coming-soon",
+    publishedAt: "",
+    readTime: { minutes: 5, words: 1100 },
+    featured: false,
+    series: null
+  },
+  {
+    id: "blog-004",
+    slug: "sih-2024-what-we-built",
+    title: "SIH 2024: What We Built and What Broke",
+    subtitle: "National Finalist. 36 hours. One team. 
+               Many bugs.",
+    preview: "We made it to the national finals of 
+      Smart India Hackathon 2024. This is what the 
+      project was, what fell apart at 3am, and what 
+      it feels like to build something real under 
+      that kind of pressure.",
+    content: "// COMING SOON",
+    tags: ["SIH 2024", "Hackathon", "Team", "Story"],
+    category: "Journey",
+    status: "coming-soon",
+    publishedAt: "",
+    readTime: { minutes: 7, words: 1600 },
+    featured: true,
+    series: null
+  },
+  {
+    id: "blog-005",
+    slug: "flowers102-series-part1",
+    title: "Starting Flowers102: Why 102 Classes 
+            is a Different Problem",
+    subtitle: "Fine-grained recognition vs scene 
+               classification - not the same game",
+    preview: "Going from 6 classes to 102 is not 
+      just more of the same. The model needs to 
+      learn subtle differences between species 
+      that look almost identical. Part 1 of the 
+      Flowers102 series.",
+    content: "// COMING SOON",
+    tags: ["Computer Vision", "Fine-Grained", 
+           "Flowers102", "MobileNetV2"],
+    category: "Research",
+    status: "coming-soon",
+    publishedAt: "",
+    readTime: { minutes: 5, words: 1200 },
+    featured: false,
+    series: {
+      name: "Flowers102 Deep Dive",
+      part: 1,
+      total: 3
+    }
+  }
+]
+
+export const categoryConfig = {
+  Debug:    { label: "Debug",    color: "#EF4444", icon: "bug"      },
+  Tutorial: { label: "Tutorial", color: "#22C55E", icon: "terminal" },
+  Project:  { label: "Project",  color: "var(--accent)", icon: "folder" },
+  Research: { label: "Research", color: "var(--accent-2)", icon: "flask" },
+  Opinion:  { label: "Opinion",  color: "#F59E0B", icon: "thought"  },
+  Journey:  { label: "Journey",  color: "#3B82F6", icon: "map"      }
+}
+
+=== COMPONENT ARCHITECTURE ===
+
+components/Blog/
+  index.tsx               (section wrapper + layout)
+  BlogGrid.tsx            (card grid + featured row)
+  BlogCard.tsx            (collapsed card)
+  BlogExpanded.tsx        (expanded inline reader)
+  BlogFilter.tsx          (category + status filter)
+  BlogStats.tsx           (post count summary)
+  SeriesBadge.tsx         (series indicator chip)
+  ReadTimeChip.tsx        (pixel clock + time)
+  StatusChip.tsx          (published/draft/coming-soon)
+  CategoryBadge.tsx       (pixel category icon + label)
+  TagCloud.tsx            (all unique tags, filterable)
+  MarkdownRenderer.tsx    (renders content field)
+  PixelAuthor.tsx         (pixel author block, reused from About)
+  EmptyState.tsx          (no results state)
+
+=== LAYOUT ===
+
+Desktop: max-width 960px, centered.
+Mobile: full width, 24px padding.
+
+Structure top to bottom:
+  1. Section header
+  2. BlogStats row
+  3. BlogFilter bar
+  4. Featured posts row (horizontal scroll)
+  5. BlogGrid (remaining posts)
+  6. TagCloud (collapsible)
+  7. Empty state (conditional)
+
+=== SECTION HEADER ===
+
+Pixel pencil icon (16x16 SVG rects) left of title.
+"BLOG" 11px JetBrains Mono --text-muted tracked wide.
+Subtitle: "// writing about what I build and debug"
+  Inter 12px --text-muted italic, below title.
+Full width 1px dashed --border divider below.
+
+=== BLOG STATS ROW (BlogStats.tsx) ===
+
+4 stats in a row, same counter animation as Hero/Certs.
+
+Stats (auto-computed from blogPosts array):
+  Total posts     | label: "Posts"
+  Published       | label: "Live"
+  In Draft        | label: "Writing"
+  Unique tags     | label: "Topics"
+
+Font: JetBrains Mono.
+Value: 22px --accent.
+Label: 10px --text-muted uppercase.
+Dividers: 1px solid --border between each.
+
+=== BLOG FILTER BAR (BlogFilter.tsx) ===
+
+Row 1 - Status:
+  [All] [Published] [Draft] [Coming Soon]
+
+Row 2 - Category:
+  [All] [Debug] [Tutorial] [Project] 
+  [Research] [Opinion] [Journey]
+
+Same pill style as Certifications filter.
+Active pill uses category color for row 2.
+Both rows work as AND filter.
+Framer Motion AnimatePresence on grid reflow.
+
+=== FEATURED ROW ===
+
+Label: "FEATURED POSTS" pixel star icon + 
+  10px JetBrains Mono --text-muted.
+Horizontal scrollable row.
+Featured cards: min-width 320px.
+Hidden when filter is active.
+
+=== BLOG CARD (BlogCard.tsx) - COLLAPSED ===
+
+Border: 1px solid --border. No border-radius.
+Background: var(--surface).
+Min-height: 220px.
+Cursor: pointer.
+
+TOP BAR:
+  Left: CategoryBadge + SeriesBadge (if series exists)
+  Right: StatusChip
+
+  CategoryBadge:
+    Pixel 8x8 icon (category-specific, SVG rects)
+    Label: 10px JetBrains Mono, category color
+    Border: 1px solid category color
+    Padding: 3px 8px
+
+  SeriesBadge (SeriesBadge.tsx):
+    Only renders if post.series exists
+    "PT.N/N" format (e.g. "PT.2/3")
+    Font: 10px JetBrains Mono --accent
+    Border: 1px solid --accent
+    Pixel chain-link icon (8x8) left of text
+
+  StatusChip:
+    published:    "LIVE" green, solid dot
+    draft:        "DRAFTING" amber, blinking dot
+    coming-soon:  "SOON" muted, dashed border
+
+TITLE BLOCK:
+  Title: JetBrains Mono 15px --text-primary bold
+    Max 2 lines, ellipsis
+  Subtitle: Inter 12px --text-muted italic
+    Max 1 line, ellipsis
+  Margin-top: 10px
+
+PREVIEW TEXT:
+  Inter 12px --text-muted
+  Max 3 lines, line-clamp
+  Margin-top: 8px
+
+META ROW:
+  Left:
+    ReadTimeChip: pixel clock icon (8x8) + "N min read"
+      Font: 10px JetBrains Mono --text-muted
+    Dot separator: 3px pixel square --border
+    Date: publishedAt or "Unpublished"
+      Font: 10px JetBrains Mono --text-muted
+  Right:
+    Expand arrow: Lucide ChevronDown
+      Rotates 180deg when expanded
+
+TAGS ROW:
+  First 3 tags as small chips
+  "+N" chip if more
+  Font: 10px JetBrains Mono
+  Border: 1px solid --border
+  Padding: 2px 6px
+
+Card hover:
+  Transform: translate(-3px, -3px)
+  Box-shadow: 5px 5px 0px var(--accent)
+  Border-color: var(--accent)
+  Transition: 150ms ease
+
+coming-soon cards:
+  Opacity: 0.75
+  Dashed border instead of solid
+  Hover effect still applies
+  Expanded panel shows "coming soon" state instead
+    of content
+
+=== BLOG EXPANDED PANEL (BlogExpanded.tsx) ===
+
+Slides open inline below the card.
+Full grid width (spans all columns).
+Framer Motion height animation, same spec as other sections.
+
+Only one post expanded at a time.
+Escape closes open panel.
+
+Panel border-top: 2px solid var(--accent).
+Background: var(--bg), slight contrast from grid.
+Padding: 28px 32px desktop, 20px 16px mobile.
+
+PANEL HEADER:
+  Full title: JetBrains Mono 20px --text-primary
+  Subtitle: Inter 14px --text-muted italic
+  
+  Meta line below:
+    PixelAuthor block:
+      Pixel avatar (same as About fallback, 16x16 scaled)
+      "Sibaram Nayak" 11px JetBrains Mono --text-primary
+      Dot separator
+      Date or "Unpublished"
+      Dot separator
+      ReadTimeChip
+    
+  All tags (full, not truncated): flex wrap, gap 6px.
+  
+  SeriesBadge (if series):
+    Expanded version showing full series name
+    "Part N of N - [Series Name]"
+    Border: 1px solid --accent, padding 6px 12px
+    Navigation arrows if other parts exist in data:
+      [< Part N-1] and [Part N+1 >] as pixel buttons
+      Clicking switches expanded post to that part
+
+PANEL CONTENT (MarkdownRenderer.tsx):
+  Renders content field as markdown.
+  
+  If status is "published":
+    Full markdown content, styled:
+    h2: JetBrains Mono 16px --text-primary, 
+        border-bottom 1px dashed --border
+    h3: JetBrains Mono 14px --accent
+    p: Inter 14px --text-primary, line-height 1.7
+    code inline: JetBrains Mono 13px --accent-2, 
+        background var(--surface), padding 2px 6px,
+        border 1px solid --border
+    pre/code block: 
+        background var(--surface)
+        border: 1px solid --border
+        border-left: 3px solid --accent
+        padding: 16px
+        font: JetBrains Mono 12px
+        overflow-x: auto
+    ul/ol: Inter 14px, left-border 2px solid --accent,
+        padding-left 16px
+    blockquote:
+        border-left: 3px solid --accent-2
+        background: var(--surface)
+        padding: 12px 16px
+        font-style: italic
+  
+  If status is "draft":
+    Preview text rendered normally.
+    Below preview:
+    Pixel construction icon (16x16 SVG):
+      Hard hat shape, simple rects
+    Text block:
+      "// This post is currently being written."
+      "Check back soon or follow on GitHub for updates."
+      Font: JetBrains Mono 12px --text-muted
+      Border: 1px dashed --border, padding 16px
+  
+  If status is "coming-soon":
+    Just the preview text.
+    Below:
+    Large pixel hourglass icon (24x24 SVG rects):
+      Top triangle: cols 2-6, rows 1-5, narrowing
+      Middle pinch: 1px, center
+      Bottom triangle: cols 2-6, rows 7-11, widening
+      Sand pixels: 3 rects inside top, 3 inside bottom
+    Text: "// Coming soon. The idea exists, 
+            the words do not yet."
+    Font: JetBrains Mono 12px --text-muted
+    Centered block.
+
+PANEL FOOTER:
+  Left: [< Back] button - closes expanded panel
+    Pixel left-arrow icon, JetBrains Mono 12px --text-muted
+  Right: Share row (if published):
+    "SHARE:" label 10px --text-muted
+    [Copy Link] pixel button
+    [Twitter/X] pixel button  
+    Each: 1px --border box, 28x28px, pixel icon inside
+
+=== TAG CLOUD (TagCloud.tsx) ===
+
+Below main grid. Collapsed by default.
+Toggle: "// browse by tag" link, JetBrains Mono 11px --accent.
+
+When open:
+  All unique tags from all posts, deduped, sorted by 
+  frequency (most used first).
+  
+  Each tag chip:
+    Label: tag name
+    Count: "(N)" in --text-muted right of label
+    Font: JetBrains Mono 11px
+    Border: 1px solid --border
+    Padding: 4px 10px
+    No border-radius
+
+  Tags used in 2+ posts:
+    Border-color: --accent at 60% opacity
+  Tags used in 3+ posts:
+    Border-color: --accent, font slightly larger (12px)
+
+  Click a tag:
+    Activates tag filter (new filter state separate 
+    from category/status)
+    Grid shows only posts with that tag
+    Active tag chip: filled --accent bg
+
+  "// clear tag filter" appears when tag active.
+
+=== PIXEL ICONS (SVG rects, 16x16 grid, 1px per unit) ===
+
+Pencil icon (section header):
+  Body: diagonal rect, rows 2-13, cols 4-12
+  Tip: triangle rects rows 13-15
+  Eraser: 3px rect top, cols 4-6, row 2
+  Line along body: 1px rect, 1 col offset from edge
+
+Bug icon (Debug category):
+  Body: oval, rows 4-10, cols 4-12
+  Head: smaller oval, rows 1-4, cols 5-11
+  Legs: 3 pairs of 1px lines each side
+  Eyes: 2 white dots, row 3
+
+Flask icon (Research category):
+  Neck: 2px wide, rows 1-5, center
+  Body: widens rows 6-14, cols 3-13
+  Liquid fill: rows 10-14, --accent color at 60%
+  Bubble: 2px dot, row 9, col 10
+
+Map icon (Journey category):
+  Unfolded map: rectangle outline rows 2-14
+  Fold line: diagonal from col 5 row 2 to col 5 row 7
+  Location pin: inverted teardrop, center-top area
+  Contour lines: 2 horizontal dashes inside
+
+Thought icon (Opinion category):
+  Speech bubble: rounded rect outline (pixel approximation)
+  Tail: 2 small squares bottom-left
+  3 dots inside: 2x2 rects, row 7, cols 5, 8, 11
+
+Chain link icon (SeriesBadge):
+  Two interlocked ovals, pixel outlines
+  Left oval:  cols 1-6, rows 4-12
+  Right oval: cols 7-14, rows 4-12
+  Overlap: shared cols 6-7
+
+Hourglass icon (coming-soon state, 24x24):
+  Top trapezoid: wide at top row 1, narrow at row 8
+  Bottom trapezoid: narrow at row 9, wide at row 16
+  Frame lines: top row 1 full width, bottom row 16, 
+               left and right verticals
+  Sand top: 3 filled pixels rows 3-5, centered
+  Sand bottom: 3 filled pixels rows 12-14, centered
+
+Construction/hard hat icon (draft state, 16x16):
+  Brim: full width row 10, 1px
+  Dome: semicircle rows 4-9, cols 3-13
+  Band: row 9, cols 3-13, filled --accent
+  Center stripe: cols 7-9, rows 5-8, --accent
+
+=== SERIES NAVIGATION ===
+
+If a post is part of a series:
+  Find all posts in same series from blogPosts array.
+  Sort by part number.
+  Show in expanded panel:
+    Series name label: 10px JetBrains Mono --text-muted
+    Row of part indicators:
+      Each part: numbered square 24x24px
+        Current: filled --accent, dark text
+        Other published: filled --surface, --text-primary, 
+          clickable (switches expanded post)
+        Coming soon: dashed border, --text-muted, 
+          not clickable
+    [< Prev Part] [Next Part >] buttons if adjacent 
+      parts exist in data
+
+=== ANIMATIONS ===
+
+Section entrance:
+  Stats count up (IntersectionObserver, once)
+  Cards stagger: 0.06s per card
+  Each: y: 12 -> 0, opacity: 0 -> 1, 220ms
+
+Filter change:
+  AnimatePresence mode="popLayout"
+  Same exit/enter spec as other sections
+
+Expand:
+  Height animates, panel slides in
+  Panel content fades in after height settles (150ms delay)
+
+Tag cloud open:
+  Same height animation as expanded panel
+
+Series navigation switch:
+  Current expanded post: x: 0 -> -20, opacity 0, 150ms
+  New post: x: 20 -> 0, opacity 0->1, 200ms
+
+=== THEME ===
+
+All colors CSS vars.
+Code blocks: same surface color both themes.
+Draft/coming-soon state text: --text-muted both themes.
+Category badge colors: fixed hex values, work on both 
+  light and dark (chosen for contrast on both).
+
+=== MOBILE (below 768px) ===
+
+Grid: single column
+Featured row: single column stack
+Filter bars: horizontally scrollable
+Stats: 2x2 grid
+Expanded panel: full width, padding reduced
+Series nav: scrollable row if many parts
+Tag cloud: same, 2-column chip wrap
+Share buttons: hidden on mobile (copy link only)
+Code blocks in expanded: horizontal scroll
+
+=== PERFORMANCE ===
+
+blogPosts array: imported once, filtered in memory.
+MarkdownRenderer: dynamic import (heavy, only loads 
+  when a published post is expanded).
+Series navigation: derived from same array, no extra 
+  fetch.
+Tag frequency map: useMemo, recomputes only if 
+  blogPosts changes.
+All card animations: once on entry, no scroll-linked.
+
+=== DO NOT ===
+
+- No external CMS fetch on load (all data in blog.ts)
+- No full page route for individual posts (inline only)
+- No comment section
+- No like or reaction buttons
+- No newsletter signup inside this section
+- No infinite scroll or pagination (render all, 
+  filter handles discovery)
+- No border-radius anywhere
+- No gradient text
+- No animations that loop except:
+    blinking dot on draft status chip
+    blinking cursor if any terminal element used
+- Coming-soon posts must never show empty content area
+- Draft posts must never show the raw markdown string
