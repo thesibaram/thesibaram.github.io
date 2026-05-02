@@ -1,6 +1,6 @@
 import { Router } from "express";
 import Anthropic from "@anthropic-ai/sdk";
-import { sibaramContext } from "../lib/aiContext.js";
+import { buildDodoContext } from "../lib/aiContext.js";
 
 const chatRouter = Router();
 const sessionCounts = new Map<string, number>();
@@ -33,7 +33,7 @@ chatRouter.post("/chat", async (req, res) => {
     const response = await client.messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 300,
-      system: sibaramContext,
+      system: buildDodoContext(),
       messages: messages.slice(-10).map((m) => ({
         role: m.role,
         content: m.content,

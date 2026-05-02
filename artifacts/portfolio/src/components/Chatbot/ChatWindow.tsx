@@ -62,34 +62,42 @@ export function ChatWindow({ onClose, sessionId }: ChatWindowProps) {
         flexDirection: "column",
         border: "2px solid var(--px-border)",
         background: "var(--px-bg)",
-        boxShadow: "8px 8px 0px rgba(0,0,0,0.3)",
+        boxShadow: "8px 8px 0px rgba(0,0,0,0.25)",
         zIndex: 9998,
         transformOrigin: "bottom right",
         WebkitOverflowScrolling: "touch",
+        overflow: "hidden",
       }}
     >
       <ChatHeader onClose={onClose} />
 
       <div
-        style={{
-          flex: 1,
-          overflowY: "auto",
-          padding: "16px",
-          scrollBehavior: "smooth",
-        }}
+        style={{ flex: 1, overflowY: "auto", padding: "16px", scrollBehavior: "smooth" }}
         className="chat-scroll"
       >
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center text-center gap-3 pt-8">
-            <div style={{ color: "var(--px-accent)" }}>
-              <PixelBotIcon size={32} />
+          <div className="flex flex-col items-center text-center gap-3 pt-6">
+            <div
+              style={{
+                width: "52px",
+                height: "52px",
+                background: "var(--px-accent)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#0D0D10",
+              }}
+            >
+              <PixelBotIcon size={28} />
             </div>
-            <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "12px", color: "var(--px-text)" }}>
-              Hi, I am Sibaram's AI assistant.
-            </p>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "var(--px-muted)" }}>
-              Ask me anything about his skills, projects, or availability.
-            </p>
+            <div>
+              <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "13px", fontWeight: 700, color: "var(--px-text)" }}>
+                Hi, I'm Dodo!
+              </p>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "var(--px-muted)", marginTop: "4px" }}>
+                Sibaram's AI assistant. Ask me anything about his skills, projects, or availability.
+              </p>
+            </div>
             <SuggestedQuestions onSelect={sendMessage} />
           </div>
         ) : (

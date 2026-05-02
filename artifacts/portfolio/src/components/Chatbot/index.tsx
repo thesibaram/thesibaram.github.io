@@ -66,7 +66,7 @@ export function Chatbot() {
               pointerEvents: "none",
             }}
           >
-            Ask AI about Sibaram
+            Ask Dodo about Sibaram
           </motion.div>
         )}
       </AnimatePresence>
@@ -115,7 +115,7 @@ export function Chatbot() {
             transition: "transform 150ms ease, box-shadow 150ms ease",
             willChange: "transform",
           }}
-          aria-label="Ask AI about Sibaram"
+          aria-label="Ask Dodo about Sibaram"
         >
           <PixelBotIcon size={24} />
         </button>
