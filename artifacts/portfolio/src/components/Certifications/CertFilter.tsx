@@ -1,83 +1,54 @@
 import { Certification } from "@/data/certifications"
 
 type StatusFilter = "all" | Certification["status"]
-type CategoryFilter = "all" | Certification["category"]
 
 interface Props {
   statusFilter: StatusFilter
-  categoryFilter: CategoryFilter
   onStatusChange: (s: StatusFilter) => void
-  onCategoryChange: (c: CategoryFilter) => void
 }
 
-const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "completed", label: "Completed" },
-  { value: "in-progress", label: "In Progress" },
-  { value: "planned", label: "Planned" },
+const STATUS_OPTIONS: { value: StatusFilter; label: string; color: string }[] = [
+  { value: "all",         label: "All",         color: "var(--px-accent)"  },
+  { value: "completed",   label: "Earned",       color: "#22C55E"           },
+  { value: "in-progress", label: "In Progress",  color: "#F59E0B"           },
+  { value: "planned",     label: "Planned",      color: "var(--px-muted)"   },
 ]
 
-const CATEGORY_OPTIONS: { value: CategoryFilter; label: string; color?: string }[] = [
-  { value: "all",     label: "All" },
-  { value: "ML",      label: "ML",      color: "var(--px-accent)"  },
-  { value: "DL",      label: "DL",      color: "var(--px-accent2)" },
-  { value: "CV",      label: "CV",      color: "#22C55E"            },
-  { value: "Dev",     label: "Dev",     color: "#F59E0B"            },
-  { value: "Cloud",   label: "Cloud",   color: "#3B82F6"            },
-  { value: "General", label: "General", color: "var(--px-border)"  },
-]
-
-function FilterPill({
-  label, active, color, onClick
-}: { label: string; active: boolean; color?: string; onClick: () => void }) {
-  const activeColor = color || "var(--px-accent)"
+export function CertFilter({ statusFilter, onStatusChange }: Props) {
   return (
-    <button
-      onClick={onClick}
-      className="font-mono text-[11px] px-3.5 py-1.5 border whitespace-nowrap flex-shrink-0 transition-all duration-[120ms]"
-      style={{
-        background: active ? activeColor : 'transparent',
-        color: active ? '#0D0D10' : 'var(--px-muted)',
-        borderColor: active ? activeColor : 'var(--px-border)',
-      }}
-      onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLElement).style.cssText += `;transform:translate(-2px,-2px);box-shadow:3px 3px 0px var(--px-accent)` } }}
-      onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '' } }}
+    <div
+      className="flex mt-6 border border-[var(--px-border)] overflow-x-auto"
+      style={{ scrollbarWidth: 'none' }}
+      role="tablist"
+      data-testid="cert-filter"
     >
-      {label}
-    </button>
-  )
-}
-
-export function CertFilter({ statusFilter, categoryFilter, onStatusChange, onCategoryChange }: Props) {
-  return (
-    <div className="flex flex-col gap-2 mt-6">
-      {/* Status row */}
-      <div className="flex gap-0 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-        <div className="flex gap-2">
-          {STATUS_OPTIONS.map(opt => (
-            <FilterPill
-              key={opt.value}
-              label={opt.label}
-              active={statusFilter === opt.value}
-              onClick={() => onStatusChange(opt.value)}
-            />
-          ))}
-        </div>
-      </div>
-      {/* Category row */}
-      <div className="flex gap-0 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-        <div className="flex gap-2">
-          {CATEGORY_OPTIONS.map(opt => (
-            <FilterPill
-              key={opt.value}
-              label={opt.label}
-              active={categoryFilter === opt.value}
-              color={opt.color}
-              onClick={() => onCategoryChange(opt.value as CategoryFilter)}
-            />
-          ))}
-        </div>
-      </div>
+      {STATUS_OPTIONS.map((opt, i) => {
+        const isActive = statusFilter === opt.value
+        return (
+          <button
+            key={opt.value}
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onStatusChange(opt.value)}
+            className={`flex-1 min-w-[80px] flex items-center justify-center gap-1.5 font-mono text-[11px] py-2.5 px-4 whitespace-nowrap transition-all duration-[120ms] ${i > 0 ? 'border-l border-[var(--px-border)]' : ''}`}
+            style={{
+              background:  isActive ? opt.color : 'transparent',
+              color:       isActive ? '#0D0D10'  : 'var(--px-muted)',
+              borderColor: isActive ? opt.color  : undefined,
+            }}
+            onMouseEnter={e => { if (!isActive) { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--px-text)' } }}
+            onMouseLeave={e => { if (!isActive) { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--px-muted)' } }}
+          >
+            {opt.value !== "all" && (
+              <div
+                className="w-1.5 h-1.5 flex-shrink-0"
+                style={{ background: isActive ? '#0D0D10' : opt.color }}
+              />
+            )}
+            {opt.label}
+          </button>
+        )
+      })}
     </div>
   )
 }

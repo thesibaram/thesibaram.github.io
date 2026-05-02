@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { PixelDivider } from "@/components/pixels/PixelDivider"
 import { Certification } from "@/data/certifications"
 import { CertStats } from "./CertStats"
 import { CertFilter } from "./CertFilter"
-import { CertGrid } from "./CertGrid"
+import { CertList } from "./CertList"
 
 type StatusFilter = "all" | Certification["status"]
-type CategoryFilter = "all" | Certification["category"]
 
 const SealIcon = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" className="w-full h-full pixel-art">
@@ -23,23 +22,6 @@ const SealIcon = () => (
 
 export function Certifications() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all")
-
-  // Close expanded card on Escape
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        // Signal to grid to close — handled by CertGrid's own state
-      }
-    }
-    window.addEventListener("keydown", handler)
-    return () => window.removeEventListener("keydown", handler)
-  }, [])
-
-  function resetFilters() {
-    setStatusFilter("all")
-    setCategoryFilter("all")
-  }
 
   return (
     <motion.section
@@ -54,17 +36,8 @@ export function Certifications() {
       <PixelDivider />
 
       <CertStats />
-      <CertFilter
-        statusFilter={statusFilter}
-        categoryFilter={categoryFilter}
-        onStatusChange={setStatusFilter}
-        onCategoryChange={setCategoryFilter}
-      />
-      <CertGrid
-        statusFilter={statusFilter}
-        categoryFilter={categoryFilter}
-        onResetFilters={resetFilters}
-      />
+      <CertFilter statusFilter={statusFilter} onStatusChange={setStatusFilter} />
+      <CertList statusFilter={statusFilter} onResetFilters={() => setStatusFilter("all")} />
     </motion.section>
   )
 }
