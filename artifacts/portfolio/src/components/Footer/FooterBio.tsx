@@ -1,4 +1,5 @@
 import { VisitorCounter } from "./VisitorCounter";
+import { PixelLogo } from "../PixelLogo";
 
 export function FooterBio() {
   return (
@@ -6,17 +7,15 @@ export function FooterBio() {
       <div>
         <span
           style={{
-            fontFamily: "JetBrains Mono, monospace",
-            fontSize: "22px",
-            fontWeight: 700,
-            color: "var(--px-text)",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
             border: "1px solid var(--px-accent)",
-            padding: "4px 10px",
-            display: "inline-block",
             boxShadow: "3px 3px 0 var(--px-accent)",
+            color: "var(--px-text)",
           }}
         >
-          SN
+          <PixelLogo size={48} />
         </span>
       </div>
 
