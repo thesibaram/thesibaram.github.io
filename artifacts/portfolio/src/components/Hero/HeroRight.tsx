@@ -28,7 +28,7 @@ export function HeroRight() {
         >
           <span className="block text-[var(--px-text)]">SIBARAM</span>
           <span
-            className="block"
+            className="block text-center"
             style={{
               color: "transparent",
               WebkitTextStroke: "2px var(--px-accent)",
@@ -38,7 +38,6 @@ export function HeroRight() {
           </span>
         </h1>
       </motion.div>
-
       {/* Divider with role typer */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -50,7 +49,6 @@ export function HeroRight() {
         <RoleTyper />
         <div className="h-px flex-1 bg-[var(--px-border)]" />
       </motion.div>
-
       {/* Description */}
       <motion.p
         initial={{ opacity: 0 }}
@@ -61,7 +59,6 @@ export function HeroRight() {
       >
         B.Tech Electrical Engineering at PMEC, Berhampur — building production-grade ML systems and computer vision models from Odisha. CNNs, transfer learning, Grad-CAM.
       </motion.p>
-
       {/* CTA buttons */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
@@ -116,12 +113,10 @@ export function HeroRight() {
           {hero.cta.secondary.label}
         </a>
       </motion.div>
-
       {/* Stats */}
       <HeroStats />
-
       {/* Socials */}
       <SocialLinks />
     </motion.div>
-  )
+  );
 }
