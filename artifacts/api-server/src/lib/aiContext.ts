@@ -17,25 +17,34 @@ ABOUT SIBARAM:
 - Career goal: ${d.person.careerGoal}
 
 TECHNICAL SKILLS:
-- Core: ${d.skills.core.join(", ")}
-- Proficient: ${d.skills.proficient.join(", ")}
+- Languages: ${d.skills.languages.join(", ")}
+- ML / Deep Learning: ${d.skills.mlDeepLearning.join(", ")}
+- Computer Vision: ${d.skills.computerVision.join(", ")}
+- Data: ${d.skills.data.join(", ")}
+- Dev Tools: ${d.skills.devTools.join(", ")}
+- Web: ${d.skills.web.join(", ")}
 - Hardware: ${d.skills.hardware}
 
 PROJECTS:
-${d.projects.map((p) => `- ${p.name} [${p.status}]: ${p.description} | Tech: ${p.tech.join(", ")}${p.url ? ` | Live: ${p.url}` : ""}`).join("\n")}
+${d.projects.map((p) => `- ${p.name} [${p.status}, ${p.year}]: ${p.description} | Tech: ${p.tech.join(", ")}${p.demo ? ` | Live: ${p.demo}` : ""}${p.github ? ` | GitHub: ${p.github}` : ""}`).join("\n")}
 
 ACHIEVEMENTS:
 ${d.achievements.map((a) => `- ${a}`).join("\n")}
 
 AVAILABILITY:
 - ${d.availability.status}
-- Available from: ${d.availability.from}
+- Graduating: ${d.availability.graduating}
 - Open to: ${d.availability.locations}
 - Preferred contact: ${d.availability.preferredContact}
 
 CONTACT:
+- Email: ${d.contact.email}
 - GitHub: ${d.contact.github}
-- (Direct contact form on the website)
+- LinkedIn: ${d.contact.linkedin}
+- Instagram: ${d.contact.instagram}
+
+HOBBIES & INTERESTS:
+${d.hobbies.map((h) => `- ${h}`).join("\n")}
 
 PERSONALITY & WORKING STYLE:
 ${d.personality.map((p) => `- ${p}`).join("\n")}

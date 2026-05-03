@@ -56,9 +56,26 @@ function ExternalLinkIcon() {
   );
 }
 
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" className="pixel-art" style={{ imageRendering: "pixelated" }}>
+      <rect x="2" y="0" width="12" height="2" />
+      <rect x="0" y="2" width="2" height="12" />
+      <rect x="14" y="2" width="2" height="12" />
+      <rect x="2" y="14" width="12" height="2" />
+      <rect x="4" y="4" width="8" height="8" />
+      <rect x="5" y="5" width="6" height="6" fill="var(--px-surface)" />
+      <rect x="6" y="6" width="4" height="4" />
+      <rect x="7" y="7" width="2" height="2" fill="var(--px-surface)" />
+      <rect x="11" y="2" width="2" height="2" />
+    </svg>
+  );
+}
+
 const icons: Record<string, () => ReactElement> = {
   github: GitHubIcon,
   linkedin: LinkedInIcon,
+  instagram: InstagramIcon,
   mail: MailIcon,
 };
 

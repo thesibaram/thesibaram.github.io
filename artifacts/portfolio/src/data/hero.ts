@@ -14,18 +14,19 @@ export const hero = {
     active: true
   },
   cta: {
-    primary:   { label: "View Projects",    href: "#projects"   },
-    secondary: { label: "Download Resume",  href: "/resume.pdf" }
+    primary:   { label: "View Projects",   href: "#projects" },
+    secondary: { label: "Download Resume", href: "https://drive.google.com/file/d/1gIDOSyr4AREiWYphSNtrWcClJyslWeVk/view?usp=drive_link" }
   },
   socials: [
-    { label: "GitHub",   href: "https://github.com/thesibaram", icon: "github"  },
-    { label: "LinkedIn", href: "#",                              icon: "linkedin"},
-    { label: "Email",    href: "mailto:placeholder@email.com",   icon: "mail"    }
+    { label: "GitHub",    href: "https://github.com/thesibaram",                                              icon: "github"    },
+    { label: "LinkedIn",  href: "https://linkedin.com/in/sibaram-eng",                                        icon: "linkedin"  },
+    { label: "Instagram", href: "https://www.instagram.com/aarush.cla?igsh=YjltajhvbWhhdno1",                 icon: "instagram" },
+    { label: "Email",     href: "mailto:sibaram.work@gmail.com",                                              icon: "mail"      }
   ],
   stats: [
-    { value: "21",   label: "Projects"       },
-    { value: "94%",  label: "Best Accuracy"  },
-    { value: "102",  label: "Flower Classes" },
-    { value: "2024", label: "SIH Finalist"   }
+    { value: "21+",  label: "Projects"      },
+    { value: "94%",  label: "Best Accuracy" },
+    { value: "SIH",  label: "2024 Finalist" },
+    { value: "2027", label: "Graduating"    }
   ]
 }

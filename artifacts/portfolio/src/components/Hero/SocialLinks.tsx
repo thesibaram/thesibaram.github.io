@@ -1,10 +1,11 @@
 import { motion } from "framer-motion"
-import { Github, Linkedin, Mail } from "lucide-react"
+import { Github, Linkedin, Mail, Instagram } from "lucide-react"
 import { hero } from "@/data/hero"
 
 const iconMap: Record<string, React.ElementType> = {
   github: Github,
   linkedin: Linkedin,
+  instagram: Instagram,
   mail: Mail,
 }
 

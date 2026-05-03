@@ -5,26 +5,26 @@ export const about = {
   location: "Sanakholi, Ganjam, Odisha",
   focus: "Machine Learning + Computer Vision",
   status: "Actively seeking ML internships",
-  image: "/images/sibaram.jpg",
+  image: "https://drive.google.com/uc?export=view&id=1OHMaCPW5bgyCcIIjSFrQZih6ITJjaq8B",
   imageFallback: null as null,
   bio: [
-    "I study Electrical Engineering but spend most of my time training neural networks on my RTX 3050 Ti.",
-    "Currently debugging a Grad-CAM graph disconnection on Flowers102 - the kind of bug that teaches more than any tutorial.",
-    "SIH 2024 National Finalist. 21 ML projects shipped. Looking for a team where I can go deep on Computer Vision."
+    "B.Tech Electrical Engineering student at PMEC, Berhampur, actively transitioning into machine learning and computer vision.",
+    "I build end-to-end ML projects — from power systems harmonic detection to 94% accurate image classifiers — with a focus on real, deployable results.",
+    "Currently hunting for ML internships where I can contribute from day one."
   ],
   stats: [
-    { label: "LOCATION",    value: "Berhampur, Odisha"        },
-    { label: "BRANCH",      value: "Electrical Engineering"   },
-    { label: "FOCUS",       value: "ML + Computer Vision"     },
-    { label: "STATUS",      value: "Internship hunting"       },
-    { label: "CURRENT BUG", value: "Grad-CAM graph disconnect" },
-    { label: "SIH 2024",    value: "National Finalist"        },
-    { label: "PROJECTS",    value: "21 shipped"               },
-    { label: "GPU",         value: "RTX 3050 Ti"             }
+    { label: "LOCATION",   value: "Berhampur, Odisha"      },
+    { label: "BRANCH",     value: "Electrical Engineering"  },
+    { label: "FOCUS",      value: "ML + Computer Vision"    },
+    { label: "STATUS",     value: "Open to internships"     },
+    { label: "GRADUATION", value: "May / June 2027"         },
+    { label: "SIH 2024",   value: "National Finalist"       },
+    { label: "PROJECTS",   value: "21+ shipped"             },
+    { label: "GPU",        value: "RTX 3050 Ti"            }
   ],
   funFacts: [
     "Trains CNNs at 2am",
-    "From a village, building for the world",
+    "Film photography & visual storytelling",
     "Fixes bugs nobody else debugs",
     "PixelNest is my side brain"
   ]

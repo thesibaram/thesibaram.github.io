@@ -37,7 +37,7 @@ export const projects: Project[] = [
     ],
     status: "completed",
     year: "2024",
-    links: { github: "#" },
+    links: { github: "https://github.com/thesibaram" },
     featured: true
   },
   {
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     ],
     status: "in-progress",
     year: "2025",
-    links: { github: "#" },
+    links: { github: "https://github.com/thesibaram" },
     featured: true
   },
   {
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     ],
     status: "in-progress",
     year: "2024",
-    links: { demo: "https://thesibaram.github.io/pixelnest", github: "#" },
+    links: { demo: "https://thesibaram.github.io/pixelnest", github: "https://github.com/thesibaram/pixelnest" },
     featured: false
   },
   {
@@ -113,7 +113,26 @@ export const projects: Project[] = [
     ],
     status: "completed",
     year: "2024",
-    links: { github: "#" },
+    links: { github: "https://github.com/thesibaram" },
+    featured: false
+  },
+  {
+    id: "dark-laboratory-portfolio",
+    title: "Dark Laboratory Portfolio",
+    tagline: "Animated developer portfolio with pixel-lab aesthetic",
+    description: "This portfolio website — built with React, Vite, Tailwind CSS, and Framer Motion. Features a cyan-on-dark 'calm pixel laboratory' aesthetic with animated sections, an AI chatbot (Dodo), and a responsive layout.",
+    problem: "Needed a portfolio that stands out visually while staying fast and accessible.",
+    approach: "Component-driven architecture, Framer Motion for scroll-triggered animations, JetBrains Mono for a terminal feel. AI chatbot powered by Claude via Replit integrations.",
+    outcome: "Live portfolio website with full sections: Hero, About, Skills, Projects, Experience, Certifications, Blog, Contact.",
+    category: "Web",
+    techStack: ["React", "Vite", "Tailwind CSS", "Framer Motion", "TypeScript"],
+    metrics: [
+      { label: "Sections", value: "9" },
+      { label: "AI", value: "Dodo" }
+    ],
+    status: "in-progress",
+    year: "2025",
+    links: { github: "https://github.com/thesibaram" },
     featured: false
   }
 ]
