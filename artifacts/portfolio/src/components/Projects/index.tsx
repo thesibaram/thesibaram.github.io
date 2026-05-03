@@ -180,7 +180,7 @@ export function Projects() {
                 color: "var(--px-muted)",
                 letterSpacing: "0.1em",
               }}
-            >
+              className="text-center">
               {showAll
                 ? `// showing all ${filteredProjects.length} projects`
                 : `// showing ${Math.min(INITIAL_VISIBLE, filteredProjects.length)} of ${filteredProjects.length} projects`}
