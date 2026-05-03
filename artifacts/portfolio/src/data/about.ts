@@ -5,7 +5,7 @@ export const about = {
   location: "Sanakholi, Ganjam, Odisha",
   focus: "Machine Learning + Computer Vision",
   status: "Actively seeking ML internships",
-  image: "https://drive.google.com/uc?export=view&id=1OHMaCPW5bgyCcIIjSFrQZih6ITJjaq8B",
+  image: "/images/sibaram.jpg",
   imageFallback: null as null,
   bio: [
     "B.Tech Electrical Engineering student at PMEC, Berhampur, actively transitioning into machine learning and computer vision.",
