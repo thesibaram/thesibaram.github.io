@@ -144,7 +144,7 @@ export function Projects() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="mt-10 flex flex-col items-start gap-3 text-center"
+          className="mt-10 flex flex-col items-center gap-3 text-center"
         >
           {/* 1 — Load more / show less button */}
           {hasMore && (
