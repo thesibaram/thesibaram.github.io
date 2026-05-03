@@ -39,7 +39,7 @@ export function ProjectCard({ project, isOpen, onToggle }: ProjectCardProps) {
         {project.title}
       </h3>
 
-      <p className="text-[var(--px-muted)] text-[13px] leading-snug line-clamp-2">
+      <p className="text-[var(--px-muted)] text-[14px] leading-snug line-clamp-2">
         {project.tagline}
       </p>
 
@@ -73,7 +73,7 @@ export function ProjectCard({ project, isOpen, onToggle }: ProjectCardProps) {
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="border border-[var(--px-border)] font-mono text-[11px] px-2 py-0.5 pixel-hover text-[var(--px-text)] hover:text-[var(--px-accent)] hover:border-[var(--px-accent)]"
+              className="border border-[var(--px-border)] font-mono text-[12px] px-2 py-0.5 pixel-hover text-[var(--px-text)] hover:text-[var(--px-accent)] hover:border-[var(--px-accent)]"
             >
               [Live Demo]
             </a>
@@ -84,7 +84,7 @@ export function ProjectCard({ project, isOpen, onToggle }: ProjectCardProps) {
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="border border-[var(--px-border)] font-mono text-[11px] px-2 py-0.5 pixel-hover text-[var(--px-text)] hover:text-[var(--px-accent)] hover:border-[var(--px-accent)]"
+              className="border border-[var(--px-border)] font-mono text-[12px] px-2 py-0.5 pixel-hover text-[var(--px-text)] hover:text-[var(--px-accent)] hover:border-[var(--px-accent)]"
             >
               [GitHub]
             </a>
@@ -95,7 +95,7 @@ export function ProjectCard({ project, isOpen, onToggle }: ProjectCardProps) {
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="border border-[var(--px-border)] font-mono text-[11px] px-2 py-0.5 pixel-hover text-[var(--px-text)] hover:text-[var(--px-accent)] hover:border-[var(--px-accent)]"
+              className="border border-[var(--px-border)] font-mono text-[12px] px-2 py-0.5 pixel-hover text-[var(--px-text)] hover:text-[var(--px-accent)] hover:border-[var(--px-accent)]"
             >
               [Paper]
             </a>

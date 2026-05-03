@@ -37,7 +37,7 @@ export function Achievements() {
         <span
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "10px",
+            fontSize: "12px",
             color: "var(--px-muted)",
             letterSpacing: "0.1em",
           }}
@@ -65,7 +65,7 @@ export function Achievements() {
         <span
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "9px",
+            fontSize: "11px",
             color: "var(--px-muted)",
             letterSpacing: "0.1em",
           }}

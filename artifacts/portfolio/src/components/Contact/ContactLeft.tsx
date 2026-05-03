@@ -12,7 +12,7 @@ export function ContactLeft() {
     <div className="flex flex-col gap-10">
       {/* Heading block */}
       <div>
-        <p className="font-mono text-[10px] text-[var(--px-accent)] tracking-[0.3em] uppercase mb-5">
+        <p className="font-mono text-[12px] text-[var(--px-accent)] tracking-[0.3em] uppercase mb-5">
           // CONTACT.SYS
         </p>
         <h2
@@ -23,7 +23,7 @@ export function ContactLeft() {
           <span style={{ color: "var(--px-accent)" }}>Something</span><br />
           Together.
         </h2>
-        <p className="font-sans text-[14px] text-[var(--px-muted)] leading-relaxed max-w-xs">
+        <p className="font-sans text-[15px] text-[var(--px-muted)] leading-relaxed max-w-xs">
           Actively looking for ML internships and research roles. Open to remote or on-site across India.
         </p>
       </div>
@@ -41,19 +41,19 @@ export function ContactLeft() {
                 borderBottom: i < INFO_ROWS.length - 1 ? "1px solid var(--px-border)" : "none",
               }}
             >
-              <span className="font-mono text-[9px] text-[var(--px-muted)] tracking-[0.25em] uppercase">
+              <span className="font-mono text-[11px] text-[var(--px-muted)] tracking-[0.25em] uppercase">
                 {label}
               </span>
               {link ? (
                 <a
                   href={link}
-                  className="font-mono text-[13px] text-[var(--px-text)] hover:text-[var(--px-accent)]"
+                  className="font-mono text-[14px] text-[var(--px-text)] hover:text-[var(--px-accent)]"
                   style={{ textDecoration: "none", transition: "color 150ms ease" }}
                 >
                   {value}
                 </a>
               ) : (
-                <span className="font-mono text-[13px] text-[var(--px-text)]">{value}</span>
+                <span className="font-mono text-[14px] text-[var(--px-text)]">{value}</span>
               )}
             </div>
           );
@@ -62,7 +62,7 @@ export function ContactLeft() {
 
       {/* Social links */}
       <div>
-        <p className="font-mono text-[9px] text-[var(--px-muted)] tracking-[0.25em] uppercase mb-4">
+        <p className="font-mono text-[11px] text-[var(--px-muted)] tracking-[0.25em] uppercase mb-4">
           // Socials
         </p>
         <div className="flex flex-wrap gap-2">
@@ -72,7 +72,7 @@ export function ContactLeft() {
               href={href}
               target={href.startsWith("mailto") ? undefined : "_blank"}
               rel="noreferrer"
-              className="font-mono text-[11px] px-4 py-2 border border-[var(--px-border)] text-[var(--px-muted)]"
+              className="font-mono text-[12px] px-4 py-2 border border-[var(--px-border)] text-[var(--px-muted)]"
               style={{ textDecoration: "none", transition: "all 140ms ease" }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;

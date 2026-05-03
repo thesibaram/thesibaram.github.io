@@ -24,14 +24,14 @@ export function FooterBottom() {
     >
       <div className="flex items-center gap-2" style={{ color: "var(--px-muted)" }}>
         <CopyrightIcon />
-        <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "10px", color: "var(--px-muted)" }}>
+        <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "12px", color: "var(--px-muted)" }}>
           2026 Sibaram Behera — All rights reserved
         </span>
       </div>
 
       <span
         className="hidden md:block"
-        style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)" }}
+        style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-muted)" }}
       >
         // made with React + Vite in Odisha, India
       </span>

@@ -54,7 +54,7 @@ export function HeroRight() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.45, duration: 0.4 }}
-        className="font-sans text-[13px] md:text-[14px] text-[var(--px-muted)] leading-relaxed mb-6 md:mb-8 max-w-lg"
+        className="font-sans text-[15px] md:text-[16px] text-[var(--px-muted)] leading-relaxed mb-6 md:mb-8 max-w-lg"
         data-testid="hero-tagline"
       >
         B.Tech Electrical Engineering at PMEC, Berhampur — building production-grade ML systems and computer vision models from Odisha. CNNs, transfer learning, Grad-CAM.
@@ -69,7 +69,7 @@ export function HeroRight() {
       >
         <a
           href={hero.cta.primary.href}
-          className="inline-flex items-center justify-center px-6 md:px-7 py-3 font-mono text-[11px] md:text-[12px] uppercase tracking-wider font-bold text-[#0D0D10] bg-[var(--px-accent)] border-2 border-[var(--px-accent)]"
+          className="inline-flex items-center justify-center px-6 md:px-7 py-3 font-mono text-[12px] md:text-[13px] uppercase tracking-wider font-bold text-[#0D0D10] bg-[var(--px-accent)] border-2 border-[var(--px-accent)]"
           style={{ transition: "all 150ms ease" }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement
@@ -93,7 +93,7 @@ export function HeroRight() {
           href={hero.cta.secondary.href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-6 md:px-7 py-3 font-mono text-[11px] md:text-[12px] uppercase tracking-wider font-bold text-[var(--px-text)] border-2 border-[var(--px-border)] bg-transparent"
+          className="inline-flex items-center justify-center gap-2 px-6 md:px-7 py-3 font-mono text-[12px] md:text-[13px] uppercase tracking-wider font-bold text-[var(--px-text)] border-2 border-[var(--px-border)] bg-transparent"
           style={{ transition: "all 150ms ease" }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement

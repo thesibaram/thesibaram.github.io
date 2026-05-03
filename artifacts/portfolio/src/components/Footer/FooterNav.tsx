@@ -65,7 +65,7 @@ export function FooterNav() {
 
       {/* Navigate column */}
       <div className="flex flex-col gap-1">
-        <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>
+        <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>
           // NAVIGATE
         </p>
         {NAV_LINKS.map(({ label, href }) => (
@@ -77,7 +77,7 @@ export function FooterNav() {
               display: "block",
               padding: "3px 0",
               fontFamily: "JetBrains Mono, monospace",
-              fontSize: "11px",
+              fontSize: "13px",
               color: "var(--px-muted)",
               textDecoration: "none",
               transition: "all 100ms",
@@ -100,7 +100,7 @@ export function FooterNav() {
       {/* Projects + Socials column */}
       <div className="flex flex-col gap-4">
         <div>
-          <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>
+          <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>
             // PROJECTS
           </p>
           {FEATURED.map((p) => (
@@ -112,7 +112,7 @@ export function FooterNav() {
                 display: "block",
                 padding: "3px 0",
                 fontFamily: "Inter, sans-serif",
-                fontSize: "11px",
+                fontSize: "13px",
                 color: "var(--px-muted)",
                 textDecoration: "none",
                 transition: "all 100ms",
@@ -138,7 +138,7 @@ export function FooterNav() {
         <div style={{ borderTop: "1px dashed var(--px-border)" }} />
 
         <div>
-          <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>
+          <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>
             // SOCIALS
           </p>
           <div className="flex gap-2 flex-wrap">

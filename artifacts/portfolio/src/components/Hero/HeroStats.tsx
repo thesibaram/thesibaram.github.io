@@ -38,7 +38,7 @@ function StatCounter({ value, label, delay }: { value: string; label: string; de
       data-testid={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}
     >
       <span className="font-mono text-[22px] md:text-[28px] font-bold text-[var(--px-accent)] leading-none">{display}</span>
-      <span className="font-sans text-[9px] md:text-[11px] text-[var(--px-muted)] uppercase tracking-wider text-center">{label}</span>
+      <span className="font-sans text-[11px] md:text-[12px] text-[var(--px-muted)] uppercase tracking-wider text-center">{label}</span>
     </motion.div>
   )
 }

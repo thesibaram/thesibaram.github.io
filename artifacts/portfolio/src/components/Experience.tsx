@@ -91,7 +91,7 @@ export function Experience() {
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3 flex-wrap">
                     <span
-                      className="font-mono text-[9px] tracking-widest uppercase px-2 py-0.5"
+                      className="font-mono text-[11px] tracking-widest uppercase px-2 py-0.5"
                       style={{
                         color: exp.typeColor,
                         background: `${exp.typeColor}18`,
@@ -101,7 +101,7 @@ export function Experience() {
                       {exp.type}
                     </span>
                     <span
-                      className="font-mono text-[10px] px-2 py-0.5"
+                      className="font-mono text-[12px] px-2 py-0.5"
                       style={{
                         color: "var(--px-muted)",
                         border: "1px solid var(--px-border)",
@@ -119,7 +119,7 @@ export function Experience() {
                   {exp.title}
                 </h3>
 
-                <p className="font-sans text-[13px] text-[var(--px-muted)] leading-relaxed mb-4">
+                <p className="font-sans text-[15px] text-[var(--px-muted)] leading-relaxed mb-4">
                   {exp.desc}
                 </p>
 
@@ -127,7 +127,7 @@ export function Experience() {
                   {exp.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="font-mono text-[10px] px-2 py-0.5"
+                      className="font-mono text-[12px] px-2 py-0.5"
                       style={{
                         color: "var(--px-muted)",
                         border: "1px solid var(--px-border)",

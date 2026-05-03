@@ -41,7 +41,7 @@ export function FormField({ name, label, type = "text", value, onChange, error, 
     borderRadius: 0,
     padding: "10px 12px",
     fontFamily: "JetBrains Mono, monospace",
-    fontSize: "13px",
+    fontSize: "14px",
     color: "var(--px-text)",
     caretColor: "var(--px-accent)",
     boxShadow,
@@ -56,7 +56,7 @@ export function FormField({ name, label, type = "text", value, onChange, error, 
         htmlFor={name}
         style={{
           fontFamily: "JetBrains Mono, monospace",
-          fontSize: "10px",
+          fontSize: "11px",
           color: "var(--px-muted)",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
@@ -85,7 +85,7 @@ export function FormField({ name, label, type = "text", value, onChange, error, 
             <div
               className="absolute bottom-2 right-2 font-mono"
               style={{
-                fontSize: "10px",
+                fontSize: "11px",
                 color:
                   value.length >= 490
                     ? "#EF4444"
@@ -129,7 +129,7 @@ export function FormField({ name, label, type = "text", value, onChange, error, 
               <span
                 style={{
                   fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   color: "#EF4444",
                 }}
               >

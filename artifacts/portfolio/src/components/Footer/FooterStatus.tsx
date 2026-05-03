@@ -24,7 +24,7 @@ const ACTIVITY = [false, true, false, true, true, false, true];
 export function FooterStatus() {
   return (
     <div className="flex flex-col gap-3">
-      <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "4px" }}>
+      <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-muted)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "4px" }}>
         // CONTACT &amp; STATUS
       </p>
 
@@ -33,7 +33,7 @@ export function FooterStatus() {
         href={`mailto:${contact.email}`}
         style={{
           fontFamily: "JetBrains Mono, monospace",
-          fontSize: "11px",
+          fontSize: "13px",
           color: "var(--px-accent)",
           textDecoration: "none",
           transition: "opacity 100ms",
@@ -47,7 +47,7 @@ export function FooterStatus() {
       {/* Location */}
       <div className="flex items-center gap-2">
         <div style={{ color: "var(--px-muted)" }}><LocationIcon /></div>
-        <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-text)" }}>
+        <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "13px", color: "var(--px-text)" }}>
           Berhampur, Odisha
         </span>
       </div>
@@ -58,14 +58,14 @@ export function FooterStatus() {
       {/* Status */}
       <div className="flex items-center gap-2">
         <span style={{ display: "inline-block", width: "6px", height: "6px", background: "#22C55E", flexShrink: 0, animation: "blink 1s step-start infinite" }} />
-        <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "10px", color: "#22C55E" }}>
+        <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "12px", color: "#22C55E" }}>
           OPEN TO ML INTERNSHIPS
         </span>
       </div>
 
       {/* GitHub activity */}
       <div style={{ border: "1px solid var(--px-border)", padding: "10px", marginTop: "4px" }}>
-        <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)", marginBottom: "6px" }}>
+        <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--px-muted)", marginBottom: "6px" }}>
           // github.com/thesibaram — last 7 days
         </p>
         <div className="flex gap-1">
@@ -90,7 +90,7 @@ export function FooterStatus() {
           gap: "8px",
           padding: "10px 16px",
           fontFamily: "JetBrains Mono, monospace",
-          fontSize: "10px",
+          fontSize: "12px",
           fontWeight: 600,
           letterSpacing: "0.1em",
           color: "#0D0D10",

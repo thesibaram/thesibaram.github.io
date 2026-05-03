@@ -56,7 +56,7 @@ export function VisitorCounter() {
         <span
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "9px",
+            fontSize: "11px",
             color: "var(--px-muted)",
             minWidth: "48px",
           }}
@@ -66,7 +66,7 @@ export function VisitorCounter() {
         <span
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "11px",
+            fontSize: "13px",
             color: "var(--px-accent)",
             fontWeight: 700,
           }}
@@ -89,7 +89,7 @@ export function VisitorCounter() {
         <span
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "9px",
+            fontSize: "11px",
             color: "var(--px-muted)",
             minWidth: "48px",
           }}
@@ -99,7 +99,7 @@ export function VisitorCounter() {
         <span
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "11px",
+            fontSize: "13px",
             color: "var(--px-accent2)",
             fontWeight: 700,
           }}

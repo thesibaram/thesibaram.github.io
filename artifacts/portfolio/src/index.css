@@ -153,6 +153,13 @@ html { scroll-behavior: smooth; }
 input::placeholder { color: var(--px-muted); opacity: 1; }
 input::-webkit-input-placeholder { color: var(--px-muted); opacity: 1; }
 
+/* ── Minimum readable font sizes ──────────────────────────────── */
+/* Tailwind arbitrary-size overrides */
+.text-\[8px\]  { font-size: 11px !important; }
+.text-\[9px\]  { font-size: 11px !important; }
+.text-\[10px\] { font-size: 12px !important; }
+.text-\[11px\] { font-size: 12px !important; }
+
 @media (max-width: 768px) {
   .footer-top-grid {
     grid-template-columns: 1fr !important;

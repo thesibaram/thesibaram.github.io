@@ -18,7 +18,7 @@ export const SkillChip = memo(function SkillChip({ skill, index }: Props) {
       data-testid={`skill-chip-${skill.name.toLowerCase().replace(/\s+/g, '-')}`}
     >
       <PixelLevelBar level={skill.level} />
-      <span className="font-mono text-[12px] text-[var(--px-text)] group-hover:text-[var(--px-accent)] transition-colors duration-[120ms] leading-tight">
+      <span className="font-mono text-[13px] text-[var(--px-text)] group-hover:text-[var(--px-accent)] transition-colors duration-[120ms] leading-tight">
         {skill.name}
       </span>
     </motion.div>

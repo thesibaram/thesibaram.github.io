@@ -49,18 +49,18 @@ export function About() {
                 >
                   {about.name}
                 </h2>
-                <p className="font-mono text-[12px] text-[var(--px-accent)] mt-2 tracking-wider uppercase">
+                <p className="font-mono text-[13px] text-[var(--px-accent)] mt-2 tracking-wider uppercase">
                   {about.role}
                 </p>
-                <p className="font-sans text-[13px] text-[var(--px-muted)] mt-1">
+                <p className="font-sans text-[15px] text-[var(--px-muted)] mt-1">
                   {about.college}
                 </p>
               </div>
               <div className="flex flex-row sm:flex-col gap-2 sm:gap-1.5 sm:text-right flex-shrink-0">
-                <span className="font-mono text-[10px] text-[var(--px-muted)] tracking-widest uppercase">
+                <span className="font-mono text-[12px] text-[var(--px-muted)] tracking-widest uppercase">
                   {about.focus}
                 </span>
-                <span className="font-mono text-[10px] text-[var(--px-muted)]">
+                <span className="font-mono text-[12px] text-[var(--px-muted)]">
                   {about.location}
                 </span>
               </div>

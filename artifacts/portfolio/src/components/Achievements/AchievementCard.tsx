@@ -60,7 +60,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
             <span
               style={{
                 fontFamily: "JetBrains Mono, monospace",
-                fontSize: "9px",
+                fontSize: "11px",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
                 color: type.color,
@@ -74,7 +74,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
           <span
             style={{
               fontFamily: "JetBrains Mono, monospace",
-              fontSize: "10px",
+              fontSize: "12px",
               color: "var(--px-muted)",
               flexShrink: 0,
             }}
@@ -102,7 +102,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
         <p
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "12px",
+            fontSize: "13px",
             color: "var(--px-accent)",
             fontWeight: 600,
             marginBottom: "4px",
@@ -115,7 +115,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
         <p
           style={{
             fontFamily: "JetBrains Mono, monospace",
-            fontSize: "9px",
+            fontSize: "11px",
             color: "var(--px-muted)",
             letterSpacing: "0.05em",
             marginBottom: "12px",
@@ -128,7 +128,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
         <p
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "12px",
+            fontSize: "14px",
             color: "var(--px-text)",
             lineHeight: 1.65,
             opacity: 0.85,
@@ -143,7 +143,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
           <span
             style={{
               fontFamily: "JetBrains Mono, monospace",
-              fontSize: "9px",
+              fontSize: "11px",
               fontWeight: 700,
               letterSpacing: "0.1em",
               color: "#0D0D10",
@@ -160,7 +160,7 @@ export function AchievementCard({ achievement, index }: AchievementCardProps) {
               rel="noopener noreferrer"
               style={{
                 fontFamily: "JetBrains Mono, monospace",
-                fontSize: "9px",
+                fontSize: "11px",
                 color: "var(--px-muted)",
                 textDecoration: "none",
                 letterSpacing: "0.05em",

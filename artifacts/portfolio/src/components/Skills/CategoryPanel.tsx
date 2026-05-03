@@ -22,17 +22,17 @@ export function CategoryPanel({ activeId }: Props) {
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
           {coreCount > 0 && (
-            <span className="font-mono text-[10px] text-[var(--px-accent)] border border-[var(--px-accent)] px-1.5 py-0.5">
+            <span className="font-mono text-[12px] text-[var(--px-accent)] border border-[var(--px-accent)] px-1.5 py-0.5">
               {coreCount} core
             </span>
           )}
           {profCount > 0 && (
-            <span className="font-mono text-[10px] text-[var(--px-accent2)] border border-[var(--px-accent2)] px-1.5 py-0.5">
+            <span className="font-mono text-[12px] text-[var(--px-accent2)] border border-[var(--px-accent2)] px-1.5 py-0.5">
               {profCount} proficient
             </span>
           )}
           {famCount > 0 && (
-            <span className="font-mono text-[10px] text-[var(--px-muted)] border border-[var(--px-border)] px-1.5 py-0.5">
+            <span className="font-mono text-[12px] text-[var(--px-muted)] border border-[var(--px-border)] px-1.5 py-0.5">
               {famCount} familiar
             </span>
           )}

@@ -157,7 +157,7 @@ export function Projects() {
               transition={{ duration: 0.1 }}
               style={{
                 fontFamily: "JetBrains Mono, monospace",
-                fontSize: "11px",
+                fontSize: "12px",
                 fontWeight: 700,
                 letterSpacing: "0.1em",
                 color: "var(--px-accent)",
@@ -176,7 +176,7 @@ export function Projects() {
             <span
               style={{
                 fontFamily: "JetBrains Mono, monospace",
-                fontSize: "9px",
+                fontSize: "11px",
                 color: "var(--px-muted)",
                 letterSpacing: "0.1em",
               }}
@@ -199,7 +199,7 @@ export function Projects() {
               alignItems: "center",
               gap: "8px",
               fontFamily: "JetBrains Mono, monospace",
-              fontSize: "11px",
+              fontSize: "12px",
               fontWeight: 700,
               letterSpacing: "0.1em",
               color: "var(--px-text)",
