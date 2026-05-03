@@ -21,7 +21,7 @@ export function Resume() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-4 py-20 w-full"
+      className="max-w-[1360px] mx-auto px-4 py-20 w-full"
     >
       <SectionHeader title="Resume" icon={<DocumentIcon />} />
       <PixelDivider />

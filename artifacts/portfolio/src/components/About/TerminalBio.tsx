@@ -1,45 +1,7 @@
-"use client"
-import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { about } from "../../data/about"
 
 export function TerminalBio() {
-  const [lines, setLines] = useState<string[]>(["$ whoami", ""])
-  const [currentPara, setCurrentPara] = useState(0)
-  const [currentChar, setCurrentChar] = useState(0)
-  const [done, setDone] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (currentPara >= about.bio.length) {
-      setDone(true)
-      return
-    }
-    const para = "> " + about.bio[currentPara]
-    if (currentChar < para.length) {
-      const t = setTimeout(() => {
-        setLines(prev => {
-          const next = [...prev]
-          // The current typing line is the last element
-          if (next.length <= 2 + currentPara) {
-            next.push("")
-          }
-          next[2 + currentPara] = para.slice(0, currentChar + 1)
-          return next
-        })
-        setCurrentChar(c => c + 1)
-      }, 18)
-      return () => clearTimeout(t)
-    } else {
-      // Paragraph done, pause then move to next
-      const t = setTimeout(() => {
-        setCurrentPara(p => p + 1)
-        setCurrentChar(0)
-      }, 400)
-      return () => clearTimeout(t)
-    }
-  }, [currentPara, currentChar])
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -48,25 +10,44 @@ export function TerminalBio() {
       transition={{ duration: 0.5 }}
       className="w-full border border-[var(--px-border)]"
     >
-      {/* Terminal title bar */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[var(--px-border)]">
+      {/* Header */}
+      <div
+        className="flex items-center justify-between px-4 py-3 border-b border-[var(--px-border)]"
+        style={{ background: "var(--px-border)" }}
+      >
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 block" style={{ background: "#FF5F57" }} />
           <span className="w-2 h-2 block" style={{ background: "#FFBD2E" }} />
           <span className="w-2 h-2 block" style={{ background: "#28C840" }} />
         </div>
-        <span className="font-mono text-[11px] text-[var(--px-muted)]">about.sh</span>
+        <span className="font-mono text-[10px] text-[var(--px-muted)]">about.md</span>
       </div>
-      {/* Terminal body */}
-      <div ref={containerRef} className="bg-[var(--px-surface)] p-5 font-mono text-[13px] min-h-[160px]">
-        {lines.map((line, i) => (
-          <div key={i} className={i === 0 ? "text-[var(--px-accent)]" : "text-[var(--px-text)] opacity-90"}>
-            {line || <>&nbsp;</>}
-          </div>
+
+      {/* Bio paragraphs */}
+      <div className="p-5 flex flex-col gap-4" style={{ background: "var(--px-surface)" }}>
+        {about.bio.map((para, i) => (
+          <p
+            key={i}
+            className="font-sans text-[13px] text-[var(--px-text)] leading-[1.75]"
+            style={{ opacity: 0.9 }}
+          >
+            {para}
+          </p>
         ))}
-        {done && (
-          <span className="text-[var(--px-accent)] cursor-blink">_</span>
-        )}
+      </div>
+
+      {/* Open to work status bar */}
+      <div
+        className="px-4 py-3 border-t border-[var(--px-border)] flex items-center gap-3"
+        style={{ background: "var(--px-bg)" }}
+      >
+        <span
+          className="w-2 h-2 block flex-shrink-0"
+          style={{ background: "#22C55E", animation: "blink 1.2s step-start infinite" }}
+        />
+        <span className="font-mono text-[11px] text-[var(--px-accent)]">
+          {about.status}
+        </span>
       </div>
     </motion.div>
   )

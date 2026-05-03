@@ -18,55 +18,129 @@ const experiences = [
   {
     title: "Smart India Hackathon 2024 — National Finalist",
     date: "2024",
-    desc: "Team project, national-level hackathon. One of the top teams selected for the national finals out of thousands of submissions across India."
+    type: "Achievement",
+    typeColor: "var(--px-accent)",
+    desc: "Team project, national-level hackathon. One of the top teams selected for the national finals out of thousands of submissions across India.",
+    tags: ["Hackathon", "Team", "National"],
   },
   {
     title: "GeeksforGeeks — 21 Projects in 21 Days ML Program",
     date: "2024",
-    desc: "Participant in GFG's structured ML sprint program. Built 21 machine learning projects covering classification, regression, NLP, and data analysis."
+    type: "Program",
+    typeColor: "var(--px-accent2)",
+    desc: "Participant in GFG's structured ML sprint program. Built 21 machine learning projects covering classification, regression, NLP, and data analysis.",
+    tags: ["ML", "Python", "Scikit-learn"],
   },
   {
     title: "PMEC EE Department — Research Contributor",
     date: "2023–2024",
-    desc: "Independent research on harmonic source identification in power systems using ML-based current signature analysis."
-  }
+    type: "Research",
+    typeColor: "#22C55E",
+    desc: "Independent research on harmonic source identification in power systems using ML-based current signature analysis.",
+    tags: ["Research", "Power Systems", "ML"],
+  },
 ];
 
 export function Experience() {
   return (
-    <motion.section 
+    <motion.section
       id="experience"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-4 py-20 w-full"
+      className="max-w-[1360px] mx-auto px-4 md:px-6 py-20 w-full"
     >
       <SectionHeader title="Experience" icon={<ClockIcon />} />
       <PixelDivider />
-      
-      <div className="mt-8 ml-4 border-l-2 border-[var(--px-border)] pl-8 relative space-y-12">
+
+      <div className="mt-10 grid gap-0 relative">
+        {/* Vertical timeline line */}
+        <div
+          className="absolute left-[11px] top-4 bottom-4 w-px hidden md:block"
+          style={{ background: "var(--px-border)" }}
+        />
+
         {experiences.map((exp, i) => (
-          <div
+          <motion.div
             key={i}
-            className="relative"
-            style={{ transition: "transform 200ms ease, box-shadow 200ms ease" }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px rgba(0,180,216,0.12)";
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.transform = "";
-              (e.currentTarget as HTMLElement).style.boxShadow = "";
-            }}
+            initial={{ opacity: 0, x: -12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.12, duration: 0.45 }}
+            className="relative flex gap-8 md:pl-10 pb-8 last:pb-0"
           >
-            {/* Pixel Dot */}
-            <div className="absolute -left-[41px] top-1 w-4 h-4 bg-[var(--px-accent)] pixel-art" />
-            
-            <h3 className="text-xl font-bold font-mono text-[var(--px-text)] mb-1">{exp.title}</h3>
-            <span className="inline-block text-[var(--px-accent2)] font-mono text-sm mb-4">{exp.date}</span>
-            <p className="text-[var(--px-muted)] leading-relaxed">{exp.desc}</p>
-          </div>
+            {/* Timeline dot */}
+            <div
+              className="absolute left-0 top-5 w-6 h-6 hidden md:flex items-center justify-center flex-shrink-0 z-10"
+              style={{ background: "var(--px-bg)" }}
+            >
+              <div
+                className="w-2.5 h-2.5 pixel-art"
+                style={{ background: exp.typeColor }}
+              />
+            </div>
+
+            {/* Card */}
+            <div
+              className="flex-1 border border-[var(--px-border)] bg-[var(--px-surface)] overflow-hidden"
+              style={{ borderLeft: `3px solid ${exp.typeColor}` }}
+            >
+              <div className="p-5">
+                {/* Top row */}
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span
+                      className="font-mono text-[9px] tracking-widest uppercase px-2 py-0.5"
+                      style={{
+                        color: exp.typeColor,
+                        background: `${exp.typeColor}18`,
+                        border: `1px solid ${exp.typeColor}40`,
+                      }}
+                    >
+                      {exp.type}
+                    </span>
+                    <span
+                      className="font-mono text-[10px] px-2 py-0.5"
+                      style={{
+                        color: "var(--px-muted)",
+                        border: "1px solid var(--px-border)",
+                      }}
+                    >
+                      {exp.date}
+                    </span>
+                  </div>
+                </div>
+
+                <h3
+                  className="font-mono font-bold text-[var(--px-text)] leading-snug mb-3"
+                  style={{ fontSize: "clamp(14px, 2vw, 17px)" }}
+                >
+                  {exp.title}
+                </h3>
+
+                <p className="font-sans text-[13px] text-[var(--px-muted)] leading-relaxed mb-4">
+                  {exp.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {exp.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="font-mono text-[10px] px-2 py-0.5"
+                      style={{
+                        color: "var(--px-muted)",
+                        border: "1px solid var(--px-border)",
+                        background: "var(--px-bg)",
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         ))}
       </div>
     </motion.section>

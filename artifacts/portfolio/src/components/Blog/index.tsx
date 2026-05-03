@@ -51,7 +51,7 @@ export function Blog() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-4 md:px-6 py-20 w-full"
+      className="max-w-[1360px] mx-auto px-4 md:px-6 py-20 w-full"
     >
       <SectionHeader title="Blog" icon={<PencilIcon />} />
       <p className="font-sans text-[12px] text-[var(--px-muted)] italic -mt-3 mb-0">// writing about what I build and debug</p>

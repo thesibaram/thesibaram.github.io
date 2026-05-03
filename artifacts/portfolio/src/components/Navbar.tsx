@@ -38,7 +38,7 @@ export function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-[var(--px-bg)]/80 border-b border-[var(--px-border)] h-16">
-        <div className="max-w-6xl mx-auto px-4 h-full flex items-center justify-between">
+        <div className="max-w-[1360px] mx-auto px-4 h-full flex items-center justify-between">
           <div 
             className="w-10 h-10 border border-[var(--px-border)] flex items-center justify-center font-mono font-bold text-lg pixel-hover cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

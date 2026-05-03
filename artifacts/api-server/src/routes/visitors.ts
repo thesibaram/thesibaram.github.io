@@ -1,15 +1,29 @@
 import { Router } from "express";
 
 const visitorRouter = Router();
-let count = 0;
+
+let totalCount = 0;
+let dailyCount = 0;
+let currentDay = new Date().toDateString();
+
+function checkDayReset() {
+  const today = new Date().toDateString();
+  if (today !== currentDay) {
+    dailyCount = 0;
+    currentDay = today;
+  }
+}
 
 visitorRouter.get("/visitors", (_req, res) => {
-  res.json({ count });
+  checkDayReset();
+  res.json({ total: totalCount, daily: dailyCount });
 });
 
 visitorRouter.post("/visitors", (_req, res) => {
-  count += 1;
-  res.json({ count });
+  checkDayReset();
+  totalCount += 1;
+  dailyCount += 1;
+  res.json({ total: totalCount, daily: dailyCount });
 });
 
 export default visitorRouter;

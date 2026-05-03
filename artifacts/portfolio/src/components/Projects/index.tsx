@@ -17,15 +17,10 @@ const FolderIcon = () => (
 export function Projects() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [featuredOnly, setFeaturedOnly] = useState(false);
-  const [showAllFeatured, setShowAllFeatured] = useState(false);
 
-  const featuredProjects = projects.filter((p) => p.featured);
-  const filteredProjects = projects.filter((p) => {
-    const catMatch = activeFilter === "All" || p.category === activeFilter;
-    const featMatch = !featuredOnly || p.featured;
-    return catMatch && featMatch;
-  });
+  const filteredProjects = projects.filter((p) =>
+    activeFilter === "All" || p.category === activeFilter
+  );
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -42,70 +37,10 @@ export function Projects() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-4 py-20 w-full"
+      className="max-w-[1360px] mx-auto px-4 md:px-6 py-20 w-full"
     >
       <SectionHeader title="Projects" icon={<FolderIcon />} />
       <PixelDivider />
-
-      {!featuredOnly && (
-        <div className="mb-12 mt-8">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="font-mono text-xs text-[var(--px-accent)] uppercase tracking-wider">
-              ★ Featured Work
-            </span>
-          </div>
-          <div className="flex gap-5 overflow-x-auto pb-3 md:grid md:grid-cols-2 lg:grid-cols-3">
-            {(showAllFeatured ? featuredProjects : featuredProjects.slice(0, 3)).map((p, i) => (
-              <div key={p.id} className="min-w-[300px] md:min-w-0 flex flex-col">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.5 }}
-                >
-                  <ProjectCard
-                    project={p}
-                    isOpen={openId === p.id}
-                    onToggle={() => setOpenId((prev) => (prev === p.id ? null : p.id))}
-                  />
-                  <AnimatePresence>
-                    {openId === p.id && (
-                      <motion.div
-                        key="expanded"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden border border-t-0 border-[var(--px-border)] bg-[var(--px-surface)]"
-                      >
-                        <ProjectExpanded project={p} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              </div>
-            ))}
-          </div>
-          {featuredProjects.length > 3 && (
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={() => setShowAllFeatured((v) => !v)}
-                className="font-mono text-[11px] uppercase tracking-widest px-6 py-2.5 border border-[var(--px-border)] text-[var(--px-muted)] transition-all duration-150"
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "var(--px-accent)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--px-accent)";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "var(--px-border)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--px-muted)";
-                }}
-              >
-                {showAllFeatured ? "[ Show Less ↑ ]" : `[ View More Projects (${featuredProjects.length - 3}) → ]`}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
 
       <ProjectFilter
         activeFilter={activeFilter}
@@ -113,11 +48,11 @@ export function Projects() {
           setActiveFilter(f);
           setOpenId(null);
         }}
-        featuredOnly={featuredOnly}
-        onFeaturedToggle={() => setFeaturedOnly((p) => !p)}
+        totalCount={projects.length}
+        filteredCount={filteredProjects.length}
       />
 
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         <AnimatePresence mode="popLayout">
           {filteredProjects.length === 0 ? (
             <motion.div
@@ -131,13 +66,9 @@ export function Projects() {
               <p className="font-mono text-[var(--px-muted)] text-sm">
                 Nothing in this category yet.
               </p>
-              <p className="font-mono text-[var(--px-muted)] text-xs">More projects loading...</p>
               <button
-                onClick={() => {
-                  setActiveFilter("All");
-                  setFeaturedOnly(false);
-                }}
-                className="border border-[var(--px-border)] font-mono text-xs px-4 py-2 pixel-hover hover:border-[var(--px-accent)] hover:text-[var(--px-accent)] text-[var(--px-muted)]"
+                onClick={() => setActiveFilter("All")}
+                className="border border-[var(--px-border)] font-mono text-xs px-4 py-2 hover:border-[var(--px-accent)] hover:text-[var(--px-accent)] text-[var(--px-muted)] transition-colors"
                 data-testid="reset-filter"
               >
                 Reset Filter
@@ -151,7 +82,7 @@ export function Projects() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ delay: i * 0.05, duration: 0.25 }}
+                transition={{ delay: i * 0.04, duration: 0.25 }}
                 className="flex flex-col"
               >
                 <ProjectCard
