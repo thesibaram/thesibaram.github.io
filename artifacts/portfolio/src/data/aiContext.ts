@@ -23,8 +23,8 @@ PROJECTS:
 - GFG 21 Projects: 21 ML projects in 21 days, scikit-learn + pandas
 
 ACHIEVEMENTS:
-- SIH 2024 National Finalist (Smart India Hackathon)
-- GeeksforGeeks 21 Projects in 21 Days ML Program
+- SIH 2024 National Finalist — Smart India Hackathon 2024, organised by Ministry of Education, Govt. of India
+- GeeksforGeeks ML Sprint — Completed 21 ML projects in 21 days program (2024)
 
 AVAILABILITY:
 - Actively seeking ML/CV internships
