@@ -74,14 +74,12 @@ export function Projects() {
     >
       <SectionHeader title="Projects" icon={<FolderIcon />} />
       <PixelDivider />
-
       <ProjectFilter
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
         totalCount={projects.length}
         filteredCount={filteredProjects.length}
       />
-
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         <AnimatePresence mode="popLayout">
           {filteredProjects.length === 0 ? (
@@ -139,7 +137,6 @@ export function Projects() {
           )}
         </AnimatePresence>
       </div>
-
       {/* Load More / Show Less + GitHub CTA */}
       {filteredProjects.length > 0 && (
         <motion.div
@@ -220,7 +217,7 @@ export function Projects() {
               e.currentTarget.style.borderColor = "var(--px-border)";
               e.currentTarget.style.color = "var(--px-text)";
             }}
-          >
+            className="text-center">
             <GitHubIcon />
             VIEW ALL ON GITHUB →
           </motion.a>
