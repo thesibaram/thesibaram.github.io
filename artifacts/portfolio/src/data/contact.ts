@@ -7,7 +7,7 @@ export const contact = {
   availability: "Open to ML / CV internships immediately",
   responseTime: "Usually replies within 24 hours",
   preferredContact: "email",
-  formEndpoint: "",
+  formEndpoint: "https://formsubmit.co/ajax/sibaram.work@gmail.com",
   socials: [
     {
       label: "GitHub",

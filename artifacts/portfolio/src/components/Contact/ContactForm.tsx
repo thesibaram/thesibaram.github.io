@@ -47,16 +47,21 @@ export function ContactForm() {
     if (Object.keys(validationErrors).length > 0) return;
     setStatus("loading");
     try {
-      if (contact.formEndpoint) {
-        const res = await fetch(contact.formEndpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(fields),
-        });
-        if (!res.ok) throw new Error("Failed");
-      } else {
-        await new Promise((r) => setTimeout(r, 800));
-      }
+      const payload = {
+        name: fields.name,
+        email: fields.email,
+        _subject: fields.subject,
+        message: fields.message,
+        _template: "table",
+        _captcha: "false",
+      };
+      const res = await fetch(contact.formEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || data.success === "false") throw new Error("Failed");
       setStatus("success");
     } catch {
       setStatus("error");

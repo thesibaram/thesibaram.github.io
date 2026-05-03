@@ -1,0 +1,95 @@
+Project: Redesign and Upgrade My Machine Learning Intern Portfolio Website
+
+Task 1: Certification Section Redesign
+
+I am very disappointed with the current Certification section. Completely redesign and restructure this section with a modern, professional, and visually appealing layout.
+
+Requirements:
+
+* Improve the UI/UX and overall styling.
+* Add smooth animations and hover effects.
+* Use a clean, pixel-inspired and calm design aesthetic.
+* Make the section fully responsive for all devices including mobile, tablet, laptop, and large screens.
+* Improve spacing, typography, card layout, and alignment.
+* Add certification cards with icons, issue dates, issuer names, and verification buttons.
+* Ensure the design matches a professional Machine Learning Intern portfolio website.
+
+Task 2: Visitor Counter and Contact Integration
+
+Add a small and elegant website visitor counter.
+
+Requirements:
+
+* The visitor counter should look modern and minimal.
+* Show total website visitors dynamically.
+* Place it in a visually balanced location.
+
+Contact Section Requirements:
+
+* When someone submits a message through the Contact section, automatically send the message to:
+  [sibaram.work@gmail.com](mailto:sibaram.work@gmail.com)
+* Design the contact form template to look:
+
+  * Cool
+  * Professional
+  * Pixel-inspired
+  * Calm and clean
+* Add success and error notifications.
+* Validate form fields properly.
+* Ensure responsiveness on all devices.
+
+Test Case:
+
+* Test the contact form with one sample message submission.
+* Verify that the email is received successfully.
+
+Task 3: DODO AI Auto-Update System
+
+Improve the DODO AI assistant functionality.
+
+Requirements:
+
+* Make DODO AI automatically update itself whenever I change website content, data, projects, certifications, skills, or portfolio sections.
+* I should NOT need to manually retrain or reconfigure DODO AI.
+* The system should automatically detect changes and reflect updates instantly.
+* Implement a dynamic content syncing mechanism.
+* Ensure smooth performance and scalability.
+
+Task 4: Complete Footer Redesign
+
+I am also disappointed with the current Footer section. Completely redesign and improve it.
+
+Requirements:
+
+* Replace the existing footer entirely with a modern and professional layout.
+* Add multiple useful columns relevant to a Machine Learning Intern portfolio website.
+
+Suggested Footer Columns:
+
+* About
+* Quick Links
+* Projects
+* Skills
+* Certifications
+* Contact Information
+* Social Media Links
+* Resume Download
+* Newsletter Subscription
+* GitHub and LinkedIn Links
+
+Additional Requirements:
+
+* Add hover animations and modern icons.
+* Ensure all links work correctly.
+* Improve typography, spacing, colors, and responsiveness.
+* Make the footer visually premium, professional, calm, and futuristic.
+* Ensure the footer looks excellent on all screen sizes.
+
+General Website Requirements:
+
+* Maintain a consistent modern design system throughout the website.
+* Use smooth transitions and responsive layouts.
+* Optimize performance and loading speed.
+* Keep the UI clean, elegant, professional, and attractive for recruiters.
+* Ensure accessibility and cross-browser compatibility.
+* Use best practices for frontend development and responsive web design.

@@ -7,9 +7,10 @@ export function FooterTop() {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "35% 30% 35%",
+        gridTemplateColumns: "1fr 2fr 1fr",
         gap: "clamp(24px, 4vw, 48px)",
-        padding: "40px clamp(24px, 6vw, 80px)",
+        padding: "48px clamp(24px, 6vw, 80px)",
+        alignItems: "start",
       }}
       className="footer-top-grid"
     >

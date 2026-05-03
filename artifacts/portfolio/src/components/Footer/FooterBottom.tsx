@@ -25,7 +25,7 @@ export function FooterBottom() {
       <div className="flex items-center gap-2" style={{ color: "var(--px-muted)" }}>
         <CopyrightIcon />
         <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "10px", color: "var(--px-muted)" }}>
-          2025 Sibaram Nayak
+          2026 Sibaram Behera — All rights reserved
         </span>
       </div>
 
@@ -33,7 +33,7 @@ export function FooterBottom() {
         className="hidden md:block"
         style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "9px", color: "var(--px-muted)" }}
       >
-        // no rights reserved, use what you want
+        // made with React + Vite in Odisha, India
       </span>
 
       <BackToTop />
