@@ -147,58 +147,58 @@ export function Projects() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="mt-10 flex flex-col items-start gap-3"
         >
-          {/* Left: load more toggle */}
-          <div className="flex items-center gap-3">
-            {hasMore && (
-              <motion.button
-                onClick={() => {
-                  setShowAll((prev) => !prev);
-                  setOpenId(null);
-                }}
-                whileHover={{ x: -2, y: -2, boxShadow: "4px 4px 0 var(--px-accent)" }}
-                transition={{ duration: 0.1 }}
-                style={{
-                  fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  color: "var(--px-accent)",
-                  border: "1px solid var(--px-accent)",
-                  padding: "8px 18px",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-              >
-                {showAll
-                  ? "[ ↑ SHOW LESS ]"
-                  : `[ ↓ LOAD ${hiddenCount} MORE ]`}
-              </motion.button>
-            )}
+          {/* 1 — Load more / show less button */}
+          {hasMore && (
+            <motion.button
+              onClick={() => {
+                setShowAll((prev) => !prev);
+                setOpenId(null);
+              }}
+              whileHover={{ x: -2, y: -2, boxShadow: "4px 4px 0 var(--px-accent)" }}
+              transition={{ duration: 0.1 }}
+              style={{
+                fontFamily: "JetBrains Mono, monospace",
+                fontSize: "11px",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                color: "var(--px-accent)",
+                border: "1px solid var(--px-accent)",
+                padding: "8px 20px",
+                background: "transparent",
+                cursor: "pointer",
+              }}
+            >
+              {showAll ? "[ ↑ SHOW LESS ]" : `[ ↓ LOAD ${hiddenCount} MORE ]`}
+            </motion.button>
+          )}
 
-            {hasMore && (
-              <span
-                style={{
-                  fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "9px",
-                  color: "var(--px-muted)",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                {showAll
-                  ? `showing all ${filteredProjects.length}`
-                  : `showing ${Math.min(INITIAL_VISIBLE, filteredProjects.length)} of ${filteredProjects.length}`}
-              </span>
-            )}
-          </div>
+          {/* 2 — Counter text */}
+          {hasMore && (
+            <span
+              style={{
+                fontFamily: "JetBrains Mono, monospace",
+                fontSize: "9px",
+                color: "var(--px-muted)",
+                letterSpacing: "0.1em",
+              }}
+            >
+              {showAll
+                ? `// showing all ${filteredProjects.length} projects`
+                : `// showing ${Math.min(INITIAL_VISIBLE, filteredProjects.length)} of ${filteredProjects.length} projects`}
+            </span>
+          )}
 
-          {/* Right: GitHub CTA */}
+          {/* thin divider */}
+          <div style={{ width: "100%", height: "1px", background: "var(--px-border)", marginTop: "4px" }} />
+
+          {/* 3 — GitHub CTA */}
           <motion.a
             href="https://github.com/thesibaram"
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ x: -2, y: -2, boxShadow: "4px 4px 0 rgba(0,180,216,0.3)" }}
+            whileHover={{ x: -2, y: -2, boxShadow: "4px 4px 0 rgba(0,180,216,0.25)" }}
             transition={{ duration: 0.1 }}
             style={{
               display: "inline-flex",
@@ -210,7 +210,7 @@ export function Projects() {
               letterSpacing: "0.1em",
               color: "var(--px-text)",
               border: "1px solid var(--px-border)",
-              padding: "8px 18px",
+              padding: "8px 20px",
               textDecoration: "none",
               background: "var(--px-surface)",
               transition: "border-color 120ms, color 120ms",
