@@ -22,28 +22,30 @@ export function About() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="max-w-[1360px] mx-auto px-4 md:px-6 py-20 w-full"
+      className="max-w-[1360px] mx-auto px-4 md:px-6 py-16 md:py-20 w-full"
     >
       <SectionHeader title="About" icon={<PersonIcon />} />
       <PixelDivider />
 
-      {/* Two-column layout */}
-      <div className="grid lg:grid-cols-[auto_1fr] gap-12 xl:gap-20 mt-10 items-start">
-        {/* LEFT: Image + ticker */}
-        <div className="flex flex-col items-start gap-0">
+      {/* Two-column on lg+, stacked on mobile */}
+      <div className="grid lg:grid-cols-[auto_1fr] gap-10 xl:gap-20 mt-8 md:mt-10 items-start">
+
+        {/* LEFT: Image + ticker — centered on mobile, left on desktop */}
+        <div className="flex flex-col items-center lg:items-start gap-0 w-full">
           <AboutImage />
           <FunFactTicker />
         </div>
 
         {/* RIGHT: Identity header + bio + stats */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 w-full">
           {/* Identity header */}
           <div className="pb-5 border-b border-[var(--px-border)]">
-            <div className="flex items-start justify-between gap-4 flex-wrap">
+            {/* Stack on mobile, side-by-side on sm+ */}
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
               <div>
                 <h2
                   className="font-mono font-bold text-[var(--px-text)] tracking-tight leading-none"
-                  style={{ fontSize: "clamp(22px, 3vw, 32px)" }}
+                  style={{ fontSize: "clamp(20px, 4vw, 32px)" }}
                 >
                   {about.name}
                 </h2>
@@ -54,7 +56,7 @@ export function About() {
                   {about.college}
                 </p>
               </div>
-              <div className="flex flex-col gap-1.5 text-right flex-shrink-0">
+              <div className="flex flex-row sm:flex-col gap-2 sm:gap-1.5 sm:text-right flex-shrink-0">
                 <span className="font-mono text-[10px] text-[var(--px-muted)] tracking-widest uppercase">
                   {about.focus}
                 </span>

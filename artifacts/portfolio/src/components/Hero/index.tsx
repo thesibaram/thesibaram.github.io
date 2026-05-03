@@ -13,8 +13,9 @@ export function Hero() {
     >
       <HeroBackground />
 
-      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-6 md:px-10 flex-1 flex items-center">
-        <div className="grid md:grid-cols-[42fr_58fr] gap-12 md:gap-20 w-full py-16 items-center">
+      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 md:px-10 flex-1 flex items-center">
+        {/* Mobile: stacked (photo top, content below). Desktop: two-column side by side */}
+        <div className="flex flex-col md:grid md:grid-cols-[42fr_58fr] gap-8 md:gap-20 w-full py-10 md:py-16 items-center">
           <HeroLeft />
           <HeroRight />
         </div>
