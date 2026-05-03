@@ -34,11 +34,21 @@ function StatCounter({ value, label, delay }: { value: string; label: string; de
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8 + delay * 0.1, duration: 0.4 }}
-      className="flex flex-col items-center gap-1 px-3 md:px-4 first:pl-0 last:pr-0"
+      className="flex flex-col items-center gap-0.5 flex-1 min-w-0 px-1"
       data-testid={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      <span className="font-mono text-[22px] md:text-[28px] font-bold text-[var(--px-accent)] leading-none">{display}</span>
-      <span className="font-sans text-[11px] md:text-[12px] text-[var(--px-muted)] uppercase tracking-wider text-center">{label}</span>
+      <span
+        className="font-mono font-bold text-[var(--px-accent)] leading-none"
+        style={{ fontSize: "clamp(16px, 4.5vw, 28px)" }}
+      >
+        {display}
+      </span>
+      <span
+        className="font-sans text-[var(--px-muted)] uppercase tracking-wide text-center leading-tight w-full"
+        style={{ fontSize: "clamp(11px, 2vw, 12px)" }}
+      >
+        {label}
+      </span>
     </motion.div>
   )
 }
@@ -46,14 +56,14 @@ function StatCounter({ value, label, delay }: { value: string; label: string; de
 export function HeroStats() {
   return (
     <div
-      className="flex flex-wrap items-stretch pt-6 md:pt-8 gap-y-4"
+      className="flex items-stretch pt-6 md:pt-8 w-full"
       data-testid="hero-stats"
     >
       {hero.stats.map((s, i) => (
-        <div key={s.label} className="flex items-stretch">
+        <div key={s.label} className="flex items-stretch flex-1 min-w-0">
           <StatCounter value={s.value} label={s.label} delay={i * 0.1} />
           {i < hero.stats.length - 1 && (
-            <div className="w-px bg-[var(--px-border)] mx-1 md:mx-2 self-stretch" />
+            <div className="w-px bg-[var(--px-border)] self-stretch flex-shrink-0" />
           )}
         </div>
       ))}
