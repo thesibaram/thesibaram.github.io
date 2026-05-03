@@ -71,6 +71,8 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
           opacity: disabled ? 0.6 : 1,
           WebkitAppearance: "none",
           transition: "border-color 120ms",
+          // Ensure placeholder is always readable
+          ["--placeholder-color" as string]: "var(--px-muted)",
         }}
         onFocus={(e) => { e.currentTarget.style.borderColor = "var(--px-accent)"; }}
         onBlur={(e) => { e.currentTarget.style.borderColor = "var(--px-border)"; }}
