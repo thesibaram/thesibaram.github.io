@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { FormField } from "./FormField";
 import { FormSuccess } from "./FormSuccess";
 import { FormError } from "./FormError";
-import { contact } from "../../data/contact";
 
 interface Fields {
   name: string;
@@ -47,21 +46,13 @@ export function ContactForm() {
     if (Object.keys(validationErrors).length > 0) return;
     setStatus("loading");
     try {
-      const payload = {
-        name: fields.name,
-        email: fields.email,
-        _subject: fields.subject,
-        message: fields.message,
-        _template: "table",
-        _captcha: "false",
-      };
-      const res = await fetch(contact.formEndpoint, {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
       });
-      const data = await res.json();
-      if (!res.ok || data.success === "false") throw new Error("Failed");
+      const data = await res.json() as { success: boolean };
+      if (!res.ok || !data.success) throw new Error("Failed");
       setStatus("success");
     } catch {
       setStatus("error");

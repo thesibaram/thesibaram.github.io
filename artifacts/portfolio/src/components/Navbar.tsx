@@ -16,6 +16,88 @@ const links = [
   { id: "contact", label: "Contact" }
 ];
 
+function PixelLogo() {
+  const S = [
+    [0,1,1,0],
+    [1,0,0,0],
+    [0,1,1,0],
+    [0,0,0,1],
+    [0,1,1,0],
+  ];
+  const B = [
+    [1,1,1,0],
+    [1,0,0,1],
+    [1,1,1,0],
+    [1,0,0,1],
+    [1,1,1,0],
+  ];
+
+  const px = 2;
+  const cols = 4;
+  const rows = 5;
+  const gap = 3;
+  const totalW = cols * px + gap + cols * px;
+  const totalH = rows * px;
+  const ox = Math.floor((40 - totalW) / 2);
+  const oy = Math.floor((40 - totalH) / 2);
+  const bx = ox + cols * px + gap;
+
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      width="40"
+      height="40"
+      style={{ display: "block" }}
+      aria-label="SB logo"
+    >
+      {/* Corner pixel accents */}
+      <rect x="2" y="2" width="2" height="2" fill="var(--px-accent)" opacity="0.8" />
+      <rect x="36" y="2" width="2" height="2" fill="var(--px-accent)" opacity="0.8" />
+      <rect x="2" y="36" width="2" height="2" fill="var(--px-accent)" opacity="0.8" />
+      <rect x="36" y="36" width="2" height="2" fill="var(--px-accent)" opacity="0.8" />
+
+      {/* Thin accent tick lines at top edge */}
+      <rect x="6" y="2" width="4" height="1" fill="var(--px-accent)" opacity="0.3" />
+      <rect x="30" y="2" width="4" height="1" fill="var(--px-accent)" opacity="0.3" />
+
+      {/* S — accent color */}
+      {S.map((row, ri) =>
+        row.map((on, ci) =>
+          on ? (
+            <rect
+              key={`s-${ri}-${ci}`}
+              x={ox + ci * px}
+              y={oy + ri * px}
+              width={px}
+              height={px}
+              fill="var(--px-accent)"
+            />
+          ) : null
+        )
+      )}
+
+      {/* B — text color */}
+      {B.map((row, ri) =>
+        row.map((on, ci) =>
+          on ? (
+            <rect
+              key={`b-${ri}-${ci}`}
+              x={bx + ci * px}
+              y={oy + ri * px}
+              width={px}
+              height={px}
+              fill="currentColor"
+            />
+          ) : null
+        )
+      )}
+
+      {/* Bottom center accent dot */}
+      <rect x="19" y="36" width="2" height="2" fill="var(--px-accent)" opacity="0.5" />
+    </svg>
+  );
+}
+
 export function Navbar() {
   const activeSection = useActiveSection(links.map(l => l.id));
   const { theme, setTheme } = useTheme();
@@ -26,10 +108,8 @@ export function Navbar() {
   const ThemeIcon = () => (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="pixel-art">
       {theme === "dark" ? (
-        // Moon
         <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 4a6 6 0 110 12A6 6 0 0110 4z" fill="currentColor" />
       ) : (
-        // Sun
         <path d="M10 2v2m0 12v2M2 10h2m12 0h2m-2.83-5.66l-1.41 1.41M5.24 14.76l-1.41 1.41M16.83 14.76l-1.41-1.41M5.24 5.24l-1.41-1.41M10 6a4 4 0 100 8 4 4 0 000-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       )}
     </svg>
@@ -39,12 +119,16 @@ export function Navbar() {
     <>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-[var(--px-bg)]/80 border-b border-[var(--px-border)] h-16">
         <div className="max-w-[1360px] mx-auto px-4 h-full flex items-center justify-between">
-          <div 
-            className="w-10 h-10 border border-[var(--px-border)] flex items-center justify-center font-mono font-bold text-lg pixel-hover cursor-pointer"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          {/* Pixel logo */}
+          <div
+            className="w-10 h-10 border border-[var(--px-border)] flex items-center justify-center pixel-hover cursor-pointer text-[var(--px-text)] relative overflow-hidden"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             data-testid="nav-logo"
+            style={{ transition: "border-color 150ms ease" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--px-accent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--px-border)"; }}
           >
-            SN
+            <PixelLogo />
           </div>
 
           {/* Desktop Nav */}
@@ -53,14 +137,14 @@ export function Navbar() {
               <a
                 key={link.id}
                 href={`#${link.id}`}
-                className={`pixel-hover px-2 py-1 transition-colors ${activeSection === link.id ? 'text-[var(--px-accent)]' : 'text-[var(--px-text)] hover:text-[var(--px-accent)]'}`}
+                className={`pixel-hover px-2 py-1 transition-colors ${activeSection === link.id ? "text-[var(--px-accent)]" : "text-[var(--px-text)] hover:text-[var(--px-accent)]"}`}
                 data-testid={`nav-link-${link.id}`}
               >
                 {link.label}
               </a>
             ))}
-            <button 
-              onClick={toggleTheme} 
+            <button
+              onClick={toggleTheme}
               className="w-8 h-8 flex items-center justify-center border border-[var(--px-border)] pixel-hover text-[var(--px-text)]"
               data-testid="btn-theme-toggle"
               aria-label="Toggle Theme"
@@ -71,15 +155,15 @@ export function Navbar() {
 
           {/* Mobile Toggle */}
           <div className="flex md:hidden items-center gap-4">
-            <button 
-              onClick={toggleTheme} 
+            <button
+              onClick={toggleTheme}
               className="w-8 h-8 flex items-center justify-center border border-[var(--px-border)] pixel-hover text-[var(--px-text)]"
               data-testid="btn-theme-toggle-mobile"
               aria-label="Toggle Theme"
             >
               <ThemeIcon />
             </button>
-            <button 
+            <button
               onClick={() => setMobileOpen(true)}
               className="p-2 text-[var(--px-text)]"
               data-testid="btn-mobile-menu"
@@ -103,10 +187,10 @@ export function Navbar() {
             data-testid="mobile-drawer"
           >
             <div className="flex items-center justify-between p-4 border-b border-[var(--px-border)] h-16">
-              <div className="w-10 h-10 border border-[var(--px-border)] flex items-center justify-center font-mono font-bold text-lg">
-                SN
+              <div className="w-10 h-10 border border-[var(--px-border)] flex items-center justify-center text-[var(--px-text)]">
+                <PixelLogo />
               </div>
-              <button 
+              <button
                 onClick={() => setMobileOpen(false)}
                 className="p-2 text-[var(--px-text)]"
                 data-testid="btn-close-menu"
@@ -121,7 +205,7 @@ export function Navbar() {
                   key={link.id}
                   href={`#${link.id}`}
                   onClick={() => setMobileOpen(false)}
-                  className={`py-2 border-b border-[var(--px-border)] ${activeSection === link.id ? 'text-[var(--px-accent)]' : 'text-[var(--px-text)]'}`}
+                  className={`py-2 border-b border-[var(--px-border)] ${activeSection === link.id ? "text-[var(--px-accent)]" : "text-[var(--px-text)]"}`}
                   data-testid={`mobile-nav-link-${link.id}`}
                 >
                   {link.label}
