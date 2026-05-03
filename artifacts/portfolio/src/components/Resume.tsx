@@ -40,7 +40,7 @@ export function Resume() {
         </motion.div>
         
         <a 
-          href="/resume.pdf"
+          href="https://drive.google.com/file/d/1gIDOSyr4AREiWYphSNtrWcClJyslWeVk/view?usp=drive_link"
           target="_blank"
           rel="noreferrer"
           className="inline-flex h-14 items-center justify-center border-2 border-[var(--px-accent)] bg-transparent text-[var(--px-accent)] font-mono px-8 text-lg pixel-hover uppercase font-bold"
@@ -50,7 +50,7 @@ export function Resume() {
         </a>
         
         <p className="mt-6 text-[var(--px-muted)] font-mono text-sm">
-          Last updated: May 2025
+          Last updated: May 2026
         </p>
       </div>
     </motion.section>
