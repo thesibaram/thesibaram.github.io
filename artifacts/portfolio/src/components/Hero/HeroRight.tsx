@@ -26,7 +26,7 @@ export function HeroRight() {
           style={{ fontSize: "clamp(42px, 10vw, 110px)", letterSpacing: "-1px" }}
           data-testid="hero-name"
         >
-          <span className="block text-[var(--px-text)]">SIBARAM</span>
+          <span className="block text-[var(--px-text)] text-center">SIBARAM</span>
           <span
             className="block text-center"
             style={{
