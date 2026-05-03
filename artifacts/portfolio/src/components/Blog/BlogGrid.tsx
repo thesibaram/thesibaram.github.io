@@ -15,8 +15,11 @@ interface Props {
   onResetFilters: () => void
 }
 
+const INITIAL_SHOW = 3;
+
 export function BlogGrid({ statusFilter, categoryFilter, tagFilter, onResetFilters }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [showMore, setShowMore] = useState(false)
 
   const filtered = blogPosts.filter(post => {
     const statusMatch = statusFilter === "all" || post.status === statusFilter
@@ -24,6 +27,8 @@ export function BlogGrid({ statusFilter, categoryFilter, tagFilter, onResetFilte
     const tagMatch = !tagFilter || post.tags.includes(tagFilter)
     return statusMatch && catMatch && tagMatch
   })
+
+  const displayed = showMore ? filtered : filtered.slice(0, INITIAL_SHOW)
 
   function toggle(id: string) {
     setExpandedId(prev => prev === id ? null : id)
@@ -47,7 +52,7 @@ export function BlogGrid({ statusFilter, categoryFilter, tagFilter, onResetFilte
     <div className="mt-6">
       <AnimatePresence mode="popLayout">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--px-border)]">
-          {filtered.map((post, i) => (
+          {displayed.map((post, i) => (
             <div key={post.id} className="bg-[var(--px-bg)]">
               <BlogCard
                 post={post}
@@ -62,7 +67,7 @@ export function BlogGrid({ statusFilter, categoryFilter, tagFilter, onResetFilte
 
       {/* Expanded panel — shown below grid when any post is open */}
       {expandedId && (() => {
-        const expandedPost = filtered.find(p => p.id === expandedId)
+        const expandedPost = displayed.find(p => p.id === expandedId)
         return expandedPost ? (
           <BlogExpanded
             post={expandedPost}
@@ -72,6 +77,26 @@ export function BlogGrid({ statusFilter, categoryFilter, tagFilter, onResetFilte
           />
         ) : null
       })()}
+
+      {/* View More / Show Less */}
+      {filtered.length > INITIAL_SHOW && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => { setShowMore(v => !v); setExpandedId(null); }}
+            className="font-mono text-[11px] uppercase tracking-widest px-6 py-2.5 border border-[var(--px-border)] text-[var(--px-muted)] transition-all duration-150"
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--px-accent)";
+              (e.currentTarget as HTMLElement).style.color = "var(--px-accent)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--px-border)";
+              (e.currentTarget as HTMLElement).style.color = "var(--px-muted)";
+            }}
+          >
+            {showMore ? "[ Show Less ↑ ]" : `[ View More Posts (${filtered.length - INITIAL_SHOW}) → ]`}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

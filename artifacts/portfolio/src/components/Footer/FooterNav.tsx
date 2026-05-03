@@ -61,7 +61,7 @@ function scrollTo(href: string) {
 
 export function FooterNav() {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px", gridColumn: "span 2" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
 
       {/* Navigate column */}
       <div className="flex flex-col gap-1">

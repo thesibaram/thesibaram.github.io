@@ -47,7 +47,19 @@ export function Experience() {
       
       <div className="mt-8 ml-4 border-l-2 border-[var(--px-border)] pl-8 relative space-y-12">
         {experiences.map((exp, i) => (
-          <div key={i} className="relative">
+          <div
+            key={i}
+            className="relative"
+            style={{ transition: "transform 200ms ease, box-shadow 200ms ease" }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px rgba(0,180,216,0.12)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.transform = "";
+              (e.currentTarget as HTMLElement).style.boxShadow = "";
+            }}
+          >
             {/* Pixel Dot */}
             <div className="absolute -left-[41px] top-1 w-4 h-4 bg-[var(--px-accent)] pixel-art" />
             

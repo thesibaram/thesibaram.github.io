@@ -1,0 +1,137 @@
+Here is the engineering prompt - paste this directly into Replit AI Agent:
+
+---
+
+**REPLIT AI AGENT PROMPT:**
+
+---
+
+You are working on a personal portfolio website for Sibaram Behera (B.Tech EE, PMEC Berhampur - ML/CV engineer in training). Fix the following issues precisely. Do not redesign anything that already works.
+
+---
+
+## 1. GLOBAL RESPONSIVENESS
+
+Make the entire site mobile-first using CSS media queries or Tailwind breakpoints. Target breakpoints: 375px (mobile), 768px (tablet), 1024px (desktop).
+
+Sections currently broken on mobile:
+- **Hero** - fix text overflow, scale heading font down, stack layout vertically on mobile
+- **About Me** - fix any side-by-side layout that breaks below 768px, make it single column
+- **Skills** - fix grid: on mobile show exactly 2 skill cards per row (not more, not less). Use `grid-template-columns: repeat(2, 1fr)` at mobile breakpoint.
+
+---
+
+## 2. SKILLS SECTION
+
+- Mobile: 2 columns exactly
+- Tablet: 3 columns
+- Desktop: 4-5 columns
+- If there are more than 8 skills, add a "Show More" / "Show Less" toggle button. Default: show first 8. On click: expand to show all remaining skills with smooth CSS transition.
+
+---
+
+## 3. PROJECTS SECTION
+
+- Default state: show only 3-4 featured projects
+- Add a "View More Projects" button below the grid. On click: reveal remaining projects with a smooth fade/slide animation
+- Button text toggles: "View More Projects" → "Show Less"
+- Keep existing card design intact
+
+---
+
+## 4. EXPERIENCE SECTION
+
+Current state is strong - only enhance:
+- Add a subtle left-border timeline line connecting experience cards (CSS only, no library)
+- Add a hover state: card lifts slightly (`transform: translateY(-4px)`) with a soft box-shadow transition
+- Ensure full mobile responsiveness (single column, no horizontal overflow)
+
+---
+
+## 5. CERTIFICATIONS SECTION
+
+- Currently not responsive - fix with a 2-column grid on tablet, 1-column on mobile, 3-column on desktop
+- Add a "View More Certifications" button if more than 3-4 exist, same pattern as Projects section
+- Each cert card on hover: slight lift + border highlight
+
+---
+
+## 6. BLOG SECTION
+
+- If blog posts exist: apply same "View More" pattern - show 2-3 by default, expand on click
+- If no posts yet: replace the section with a clean placeholder card that says "Writing coming soon - follow for updates" with social links (GitHub, LinkedIn)
+- Make fully responsive: 1 column mobile, 2 column tablet+
+
+---
+
+## 7. GET IN TOUCH SECTION - FULL REDESIGN
+
+Replace current contact section with this layout:
+
+```
+[ Left column - 40% width ]
+  Heading: "Let's Build Something"
+  Subtext: "Open to ML internships, research collabs, and project discussions."
+  
+  Contact items (icon + text):
+  - Email: siba****@gmail.com (use actual email)
+  - Location: Berhampur, Odisha
+  - GitHub: github.com/thesibaram
+  - LinkedIn: (add link)
+
+[ Right column - 60% width ]
+  Contact form:
+  - Name field
+  - Email field  
+  - Message textarea (4 rows)
+  - Submit button: "Send Message" (full width, accent color)
+```
+
+- On mobile: stack to single column, form below contact info
+- Form: add basic HTML5 validation (required fields)
+- Submit button: on click show a simple "Message sent!" confirmation text (no backend needed - just UI feedback or hook into Formspree/EmailJS if already set up)
+
+---
+
+## 8. FOOTER - FULL REDESIGN
+
+Replace current footer with:
+
+```
+[ Top row ]
+  Left: "Sibaram Behera" wordmark + tagline "ML Engineer in Training"
+  Right: Nav links - About | Skills | Projects | Contact
+
+[ Middle row ]
+  Centered social icons: GitHub | LinkedIn | Twitter/X (if any)
+
+[ Bottom row ]
+  Left: "Built with focus and too much coffee."
+  Right: "2025 Sibaram Behera"
+```
+
+- Full mobile responsive: stack all rows to center-aligned single column
+- Thin top border separator above footer
+- Keep dark theme consistent with rest of site
+
+---
+
+## GENERAL RULES
+
+- Do not change color palette, fonts, or overall dark theme
+- Do not remove any existing working content
+- All animations: use CSS transitions only (no heavy JS animation libraries)
+- Test every section at 375px width before finishing
+- No horizontal scrollbar on any breakpoint
+
+---
+
+Paste this into Replit Agent and hit run. Share the updated URL once done and I will review each section.
+
+---
+
+**Q1. Does the site use a CSS framework (Tailwind, Bootstrap) or raw CSS - knowing this changes how the agent implements the grid fixes?**
+
+**Q2. Is there a backend or form handler set up (Formspree, EmailJS, Node server) or should the contact form just show a UI confirmation with no actual send?**
+
+**Q3. Want the "View More" button in Projects and Certifications to use a count badge - like "View 17 More Projects" - so visitors know how many are hidden?**

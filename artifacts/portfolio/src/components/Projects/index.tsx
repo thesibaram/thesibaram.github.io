@@ -18,6 +18,7 @@ export function Projects() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState("All");
   const [featuredOnly, setFeaturedOnly] = useState(false);
+  const [showAllFeatured, setShowAllFeatured] = useState(false);
 
   const featuredProjects = projects.filter((p) => p.featured);
   const filteredProjects = projects.filter((p) => {
@@ -54,7 +55,7 @@ export function Projects() {
             </span>
           </div>
           <div className="flex gap-5 overflow-x-auto pb-3 md:grid md:grid-cols-2 lg:grid-cols-3">
-            {featuredProjects.map((p, i) => (
+            {(showAllFeatured ? featuredProjects : featuredProjects.slice(0, 3)).map((p, i) => (
               <div key={p.id} className="min-w-[300px] md:min-w-0 flex flex-col">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -85,6 +86,24 @@ export function Projects() {
               </div>
             ))}
           </div>
+          {featuredProjects.length > 3 && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => setShowAllFeatured((v) => !v)}
+                className="font-mono text-[11px] uppercase tracking-widest px-6 py-2.5 border border-[var(--px-border)] text-[var(--px-muted)] transition-all duration-150"
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--px-accent)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--px-accent)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--px-border)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--px-muted)";
+                }}
+              >
+                {showAllFeatured ? "[ Show Less ↑ ]" : `[ View More Projects (${featuredProjects.length - 3}) → ]`}
+              </button>
+            </div>
+          )}
         </div>
       )}
 

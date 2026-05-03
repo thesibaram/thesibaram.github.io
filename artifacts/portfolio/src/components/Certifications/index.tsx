@@ -29,10 +29,15 @@ const FILTERS: { key: FilterKey; label: string }[] = [
 
 export function Certifications() {
   const [active, setActive] = useState<FilterKey>("all");
+  const [showAll, setShowAll] = useState(false);
 
   const filtered = active === "all"
     ? certifications
     : certifications.filter((c) => c.category === active);
+
+  const VISIBLE_COUNT = 3;
+  const displayed = showAll ? filtered : filtered.slice(0, VISIBLE_COUNT);
+  const hasMore = filtered.length > VISIBLE_COUNT;
 
   const completed  = certifications.filter((c) => c.status === "completed").length;
   const inProgress = certifications.filter((c) => c.status === "in-progress").length;
@@ -118,10 +123,42 @@ export function Certifications() {
           gap: "20px",
         }}
       >
-        {filtered.map((cert, i) => (
+        {displayed.map((cert, i) => (
           <CertCard key={cert.id} cert={cert} index={i} />
         ))}
       </div>
+
+      {/* View More button */}
+      {hasMore && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            style={{
+              fontFamily: "JetBrains Mono, monospace",
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "0.12em",
+              padding: "10px 28px",
+              border: "1px solid var(--px-border)",
+              background: "var(--px-surface)",
+              color: "var(--px-muted)",
+              cursor: "pointer",
+              transition: "all 150ms ease",
+              borderRadius: 0,
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--px-accent)";
+              (e.currentTarget as HTMLElement).style.color = "var(--px-accent)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--px-border)";
+              (e.currentTarget as HTMLElement).style.color = "var(--px-muted)";
+            }}
+          >
+            {showAll ? "[ SHOW LESS ↑ ]" : `[ VIEW MORE CERTIFICATIONS (${filtered.length - VISIBLE_COUNT}) → ]`}
+          </button>
+        </div>
+      )}
 
       {filtered.length === 0 && (
         <div

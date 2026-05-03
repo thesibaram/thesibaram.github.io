@@ -62,7 +62,7 @@ export function Contact() {
         {/* Two-column grid */}
         <div
           className="grid gap-8 lg:gap-16"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))" }}
         >
           <ContactLeft />
           <ContactRight />

@@ -29,7 +29,7 @@ export function AboutImage() {
   return (
     <div className="flex flex-col gap-3">
       {/* Image container with pixel corner brackets */}
-      <div className="relative" style={{ width: 280, height: 320 }}>
+      <div className="relative" style={{ width: 'min(280px, 100%)', height: 320 }}>
         {/* Corner brackets via CSS - use absolute positioned spans */}
         {/* Top-left */}
         <span className="absolute top-[-6px] left-[-6px] w-3 h-0.5 bg-[var(--px-accent)]" />

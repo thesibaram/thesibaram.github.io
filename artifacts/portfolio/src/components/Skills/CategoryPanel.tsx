@@ -48,8 +48,8 @@ export function CategoryPanel({ activeId }: Props) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.16 }}
-            className="grid gap-2.5"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}
+            className="grid gap-2.5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+            style={{}}
           >
             {category.skills.map((skill, i) => (
               <SkillChip key={skill.name} skill={skill} index={i} />
