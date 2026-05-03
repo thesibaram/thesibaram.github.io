@@ -190,9 +190,6 @@ export function Projects() {
             </span>
           )}
 
-          {/* thin divider */}
-          <div style={{ width: "100%", height: "1px", background: "var(--px-border)", marginTop: "4px" }} />
-
           {/* 3 — GitHub CTA */}
           <motion.a
             href="https://github.com/thesibaram"
