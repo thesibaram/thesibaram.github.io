@@ -28,7 +28,7 @@ export function HeroRight() {
         >
           <span className="block text-[var(--px-text)] text-left">SIBARAM</span>
           <span
-            className="block text-center"
+            className="block text-left"
             style={{
               color: "transparent",
               WebkitTextStroke: "2px var(--px-accent)",
