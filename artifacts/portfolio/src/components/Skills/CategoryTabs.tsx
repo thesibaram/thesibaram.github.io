@@ -1,7 +1,6 @@
 import React from "react"
 import { skillCategories } from "@/data/skills"
 
-// --- Pixel Icons (16x16 SVG rects) ---
 function BrainIcon() {
   return (
     <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" className="pixel-art" style={{imageRendering:'pixelated'}}>
@@ -78,13 +77,13 @@ interface Props {
 
 export function CategoryTabs({ activeId, onChange }: Props) {
   return (
+    /* flex-wrap on mobile so all tabs are always visible, single row on md+ */
     <div
-      className="flex overflow-x-auto mt-8"
+      className="flex flex-wrap md:flex-nowrap mt-8 gap-y-0"
       role="tablist"
-      style={{ scrollbarWidth: 'none' }}
       data-testid="category-tabs"
     >
-      {skillCategories.map(cat => {
+      {skillCategories.map((cat, idx) => {
         const Icon = iconMap[cat.iconKey] ?? GlobeIcon
         const isActive = cat.id === activeId
         return (
@@ -93,16 +92,19 @@ export function CategoryTabs({ activeId, onChange }: Props) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(cat.id)}
-            className={`flex items-center gap-2 px-5 py-2.5 font-mono text-[11px] border border-[var(--px-border)] transition-all duration-[120ms] whitespace-nowrap flex-shrink-0 -ml-px first:ml-0 ${
+            className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 font-mono text-[10px] md:text-[11px] border border-[var(--px-border)] transition-all duration-[120ms] whitespace-nowrap flex-shrink-0 ${
+              /* On mobile: slight negative margin to merge borders; on first item no offset */
+              idx === 0 ? "" : "-ml-px"
+            } ${
               isActive
-                ? 'bg-[var(--px-accent)] text-[#0D0D10] border-[var(--px-accent)] z-10 relative'
-                : 'bg-transparent text-[var(--px-muted)] hover:text-[var(--px-text)] hover:-translate-x-0.5 hover:-translate-y-0.5'
+                ? "bg-[var(--px-accent)] text-[#0D0D10] border-[var(--px-accent)] z-10 relative"
+                : "bg-transparent text-[var(--px-muted)] hover:text-[var(--px-text)]"
             }`}
-            onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.boxShadow = '3px 3px 0px var(--px-accent)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
+            onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.boxShadow = "3px 3px 0px var(--px-accent)" }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none" }}
             data-testid={`tab-${cat.id}`}
           >
-            <span className={isActive ? 'text-[#0D0D10]' : 'text-[var(--px-muted)]'}>
+            <span className={isActive ? "text-[#0D0D10]" : "text-[var(--px-muted)]"}>
               <Icon />
             </span>
             {cat.label}

@@ -17,11 +17,11 @@ export function AboutImage() {
   const hasPhoto = about.image && !imgError
 
   return (
-    <div className="flex flex-col gap-3 w-full items-center lg:items-start">
-      {/* Image container — responsive width, aspect-ratio driven height */}
+    <div className="flex flex-col gap-3 items-center lg:items-start">
+      {/* Image container — fixed 280px on desktop, full-width capped on mobile */}
       <div
-        className="relative w-full"
-        style={{ maxWidth: "min(280px, 100%)" }}
+        className="relative"
+        style={{ width: "min(280px, 100vw - 32px)" }}
       >
         {/* Corner brackets */}
         <span className="absolute top-[-6px] left-[-6px] w-3 h-0.5 bg-[var(--px-accent)]" />

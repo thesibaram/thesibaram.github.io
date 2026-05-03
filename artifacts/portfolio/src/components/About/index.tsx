@@ -28,16 +28,16 @@ export function About() {
       <PixelDivider />
 
       {/* Two-column on lg+, stacked on mobile */}
-      <div className="grid lg:grid-cols-[auto_1fr] gap-10 xl:gap-20 mt-8 md:mt-10 items-start">
+      <div className="grid lg:grid-cols-[280px_1fr] gap-10 xl:gap-20 mt-8 md:mt-10 items-start">
 
-        {/* LEFT: Image + ticker — centered on mobile, left on desktop */}
-        <div className="flex flex-col items-center lg:items-start gap-0 w-full">
+        {/* LEFT: Image + ticker — centered on mobile, natural width on desktop */}
+        <div className="flex flex-col items-center lg:items-start gap-0">
           <AboutImage />
           <FunFactTicker />
         </div>
 
         {/* RIGHT: Identity header + bio + stats */}
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 min-w-0">
           {/* Identity header */}
           <div className="pb-5 border-b border-[var(--px-border)]">
             {/* Stack on mobile, side-by-side on sm+ */}
