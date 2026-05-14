@@ -6,13 +6,14 @@ import { TypingIndicator } from "./TypingIndicator";
 import { SuggestedQuestions } from "./SuggestedQuestions";
 import { ChatInput } from "./ChatInput";
 import { PixelBotIcon } from "./PixelBotIcon";
+import { getLocalChatResponse } from "@/lib/chatEngine";
 
 interface ChatWindowProps {
   onClose: () => void;
   sessionId: string;
 }
 
-export function ChatWindow({ onClose, sessionId }: ChatWindowProps) {
+export function ChatWindow({ onClose, sessionId: _sessionId }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -23,23 +24,14 @@ export function ChatWindow({ onClose, sessionId }: ChatWindowProps) {
 
   const sendMessage = async (content: string) => {
     const userMsg: Message = { role: "user", content };
-    const updatedMessages = [...messages, userMsg];
-    setMessages(updatedMessages);
+    setMessages(prev => [...prev, userMsg]);
     setLoading(true);
 
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId,
-          messages: updatedMessages.slice(-10),
-        }),
-      });
-      const data = await res.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
+      const responseText = await getLocalChatResponse(content);
+      setMessages(prev => [...prev, { role: "assistant", content: responseText }]);
     } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "ERROR_STATE" }]);
+      setMessages(prev => [...prev, { role: "assistant", content: "ERROR_STATE" }]);
     } finally {
       setLoading(false);
     }
