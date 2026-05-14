@@ -22,13 +22,12 @@ export function HeroRight() {
         className="mb-5 md:mb-7"
       >
         <h1
-          className="font-mono font-black leading-[0.88]"
-          style={{ fontSize: "clamp(42px, 10vw, 110px)", letterSpacing: "-1px" }}
+          className="font-mono font-black leading-none whitespace-nowrap"
+          style={{ fontSize: "clamp(26px, 8vw, 88px)", letterSpacing: "-1px" }}
           data-testid="hero-name"
         >
-          <span className="block text-[var(--px-text)] text-left">SIBARAM</span>
+          <span style={{ color: "var(--px-text)" }}>SIBARAM </span>
           <span
-            className="block text-left"
             style={{
               color: "transparent",
               WebkitTextStroke: "2px var(--px-accent)",
