@@ -26,9 +26,9 @@ export function HeroRight() {
           style={{ fontSize: "clamp(42px, 10vw, 110px)", letterSpacing: "-1px" }}
           data-testid="hero-name"
         >
-          <span className="block text-[var(--px-text)] text-center">SIBARAM</span>
+          <span className="block text-[var(--px-text)] text-left">SIBARAM</span>
           <span
-            className="block text-center"
+            className="block text-left"
             style={{
               color: "transparent",
               WebkitTextStroke: "2px var(--px-accent)",
