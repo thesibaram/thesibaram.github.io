@@ -1,14 +1,13 @@
-# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# compiled output
+# Build output
 dist
+dist/public
 tmp
 out-tsc
 *.tsbuildinfo
-.expo
-.expo-shared
 
-# dependencies
+# Dependencies
 node_modules
 
 # IDEs and editors
@@ -19,15 +18,13 @@ node_modules
 *.launch
 .settings/
 *.sublime-workspace
-
-# IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# misc
+# Misc
 /.sass-cache
 /connect.lock
 /coverage
@@ -41,9 +38,17 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
-
-# Replit
-.cache/
+# Replit-specific (safe to ignore)
+.replit
+.replitignore
+replit.md
+.replit-artifact
 .local/
+.cache/
+.agents/
+attached_assets/
+lib/
+scripts/
+extract_to_root.ps1
+pnpm-lock.yaml
+pnpm-workspace.yaml
