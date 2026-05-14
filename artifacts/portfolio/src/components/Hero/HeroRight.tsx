@@ -22,7 +22,7 @@ export function HeroRight() {
         className="mb-5 md:mb-7"
       >
         <h1
-          className="font-mono font-black leading-none whitespace-nowrap"
+          className="font-mono font-black whitespace-nowrap text-center text-[35px]"
           style={{ fontSize: "clamp(26px, 8vw, 88px)", letterSpacing: "-1px" }}
           data-testid="hero-name"
         >
